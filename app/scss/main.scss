@@ -1,5 +1,166 @@
 @import "base/customVariables";
 
+/*
+* BASE
+*/
+
 body {
+  font-weight: 300;
+  padding-top: 3.125em;
+}
+
+/*
+* UTILITIES
+*/
+
+/*
+* LAYOUT
+*/
+
+.hwp {
+  background-color: $sand;
+  box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.38);
+}
+
+.header > * {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  font-weight: normal;
+}
+
+.brand-name {
+  display: block;
+  color: #FFF;
+  font-size: 1.25em;
+  text-align: center;
+  background-color: $primary;
+
+  &:hover {
+    color: #FFF;
+  }
+}
+
+.step-title {
+  margin: 0;
+  margin-top: 4px;
+  padding-left: 2em;
+  font-size: 1.125em;
+  text-transform: uppercase;
+
+  @media (max-width: 992px) {
+    text-align: center;
+  }
+}
+
+.nav {
+  color: $textLight;
+  background-color: $primaryDarker;
+
+  &__label {
+    margin-top: 16px;
+    margin-left: 16px;
+    text-align: left;
+    font-size: 0.875em;
+    font-weight: 300;
+    opacity: 0.64;
+  }
+
+  ul {
+    padding-left: 0;
+    list-style-type: decimal;
+    list-style-position: inside;
+  }
+
+  li {
+    position: relative;
+    padding: 10px 0;
+    padding-left: 20px;
+    cursor: pointer;
+
+    &:before {
+      content: " ";
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      display: block;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      border: 1px solid $textLight;
+    }
+
+    &.active,
+    &:hover {
+      color: $sand;
+      background-color: rgba(#D8D8D8, 0.08);
+
+      &:before {
+        border-color: $sand;
+      }
+    }
+  }
+
+  .step-number {
+    margin-left: 10px;
+  }
+}
+
+.step {
+  display: flex;
+  align-items: center;
+
+  &__desc {
     font-weight: 400;
+    text-transform: uppercase;
+  }
+}
+
+.continue {
+  line-height: 50px;
+  text-transform: uppercase;
+  text-align: center;
+  background-color: $primaryLighter;
+
+  &__button {
+    color: white !important;
+  }
+}
+
+/*
+* STEPS
+*/
+
+/*First step*/
+.step--first {
+
+  & > div {
+    padding: 1em;
+  }
+
+  & > div:last-child {
+    padding: 2em;
+    border-left: 1px solid rgba($primaryLighter, 0.4);;
+  }
+
+  .step__list {
+    padding-left: 0;
+    list-style-position: inside;
+  }
+}
+
+.offer {
+  margin: 3em 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  img {
+    margin-right: 1em;
+  }
+
+  .float-right {
+    order: 1;
+    margin-left: 1em;
+  }
 }

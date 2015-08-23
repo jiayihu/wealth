@@ -23,17 +23,18 @@ $brand-danger:          #d9534f !default;
 
 $primary: #4EA1D7;
 $text: #30517A;
+$textLight: #9DACC5;
 $primaryDarker: #182C4D;
-$primayLighter: #9CBBCF;
+$primaryLighter: #9CBBCF;
 $accent: #E76A5A;
-
+$sand: #FFFBF3;
 
 //== Scaffolding
 //
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-$body-bg:               lighten($primayLighter, 15%) !default;
+$body-bg:               lighten($primaryLighter, 15%) !default;
 //** Global text color on `<body>`.
 $text-color:            $text !default;
 
@@ -42,7 +43,7 @@ $link-color:            $accent !default;
 //** Link hover color set via `darken()` function.
 $link-hover-color:      darken($accent, 15%) !default;
 //** Link hover decoration.
-$link-hover-decoration: underline !default;
+$link-hover-decoration: none !default;
 
 
 //== Typography
@@ -67,7 +68,7 @@ $font-size-h5:            $font-size-base !default;
 $font-size-h6:            ceil(($font-size-base * 0.85)) !default; // ~12px
 
 //** Unit-less `line-height` for use in components like buttons.
-$line-height-base:        1.428571429 !default; // 20/14
+$line-height-base:        1.5 !default; // 20/14
 //** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
 $line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
 
@@ -335,7 +336,7 @@ $screen-md-max:              ($screen-lg-min - 1) !default;
 //** Number of columns in the grid.
 $grid-columns:              12 !default;
 //** Padding between columns. Gets divided in half for the left and right.
-$grid-gutter-width:         30px !default;
+$grid-gutter-width:         0 !default;
 // Navbar collapse
 //** Point at which the navbar becomes uncollapsed.
 $grid-float-breakpoint:     $screen-sm-min !default;
