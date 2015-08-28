@@ -10,15 +10,71 @@ body {
 }
 
 /*
-* UTILITIES
+* MODULES
 */
+
+.noUi-target {
+  margin-top: 30px;
+  margin-bottom: 100px;
+  height: 4px;
+  background-color: #D3D3D3;
+  border: none;
+  border-radius: 2px;
+  box-shadow: none;
+}
+
+.noUi-horizontal .noUi-handle {
+  left: -7px;
+  width: 14px;
+  height: 14px;
+}
+
+.noUi-handle {
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  background-color: $primary;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:after,
+  &:before {
+    display: none;
+  }
+}
+
+.slider-tooltip {
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  font-size: 14px;
+}
+
+.noUi-marker,
+.noUi-marker-large,
+.noUi-marker-sub {
+  width: 1px !important;
+  background-color: $primaryDarker;
+}
+
+.noUi-pips {
+  font-size: 14px;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: $primaryDarker;
+
+  &-horizontal {
+    padding: 5px 0;
+  }
+}
 
 /*
 * LAYOUT
 */
 
 .hwp {
-  background-color: $sand;
+  background-color: $primaryDarker;
   box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.38);
 }
 
@@ -47,14 +103,17 @@ body {
   font-size: 1.125em;
   text-transform: uppercase;
 
-  @media (max-width: 992px) {
+  @media (max-width: $screen-desktop) {
     text-align: center;
   }
 }
 
 .nav {
   color: $textLight;
-  background-color: $primaryDarker;
+
+  @media(max-width: $screen-desktop) {
+    display: none;
+  }
 
   &__label {
     margin-top: 16px;
@@ -105,10 +164,11 @@ body {
   }
 }
 
-.step {
-  display: flex;
-  align-items: center;
+.main {
+  background-color: $sand;
+}
 
+.step {
   &__desc {
     font-weight: 400;
     text-transform: uppercase;
@@ -120,6 +180,7 @@ body {
   text-transform: uppercase;
   text-align: center;
   background-color: $primaryLighter;
+  cursor: pointer;
 
   &__button {
     color: white !important;
@@ -130,8 +191,10 @@ body {
 * STEPS
 */
 
-/*First step*/
+/*Intro*/
 .step--first {
+  display: flex;
+  align-items: center;
 
   & > div {
     padding: 1em;
@@ -162,5 +225,40 @@ body {
   .float-right {
     order: 1;
     margin-left: 1em;
+  }
+}
+
+/* About Step */
+.step--about {
+  text-align: center;
+  padding: 0 2em;
+}
+
+.about {
+  &__question {
+    margin-bottom: 1.125em;
+    border-bottom: 1px solid rgba(#B8BBC6, .22);
+  }
+
+  &__age .slider-tooltip {
+    left: 0;
+  }
+
+  &__situation {
+    margin-bottom: 3em;
+  }
+
+  &__select {
+    width: 200px;
+    height: 40px;
+    padding: 4px 15px;
+    background: none;
+    border: 1px solid $textLight;
+  }
+
+  &__house {
+    @media (max-width: $screen-tablet) {
+      margin-bottom: 3em;
+    }
   }
 }
