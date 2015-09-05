@@ -1,3 +1,110 @@
+/* -----------------------------------------------------------------------------
+
+  HAMBURGER ICONS COMPONENT
+
+----------------------------------------------------------------------------- */
+/**
+ * Toggle Switch Globals
+ *
+ * All switches should take on the class `c-hamburger` as well as their
+ * variant that will give them unique properties. This class is an overview
+ * class that acts as a reset for all versions of the icon.
+ */
+.c-hamburger {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 48px;
+  height: 48px;
+  font-size: 0;
+  text-indent: -9999px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: none;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  cursor: pointer;
+  -webkit-transition: background 0.1s;
+          transition: background 0.1s; }
+
+.c-hamburger:focus {
+  outline: none; }
+
+.c-hamburger span {
+  display: block;
+  position: absolute;
+  top: 22px;
+  left: 9px;
+  right: 9px;
+  height: 4px;
+  background: white; }
+
+.c-hamburger span::before,
+.c-hamburger span::after {
+  position: absolute;
+  display: block;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #fff;
+  content: ""; }
+
+.c-hamburger span::before {
+  top: -10px; }
+
+.c-hamburger span::after {
+  bottom: -10px; }
+
+/**
+ * Style 2
+ *
+ * Hamburger to "x" (htx). Takes on a hamburger shape, bars slide
+ * down to center and transform into an "x".
+ */
+.c-hamburger--htx span {
+  -webkit-transition: background 0s 0.1s;
+          transition: background 0s 0.1s; }
+
+.c-hamburger--htx span::before,
+.c-hamburger--htx span::after {
+  -webkit-transition-duration: 0.1s, 0.1s;
+          transition-duration: 0.1s, 0.1s;
+  -webkit-transition-delay: 0.1s, 0s;
+          transition-delay: 0.1s, 0s; }
+
+.c-hamburger--htx span::before {
+  -webkit-transition-property: top, -webkit-transform;
+          transition-property: top, transform; }
+
+.c-hamburger--htx span::after {
+  -webkit-transition-property: bottom, -webkit-transform;
+          transition-property: bottom, transform; }
+
+/* active state, i.e. menu open */
+.c-hamburger--htx.is-active span {
+  background: none; }
+
+.c-hamburger--htx.is-active span::before {
+  top: 0;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg); }
+
+.c-hamburger--htx.is-active span::after {
+  bottom: 0;
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg); }
+
+.c-hamburger--htx.is-active span::before,
+.c-hamburger--htx.is-active span::after {
+  -webkit-transition-delay: 0s, 0.1s;
+          transition-delay: 0s, 0.1s; }
+
 /*
 * BASE
 */
@@ -59,21 +166,30 @@ body {
 */
 .hwp {
   background-color: #182C4D;
-  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.38); }
+  box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.38);
+  overflow: hidden; }
 
 .header > * {
+  position: relative;
   padding-top: 1em;
   padding-bottom: 1em;
   font-weight: normal; }
 
 .brand-name {
   display: block;
-  color: #FFF;
-  font-size: 1.25em;
   text-align: center;
   background-color: #4EA1D7; }
-  .brand-name:hover {
-    color: #FFF; }
+  .brand-name a {
+    color: #FFF;
+    font-size: 1.25em;
+    text-align: center; }
+    .brand-name a :hover {
+      color: #FFF; }
+
+.c-hamburger {
+  position: absolute;
+  top: 10px;
+  right: 10px; }
 
 .step-title {
   margin: 0;
@@ -86,10 +202,12 @@ body {
       text-align: center; } }
 
 .nav {
-  color: #9DACC5; }
+  color: #9DACC5;
+  -webkit-transition: height 0.3s ease-out;
+          transition: height 0.3s ease-out; }
   @media (max-width: 992px) {
     .nav {
-      display: none; } }
+      height: 0; } }
   .nav__label {
     margin-top: 16px;
     margin-left: 16px;
@@ -126,6 +244,10 @@ body {
   .nav .step-number {
     margin-left: 10px; }
 
+@media (max-width: 992px) {
+  .menu-open .nav {
+    height: 370px; } }
+
 .main {
   background-color: #FFFBF3; }
 
@@ -155,6 +277,10 @@ body {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
+  @media (max-width: 992px) {
+    .step--first {
+      display: block;
+      text-align: center; } }
   .step--first > div {
     padding: 1em; }
   .step--first > div:last-child {
@@ -181,6 +307,9 @@ body {
   text-align: center; }
   .offer img {
     margin-right: 1em; }
+  @media (max-width: 992px) {
+    .offer .icon--chart {
+      width: 12.5em; } }
   .offer .float-right {
     -webkit-box-ordinal-group: 2;
     -webkit-order: 1;

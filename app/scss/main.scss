@@ -1,4 +1,5 @@
 @import "base/customVariables";
+@import "components/hamburger.scss";
 
 /*
 * BASE
@@ -76,9 +77,11 @@ body {
 .hwp {
   background-color: $primaryDarker;
   box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.38);
+  overflow: hidden;
 }
 
 .header > * {
+  position: relative;
   padding-top: 1em;
   padding-bottom: 1em;
   font-weight: normal;
@@ -86,14 +89,24 @@ body {
 
 .brand-name {
   display: block;
-  color: #FFF;
-  font-size: 1.25em;
   text-align: center;
   background-color: $primary;
 
-  &:hover {
+  a {
     color: #FFF;
+    font-size: 1.25em;
+    text-align: center;
+
+    :hover {
+      color: #FFF;
+    }
   }
+}
+
+.c-hamburger {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .step-title {
@@ -110,9 +123,10 @@ body {
 
 .nav {
   color: $textLight;
+  transition: height 0.3s ease-out;
 
-  @media(max-width: $screen-desktop) {
-    display: none;
+  @media (max-width: $screen-desktop) {
+    height: 0;
   }
 
   &__label {
@@ -164,6 +178,12 @@ body {
   }
 }
 
+@media (max-width: $screen-desktop) {
+  .menu-open .nav {
+    height: 370px;
+  }
+}
+
 .main {
   background-color: $sand;
 }
@@ -196,6 +216,11 @@ body {
   display: flex;
   align-items: center;
 
+  @media (max-width: $screen-desktop) {
+    display: block;
+    text-align: center;
+  }
+
   & > div {
     padding: 1em;
   }
@@ -220,6 +245,12 @@ body {
 
   img {
     margin-right: 1em;
+  }
+
+  .icon--chart {
+    @media (max-width: $screen-desktop) {
+      width: 12.5em;
+    }
   }
 
   .float-right {

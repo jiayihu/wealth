@@ -2,6 +2,8 @@
 'use strict';
 // var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
+var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0];
+
 // Set the active link on the navigation
 function setActive(newActive) {
   var oldActive = document.getElementsByClassName('active')[0];
@@ -10,28 +12,34 @@ function setActive(newActive) {
 }
 
 // Load the HTML Template of the step from the /templates/ folder
-function loadTemplate(templateUrl) {
-  var mainDiv = document.getElementsByClassName('main')[0],
-    xhr = new XMLHttpRequest();
+function loadTemplate(container, templateUrl, callback) {
+  var xhr = new XMLHttpRequest();
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4) {
-      var activeStep = templateUrl.match(/\d+/)[0];
-      mainDiv.innerHTML = xhr.response;
-      runStepFunctions(activeStep);
-
-      var continueButton = document.getElementsByClassName('continue')[0];
-      continueButton.addEventListener('click', function() {
-        var nextStep = parseInt(activeStep) + 1;
-        console.log(activeStep);
-        var templateUrl = continueButton.firstElementChild.dataset.template;
-        loadTemplate(templateUrl);
-        setActive( document.querySelector('.nav ul li:nth-child(' + nextStep + ')') );
-      });
+      container.innerHTML = xhr.response;
+      callback(container, templateUrl);
     }
   };
   xhr.open('GET', templateUrl);
   xhr.send();
 }
+
+function loadStep(container, templateUrl) {
+  var activeStep = templateUrl.match(/\d+/)[0];
+  runStepFunctions(activeStep);
+
+  var continueButton = document.getElementsByClassName('continue')[0];
+  if(continueButton) {
+    continueButton.addEventListener('click', function() {
+      var nextStep = parseInt(activeStep) + 1;
+      var nextTemplateUrl = continueButton.firstElementChild.dataset.template;
+      loadTemplate(container, nextTemplateUrl, loadStep);
+      setActive( document.querySelector('.nav ul li:nth-child(' + nextStep + ')') );
+    });
+  }
+}
+
+loadTemplate(TEMPLATE_CONTAINER, 'templates/1-intro.html', loadStep);
 
 function runStepFunctions(stepNumber) {
   if(stepNumber === '2') {
@@ -111,14 +119,11 @@ nav.addEventListener('click', function(e) {
       templateUrl;
   if (nodeName === 'SPAN') {
     templateUrl = e.target.dataset.template;
-    loadTemplate(templateUrl);
+    loadTemplate(TEMPLATE_CONTAINER, templateUrl, loadStep);
     setActive(e.target.parentNode);
   } else if (nodeName === 'LI') {
     templateUrl = e.target.firstElementChild.dataset.template;
-    loadTemplate(templateUrl);
+    loadTemplate(TEMPLATE_CONTAINER, templateUrl, loadStep);
     setActive(e.target);
   }
 });
-
-//Setting the first step template on load
-loadTemplate('templates/1-intro.html');
