@@ -1,8 +1,26 @@
-/*global noUiSlider: false, wNumb: false*/
 'use strict';
 // var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
 var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0];
+
+loadTemplate(TEMPLATE_CONTAINER, 'templates/1-intro.html', loadStep);
+
+//Event delegation for changing template
+var nav = document.querySelector('.nav ul');
+nav.addEventListener('click', function(e) {
+  var nodeName = e.target.nodeName,
+      templateUrl;
+  if (nodeName === 'SPAN') {
+    templateUrl = e.target.dataset.template;
+    loadTemplate(TEMPLATE_CONTAINER, templateUrl, loadStep);
+    setActive(e.target.parentNode);
+  } else if (nodeName === 'LI') {
+    templateUrl = e.target.firstElementChild.dataset.template;
+    loadTemplate(TEMPLATE_CONTAINER, templateUrl, loadStep);
+    setActive(e.target);
+  }
+});
+
 
 // Set the active link on the navigation
 function setActive(newActive) {
@@ -39,91 +57,14 @@ function loadStep(container, templateUrl) {
   }
 }
 
-loadTemplate(TEMPLATE_CONTAINER, 'templates/1-intro.html', loadStep);
-
 function runStepFunctions(stepNumber) {
+  var script = document.createElement('script');
   if(stepNumber === '2') {
-    var ageSlider = document.getElementsByClassName('about__age__slider')[0],
-        incomeSlider = document.getElementsByClassName('about__income__slider')[0];
-
-    noUiSlider.create(ageSlider, {
-      start: 20,
-      step: 1,
-      range: {
-        'min': 18,
-        'max': 70
-      },
-      pips: {
-        mode: 'values',
-        values: [20, 30, 40, 50, 60, 70],
-        density: 5
-      },
-      format: wNumb({
-    		decimals: 1,
-    		thousand: '.'
-    	})
-    });
-    var ageHandles = ageSlider.getElementsByClassName('noUi-handle'),
-    	ageTooltips = [];
-
-    for ( var i = 0; i < ageHandles.length; i++ ){
-    	ageTooltips[i] = document.createElement('div');
-    	ageHandles[i].appendChild(ageTooltips[i]);
-    }
-
-    ageTooltips[0].className += 'slider-tooltip';
-    ageTooltips[0].innerHTML = '<span></span>';
-    ageTooltips[0] = ageTooltips[0].getElementsByTagName('span')[0];
-
-    // When the slider changes, write the value to the Tooltips.
-    ageSlider.noUiSlider.on('update', function( values, handle ){
-    	ageTooltips[handle].innerHTML = values[handle];
-    });
-
-    noUiSlider.create(incomeSlider, {
-      start: 24000,
-      step: 1000,
-      range: {
-        'min': 18000,
-        'max': 100000
-      },
-      format: wNumb({
-    		decimals: 1,
-    		thousand: '.'
-    	})
-    });
-
-    var tipHandles = incomeSlider.getElementsByClassName('noUi-handle'),
-    	tooltips = [];
-
-    for ( var j = 0; j < tipHandles.length; j++ ){
-    	tooltips[j] = document.createElement('div');
-    	tipHandles[j].appendChild(tooltips[j]);
-    }
-
-    tooltips[0].className += 'slider-tooltip';
-    tooltips[0].innerHTML = '<span></span>';
-    tooltips[0] = tooltips[0].getElementsByTagName('span')[0];
-
-    // When the slider changes, write the value to the tooltips.
-    incomeSlider.noUiSlider.on('update', function( values, handle ){
-    	tooltips[handle].innerHTML = values[handle];
-    });
+    script.src='scripts/templates/2-about.js';
+  } else if(stepNumber === '3') {
+    script.src='scripts/templates/3-you.js';
+  } else if(stepNumber === '4') {
+    script.src='scripts/templates/4-people.js';
   }
+  TEMPLATE_CONTAINER.appendChild(script);
 }
-
-//Event delegation for changing template
-var nav = document.querySelector('.nav ul');
-nav.addEventListener('click', function(e) {
-  var nodeName = e.target.nodeName,
-      templateUrl;
-  if (nodeName === 'SPAN') {
-    templateUrl = e.target.dataset.template;
-    loadTemplate(TEMPLATE_CONTAINER, templateUrl, loadStep);
-    setActive(e.target.parentNode);
-  } else if (nodeName === 'LI') {
-    templateUrl = e.target.firstElementChild.dataset.template;
-    loadTemplate(TEMPLATE_CONTAINER, templateUrl, loadStep);
-    setActive(e.target);
-  }
-});

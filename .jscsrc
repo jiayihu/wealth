@@ -3,6 +3,6 @@
   "disallowSpacesInAnonymousFunctionExpression": null,
   "excludeFiles": [
     "node_modules/**",
-    "gulpfile.babel.js"
+    "gulpfile.js"
   ]
 }

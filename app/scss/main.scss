@@ -10,6 +10,16 @@ body {
   padding-top: 3.125em;
 }
 
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: $screen-desktop) {
+    display: block;
+  }
+}
+
 /*
 * MODULES
 */
@@ -70,6 +80,24 @@ body {
   }
 }
 
+.circle-legend {
+  ul {
+    list-style-type: none;
+  }
+
+  .doughnut-legend {
+      display: inline-block;
+      text-align: left;
+  }
+
+  span {
+    display: inline-block;
+    margin-right: 10px;
+    width: 15px;
+    height: 15px;
+  }
+}
+
 /*
 * LAYOUT
 */
@@ -107,6 +135,10 @@ body {
   position: absolute;
   top: 10px;
   right: 10px;
+
+  @media (min-width: $screen-desktop) {
+    display: none;
+  }
 }
 
 .step-title {
@@ -118,6 +150,15 @@ body {
 
   @media (max-width: $screen-desktop) {
     text-align: center;
+  }
+}
+
+.wrapper {
+  width: 80%;
+  margin: 0 auto;
+
+  @media (max-width: $screen-tablet) {
+    width: 90%;
   }
 }
 
@@ -189,6 +230,8 @@ body {
 }
 
 .step {
+  text-align: center;
+
   &__desc {
     font-weight: 400;
     text-transform: uppercase;
@@ -213,13 +256,7 @@ body {
 
 /*Intro*/
 .step--first {
-  display: flex;
-  align-items: center;
-
-  @media (max-width: $screen-desktop) {
-    display: block;
-    text-align: center;
-  }
+  text-align: center;
 
   & > div {
     padding: 1em;
@@ -238,9 +275,6 @@ body {
 
 .offer {
   margin: 3em 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-align: center;
 
   img {
@@ -261,13 +295,14 @@ body {
 
 /* About Step */
 .step--about {
-  text-align: center;
   padding: 0 2em;
 }
 
 .about {
   &__question {
     margin-bottom: 1.125em;
+    font-size: 1.125em;
+    font-weight: normal;
     border-bottom: 1px solid rgba(#B8BBC6, .22);
   }
 
@@ -290,6 +325,65 @@ body {
   &__house {
     @media (max-width: $screen-tablet) {
       margin-bottom: 3em;
+    }
+  }
+}
+
+
+/* Savings Step */
+.step--savings {
+
+  .col-md-6 {
+    padding: 0 1em;
+  }
+
+  .noUi-target {
+    margin-bottom: 2em;
+  }
+
+  .slider-tooltip {
+    left: -5px;
+  }
+
+  .about {
+
+    &__savings {
+      &__circle {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  }
+
+  .circle-legend {
+    li:nth-child(1) span {
+      background-color: #D3D3D3;
+    }
+    li:nth-child(2) span {
+      background-color: #E97B6C;
+    }
+    li:nth-child(3) span {
+      background-color: #9DDC57;
+    }
+  }
+
+  .flex {
+    margin-bottom: 3em;
+  }
+
+}
+
+/* Step People*/
+.step--people {
+  .graph-legend {
+    text-align: left;
+  }
+
+  .graph {
+    text-align: center;
+
+    & > * {
+      display: block;
     }
   }
 }
