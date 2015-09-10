@@ -9,7 +9,7 @@
             <g id="timeline" sketch:type="MSLayerGroup" transform="translate(371.000000, 435.000000)">
                 <g id="point" transform="translate(0.000000, 6.000000)" sketch:type="MSTextLayer">
                     <text id="starting">
-                        <tspan x="30" y="36" fill="#E97B6C"></tspan>
+                        <tspan x="30" y="36" fill="#30517A"></tspan>
                     </text>
                 </g>
             </g>

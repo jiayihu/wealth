@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="479px" height="326px" viewBox="0 0 479 326" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>Pyramid + legend + legend + legend</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M175.148403,32.5364289 L174.88721,32.206016 L174.706144,33.1997392 L60.5061487,204.479639 L137.806664,235.711075 L137.764101,235.94467 L138.147953,235.848965 L138.395902,235.949142 L138.426761,235.77945 L303.314474,194.668326 L175.342627,32.7821245 L175.476906,32.0437317 L175.148403,32.5364289 Z" id="path-1"></path>
+        <path d="M175.430524,32.2706766 L175.310214,32.1184827 L175.226812,32.5762089 L122.624306,111.470712 L158.230269,125.856454 L158.210664,125.964052 L158.387473,125.919969 L158.501682,125.966112 L158.515896,125.887949 L234.466047,106.95145 L175.519987,32.3838483 L175.581838,32.0437317 L175.430524,32.2706766 Z" id="path-3"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="This-is-you-now" sketch:type="MSArtboardGroup" transform="translate(-377.000000, -185.000000)">
+            <g id="Pyramid-+-legend-+-legend-+-legend" sketch:type="MSLayerGroup" transform="translate(377.000000, 166.000000)">
+                <g id="Pyramid">
+                    <g id="pyramid" sketch:type="MSShapeGroup">
+                        <polygon id="Triangle-1" fill="#9CBBCF" transform="translate(210.435829, 172.500000) rotate(-14.000000) translate(-210.435829, -172.500000) " points="210.435829 28 341.085561 317 79.7860963 317 "></polygon>
+                        <polygon id="Triangle-1" fill="#8CA9BC" transform="translate(118.165014, 176.133912) rotate(22.000000) translate(-118.165014, -176.133912) " points="118.165014 20.7276465 182.492554 331.540178 53.8374736 331.540178 "></polygon>
+                    </g>
+                    <mask id="mask-2" sketch:name="Mask" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#E97B6C" sketch:type="MSShapeGroup" xlink:href="#path-1"></use>
+                    <g id="pyramid" mask="url(#mask-2)" sketch:type="MSShapeGroup">
+                        <polygon id="Triangle-1" fill="#182C4D" transform="translate(210.435829, 172.500000) rotate(-14.000000) translate(-210.435829, -172.500000) " points="210.435829 28 341.085561 317 79.7860963 317 "></polygon>
+                        <polygon id="Triangle-1" fill="#132645" transform="translate(118.165014, 176.133912) rotate(22.000000) translate(-118.165014, -176.133912) " points="118.165014 20.7276465 182.492554 331.540178 53.8374736 331.540178 "></polygon>
+                    </g>
+                    <mask id="mask-4" sketch:name="Mask" fill="white">
+                        <use xlink:href="#path-3"></use>
+                    </mask>
+                    <use id="Mask" fill="#182C4D" sketch:type="MSShapeGroup" xlink:href="#path-3"></use>
+                    <g id="pyramid" mask="url(#mask-4)" sketch:type="MSShapeGroup">
+                        <polygon id="Triangle-1" fill="#E97B6C" transform="translate(210.435829, 172.500000) rotate(-14.000000) translate(-210.435829, -172.500000) " points="210.435829 28 341.085561 317 79.7860963 317 "></polygon>
+                        <polygon id="Triangle-1" fill="#DD6B5B" transform="translate(118.165014, 176.133912) rotate(22.000000) translate(-118.165014, -176.133912) " points="118.165014 20.7276465 182.492554 331.540178 53.8374736 331.540178 "></polygon>
+                    </g>
+                </g>
+                <g id="legend-+-legend-+-legend" transform="translate(179.000000, 18.000000)">
+                    <g id="legend">
+                        <ellipse id="Oval-29" stroke="#D3D3D3" sketch:type="MSShapeGroup" cx="5.48467967" cy="68.5" rx="5.48467967" ry="5.5"></ellipse>
+                        <path d="M6.48189415,67.5 L50.2060807,23.6536775" id="Line" stroke="#D3D3D3" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                        <path d="M50.3593315,1.5 L50.3593315,23.5" id="Line" stroke="#D3D3D3" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                        <ellipse id="Oval-29" fill="#D3D3D3" sketch:type="MSShapeGroup" cx="5.48467967" cy="68.5" rx="1.49582173" ry="1.5"></ellipse>
+                        <text id="Savings:-$-3,360/yr" sketch:type="MSTextLayer" font-family="Source Sans Pro" font-size="18" font-weight="normal">
+                            <tspan x="58.8356546" y="18" fill="#E97B6C">Savings</tspan>
+                            <tspan x="116.957655" y="18" fill="#ACACAC">: $ 3,360/yr</tspan>
+                        </text>
+                    </g>
+                    <g id="legend" transform="translate(129.637883, 170.000000)">
+                        <ellipse id="Oval-29" stroke="#D3D3D3" sketch:type="MSShapeGroup" cx="5.48467967" cy="68.5" rx="5.48467967" ry="5.5"></ellipse>
+                        <path d="M6.48189415,67.5 L50.2060807,23.6536775" id="Line" stroke="#D3D3D3" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                        <path d="M50.3593315,1.5 L50.3593315,23.5" id="Line" stroke="#D3D3D3" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                        <ellipse id="Oval-29" fill="#D3D3D3" sketch:type="MSShapeGroup" cx="5.48467967" cy="68.5" rx="1.49582173" ry="1.5"></ellipse>
+                        <text id="Basic-Needs" sketch:type="MSTextLayer" font-family="Source Sans Pro" font-size="18" font-weight="normal" fill="#9DACC5">
+                            <tspan x="58.8356546" y="18">Basic Needs</tspan>
+                        </text>
+                    </g>
+                    <g id="legend" transform="translate(59.832869, 80.000000)">
+                        <ellipse id="Oval-29" stroke="#D3D3D3" sketch:type="MSShapeGroup" cx="5.48467967" cy="68.5" rx="5.48467967" ry="5.5"></ellipse>
+                        <path d="M6.48189415,67.5 L50.2060807,23.6536775" id="Line" stroke="#D3D3D3" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                        <path d="M50.3593315,1.5 L50.3593315,23.5" id="Line" stroke="#D3D3D3" stroke-linecap="square" sketch:type="MSShapeGroup"></path>
+                        <ellipse id="Oval-29" fill="#D3D3D3" sketch:type="MSShapeGroup" cx="5.48467967" cy="68.5" rx="1.49582173" ry="1.5"></ellipse>
+                        <text id="Discretionary-Spendi" sketch:type="MSTextLayer" font-family="Source Sans Pro" font-size="18" font-weight="normal" sketch:alignment="middle">
+                            <tspan x="60.0087799" y="18" fill="#182C4D">Discretionary Spending</tspan>
+                            <tspan x="235.67078" y="18" fill="#ACACAC">: </tspan>
+                            <tspan x="113.18078" y="41" fill="#ACACAC">$ 7,680/yr</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

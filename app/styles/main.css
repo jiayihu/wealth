@@ -393,9 +393,84 @@ body {
 .step--people .graph-legend {
   text-align: left; }
 
+.step--people input[type="radio"] {
+  display: none; }
+
+.step--people input[value="starting"]:checked ~ .row .graph:nth-child(1) .label__circle {
+  border-color: #182C4D; }
+  .step--people input[value="starting"]:checked ~ .row .graph:nth-child(1) .label__circle:before {
+    border-color: #182C4D; }
+
+.step--people input[value="home"]:checked ~ .row .graph:nth-child(2) .label__circle {
+  border-color: #182C4D; }
+  .step--people input[value="home"]:checked ~ .row .graph:nth-child(2) .label__circle:before {
+    border-color: #182C4D; }
+
+.step--people input[value="kids"]:checked ~ .row .graph:nth-child(3) .label__circle {
+  border-color: #182C4D; }
+  .step--people input[value="kids"]:checked ~ .row .graph:nth-child(3) .label__circle:before {
+    border-color: #182C4D; }
+
+.step--people input[value="retire"]:checked ~ .row .graph:nth-child(4) .label__circle {
+  border-color: #182C4D; }
+  .step--people input[value="retire"]:checked ~ .row .graph:nth-child(4) .label__circle:before {
+    border-color: #182C4D; }
+
+.step--people .graphs-wrap {
+  margin-bottom: 2em; }
+
 .step--people .graph {
   text-align: center; }
-  .step--people .graph > * {
-    display: block; }
+  .step--people .graph:nth-child(1) {
+    position: relative;
+    top: 95px; }
+    @media (max-width: 992px) {
+      .step--people .graph:nth-child(1) {
+        top: 50px; } }
+  .step--people .graph:nth-child(2) {
+    position: relative;
+    top: 45px; }
+    @media (max-width: 992px) {
+      .step--people .graph:nth-child(2) {
+        top: 0;
+        margin-bottom: 1em; } }
+  .step--people .graph:nth-child(4) {
+    position: relative;
+    top: 35px; }
+  .step--people .graph .label {
+    display: block;
+    color: #182C4D;
+    font-size: 0.875em;
+    font-weight: inherit;
+    cursor: pointer; }
+    .step--people .graph .label > * {
+      display: block;
+      margin: 0 auto;
+      margin-top: 5px; }
+    .step--people .graph .label__circle {
+      position: relative;
+      margin: 10px auto;
+      width: 13px;
+      height: 13px;
+      border: 2px solid #4EA1D7;
+      border-radius: 50%;
+      cursor: pointer; }
+      .step--people .graph .label__circle:before {
+        content: " ";
+        position: absolute;
+        top: -6px;
+        left: -6px;
+        width: 21px;
+        height: 21px;
+        border: 1px solid transparent;
+        border-radius: 50%; }
+    .step--people .graph .label:hover .label__circle {
+      border-color: #182C4D; }
+      .step--people .graph .label:hover .label__circle:before {
+        border-color: #182C4D; }
+    .step--people .graph .label__icons {
+      font-size: 1.5em; }
+    .step--people .graph .label__legend {
+      font-weight: 400; }
 
 /*# sourceMappingURL=maps/main.css.map */

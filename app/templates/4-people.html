@@ -6,43 +6,66 @@
     <div>
       <p class="about__question">Here’s how households spend and save their money as life changes</p>
     </div>
-    <div class="radios">
-      <input type="radio" name="lifeCondition" value="starting" id="starting">
-      <input type="radio" name="lifeCondition" value="home" id="home">
-      <input type="radio" name="lifeCondition" value="kids" id="kids">
-      <input type="radio" name="lifeCondition" value="retire" id="retire">
-    </div>
+
+    <input type="radio" name="lifeCondition" value="starting" id="starting">
+    <input type="radio" name="lifeCondition" value="home" id="home" checked>
+    <input type="radio" name="lifeCondition" value="kids" id="kids">
+    <input type="radio" name="lifeCondition" value="retire" id="retire">
+
     <p class="graph-legend">
       <img src="images/4/legends.svg" alt="Graph Legend">
     </p>
-    <div class="row">
-      <div class="graph col-sm-3">
+    <div class="graphs-wrap row">
+      <div class="graph col-sm-3 col-xs-6">
         <img src="images/4/graph1.svg" alt="People Graph" class="graph__chart">
-        <label for="starting"></label>
-        <img src="images/4/starting.svg" alt="">
-        <span class="graph__legend">Starting Out</span>
+        <label class="label" data-toggle="tooltip" data-placement="bottom" title="Select the circle to indicate where you are" for="starting">
+          <span class="label__circle"></span>
+          <span class="label__icons">
+            <i class="fa fa-male"></i>
+          </span>
+          <span class="label__legend">Starting Out</span>
+        </label>
       </div>
-      <div class="graph col-sm-3">
+      <div class="graph col-sm-3 col-xs-6">
         <img src="images/4/graph2.svg" alt="People Graph" class="graph__chart">
-        <label for="starting"></label>
-        <img src="images/4/starting.svg" alt="">
-        <span class="graph__legend">Starting Out</span>
+        <label class="label" data-toggle="tooltip" data-placement="bottom" title="Select the circle to indicate where you are" for="home">
+          <span class="label__circle"></span>
+          <span class="label__icons">
+            <i class="fa fa-male"></i>
+            <i class="fa fa-female"></i>
+          </span>
+          <span class="label__legend">Two Incomes</span>
+          <span class="label__sub-legend">Saving for a home</span>
+        </label>
       </div>
-      <div class="graph col-sm-3">
+      <div class="graph col-sm-3 col-xs-6">
         <img src="images/4/graph3.svg" alt="People Graph" class="graph__chart">
-        <label for="starting"></label>
-        <img src="images/4/starting.svg" alt="">
-        <span class="graph__legend">Starting Out</span>
+        <label class="label" data-toggle="tooltip" data-placement="bottom" title="Select the circle to indicate where you are" for="kids">
+          <span class="label__circle"></span>
+          <span class="label__icons">
+            <i class="fa fa-male"></i>
+            <i class="fa fa-child"></i>
+            <i class="fa fa-female"></i>
+          </span>
+          <span class="label__legend">Two Incomes</span>
+          <span class="label__sub-legend">House Payment</span>
+          <span class="label__sub-legend">Child</span>
+        </label>
       </div>
-      <div class="graph col-sm-3">
+      <div class="graph col-sm-3 col-xs-6">
         <img src="images/4/graph4.svg" alt="People Graph" class="graph__chart">
-        <label for="starting"></label>
-        <img src="images/4/starting.svg" alt="">
-        <span class="graph__legend">Starting Out</span>
+        <label class="label" data-toggle="tooltip" data-placement="bottom" title="Select the circle to indicate where you are" for="retire">
+          <span class="label__circle"></span>
+          <span class="label__icons">
+            <i class="fa fa-male"></i>
+            <i class="fa fa-female"></i>
+          </span>
+          <span class="label__legend">Retirement</span>
+        </label>
       </div>
     </div>
   </div>
 </div> <!-- </step> -->
 <div class="continue">
-  <a class="continue__button" data-template="templates/5-people.html">CONTINUE</a>
+  <a class="continue__button" data-template="templates/5-pyramid.html">CONTINUE</a>
 </div>

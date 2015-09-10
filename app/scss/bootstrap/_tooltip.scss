@@ -12,6 +12,7 @@
   // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text;
   font-size: $font-size-small;
+  font-weight: 300;
 
   @include opacity(0);
 
