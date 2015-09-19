@@ -1,0 +1,41 @@
+.step--savings {
+
+  .col-md-6 {
+    padding: 0 1em;
+  }
+
+  .noUi-target {
+    margin-bottom: 2em;
+  }
+
+  .slider-tooltip {
+    left: -5px;
+  }
+
+  .about {
+
+    &__savings {
+      &__circle {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  }
+
+  .circle-legend {
+    li:nth-child(1) span {
+      background-color: #D3D3D3;
+    }
+    li:nth-child(2) span {
+      background-color: #E97B6C;
+    }
+    li:nth-child(3) span {
+      background-color: #9DDC57;
+    }
+  }
+
+  .flex {
+    margin-bottom: 3em;
+  }
+
+}

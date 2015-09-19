@@ -3,7 +3,7 @@
 
 var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0];
 
-loadTemplate(TEMPLATE_CONTAINER, 'templates/1-intro.html', loadStep);
+loadTemplate(TEMPLATE_CONTAINER, 'templates/6-scenarios.html', loadStep);
 
 //Event delegation for changing template
 var nav = document.querySelector('.nav ul');
@@ -65,6 +65,8 @@ function runStepFunctions(stepNumber) {
     script.src='scripts/templates/3-you.js';
   } else if(stepNumber === '4') {
     script.src='scripts/templates/4-people.js';
+  } else if(stepNumber === '6') {
+    script.src='scripts/templates/6-scenarios.js';
   }
   TEMPLATE_CONTAINER.appendChild(script);
 }

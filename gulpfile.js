@@ -8,19 +8,17 @@ var gulp = require('gulp'),
 gulp.task('serve', ['sass'], function() {
 
     browserSync.init({
-        server: './app'
+        server: './app',
+        browser: 'Google Chrome'
     });
 
     gulp.watch('app/scss/**/*.scss', ['sass']);
-    gulp.watch('app/scripts/*.js').on('change', browserSync.reload);
+    gulp.watch('app/scripts/**/*.js').on('change', browserSync.reload);
     gulp.watch('app/**/*.html').on('change', browserSync.reload);
 });
 
 gulp.task('sass', function() {
     gulp.src('./app/scss/**/*.scss')
-        .pipe(changed('./app/styles', {
-          extension: '.css'
-        }))
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
         .pipe(autoprefixer())

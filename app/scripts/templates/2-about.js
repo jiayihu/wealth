@@ -1,9 +1,9 @@
-/*global noUiSlider: false, wNumb: false*/
+/*global wNumb: false, createSlider:false */
 
 var ageSlider = document.getElementsByClassName('about__age__slider')[0],
     incomeSlider = document.getElementsByClassName('about__income__slider')[0];
 
-noUiSlider.create(ageSlider, {
+var ageOptions = {
   start: 20,
   step: 1,
   range: {
@@ -19,25 +19,8 @@ noUiSlider.create(ageSlider, {
     decimals: 1,
     thousand: '.'
   })
-});
-var ageHandles = ageSlider.getElementsByClassName('noUi-handle'),
-  ageTooltips = [];
-
-for ( var i = 0; i < ageHandles.length; i++ ){
-  ageTooltips[i] = document.createElement('div');
-  ageHandles[i].appendChild(ageTooltips[i]);
-}
-
-ageTooltips[0].className += 'slider-tooltip';
-ageTooltips[0].innerHTML = '<span></span>';
-ageTooltips[0] = ageTooltips[0].getElementsByTagName('span')[0];
-
-// When the slider changes, write the value to the Tooltips.
-ageSlider.noUiSlider.on('update', function( values, handle ){
-  ageTooltips[handle].innerHTML = values[handle];
-});
-
-noUiSlider.create(incomeSlider, {
+},
+incomeOptions = {
   start: 24000,
   step: 1000,
   range: {
@@ -48,21 +31,16 @@ noUiSlider.create(incomeSlider, {
     decimals: 1,
     thousand: '.'
   })
+};
+
+createSlider(ageSlider, ageOptions);
+ageSlider.noUiSlider.on('update', function( values, handle ){
+  var tooltip = ageSlider.getElementsByTagName('span')[0];
+  tooltip.innerHTML = values[handle];
 });
 
-var tipHandles = incomeSlider.getElementsByClassName('noUi-handle'),
-  tooltips = [];
-
-for ( var j = 0; j < tipHandles.length; j++ ){
-  tooltips[j] = document.createElement('div');
-  tipHandles[j].appendChild(tooltips[j]);
-}
-
-tooltips[0].className += 'slider-tooltip';
-tooltips[0].innerHTML = '<span></span>';
-tooltips[0] = tooltips[0].getElementsByTagName('span')[0];
-
-// When the slider changes, write the value to the tooltips.
+createSlider(incomeSlider, incomeOptions);
 incomeSlider.noUiSlider.on('update', function( values, handle ){
-  tooltips[handle].innerHTML = values[handle];
+  var tooltip = incomeSlider.getElementsByTagName('span')[0];
+  tooltip.innerHTML = values[handle];
 });

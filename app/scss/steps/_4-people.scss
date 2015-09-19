@@ -1,0 +1,123 @@
+.step--people {
+  .graph-legend {
+    text-align: left;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  input[value="starting"]:checked ~ .row .graph:nth-child(1) .label__circle {
+    border-color: $primaryDarker;
+
+    &:before {
+      border-color: $primaryDarker;
+    }
+  }
+
+  input[value="home"]:checked ~ .row .graph:nth-child(2) .label__circle {
+    border-color: $primaryDarker;
+
+    &:before {
+      border-color: $primaryDarker;
+    }
+  }
+
+  input[value="kids"]:checked ~ .row .graph:nth-child(3) .label__circle {
+    border-color: $primaryDarker;
+
+    &:before {
+      border-color: $primaryDarker;
+    }
+  }
+
+  input[value="retire"]:checked ~ .row .graph:nth-child(4) .label__circle {
+    border-color: $primaryDarker;
+
+    &:before {
+      border-color: $primaryDarker;
+    }
+  }
+
+  .graphs-wrap {
+    margin-bottom: 2em;
+  }
+
+  .graph {
+    text-align: center;
+
+    &:nth-child(1) {
+      position: relative;
+      top: 95px;
+
+      @media (max-width: $screen-desktop) {
+        top: 50px;
+      }
+    }
+    &:nth-child(2) {
+      position: relative;
+      top: 45px;
+
+      @media (max-width: $screen-desktop) {
+        top: 0;
+        margin-bottom: 1em;
+      }
+    }
+    &:nth-child(4) {
+      position: relative;
+      top: 35px;
+    }
+
+    .label {
+      display: block;
+      color: $primaryDarker;
+      font-size: 0.875em;
+      font-weight: inherit;
+      cursor: pointer;
+
+      & > * {
+        display: block;
+        margin: 0 auto;
+        margin-top: 5px;
+      }
+
+      &__circle {
+        position: relative;
+        margin: 10px auto;
+        width: 13px;
+        height: 13px;
+        border: 2px solid $primary;
+        border-radius: 50%;
+        cursor: pointer;
+
+        &:before {
+          content: " ";
+          position: absolute;
+          top: -6px;
+          left: -6px;
+          width: 21px;
+          height: 21px;
+          border: 1px solid rgba(0,0,0,0);
+          border-radius: 50%;
+        }
+      }
+
+      &:hover .label__circle {
+        border-color: $primaryDarker;
+
+        &:before {
+          border-color: $primaryDarker;
+        }
+      }
+
+      &__icons {
+        font-size: 1.5em;
+      }
+
+      &__legend {
+        font-weight: 400;
+      }
+    }
+
+  }
+}

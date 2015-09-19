@@ -1,0 +1,37 @@
+.step--first {
+  text-align: center;
+
+  & > div {
+    padding: 1em;
+  }
+
+  & > div:last-child {
+    padding: 2em;
+    border-left: 1px solid rgba($primaryLighter, 0.4);;
+  }
+
+  .step__list {
+    padding-left: 0;
+    list-style-position: inside;
+  }
+}
+
+.offer {
+  margin: 3em 0;
+  text-align: center;
+
+  img {
+    margin-right: 1em;
+  }
+
+  .icon--chart {
+    @media (max-width: $screen-desktop) {
+      width: 12.5em;
+    }
+  }
+
+  .float-right {
+    order: 1;
+    margin-left: 1em;
+  }
+}

@@ -1,3 +1,27 @@
+/*
+* BASE
+*/
+body {
+  font-weight: 300;
+  padding-top: 3.125em; }
+
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+  @media (max-width: 992px) {
+    .flex {
+      display: block; } }
+
 /* -----------------------------------------------------------------------------
 
   HAMBURGER ICONS COMPONENT
@@ -105,38 +129,11 @@
   -webkit-transition-delay: 0s, 0.1s;
           transition-delay: 0s, 0.1s; }
 
-/*
-* BASE
-*/
-body {
-  font-weight: 300;
-  padding-top: 3.125em; }
-
-.flex {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
-  @media (max-width: 992px) {
-    .flex {
-      display: block; } }
-
-/*
-* MODULES
-*/
 .noUi-target {
   margin-top: 30px;
   margin-bottom: 100px;
   height: 4px;
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
   border: none;
   border-radius: 2px;
   box-shadow: none; }
@@ -155,14 +152,30 @@ body {
   border-radius: 50%;
   box-shadow: none;
   cursor: pointer; }
-  .noUi-handle:after,
-  .noUi-handle:before {
+  .noUi-handle:after {
     display: none; }
+  .noUi-handle:before {
+    content: " ";
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: 1px solid #4ea1d7;
+    border-radius: 50%; }
+
+.noUi-base {
+  background-color: #4EA1D7; }
+
+.noUi-origin {
+  background-color: #d3d3d3; }
 
 .slider-tooltip {
   position: absolute;
-  top: -20px;
-  left: -10px;
+  top: -24px;
+  left: -4px;
   font-size: 14px; }
 
 .noUi-marker,
@@ -191,9 +204,6 @@ body {
   width: 15px;
   height: 15px; }
 
-/*
-* LAYOUT
-*/
 .hwp {
   background-color: #182C4D;
   box-shadow: 0px 3px 4px 0px rgba(0, 0, 0, 0.38);
@@ -306,10 +316,6 @@ body {
   .continue__button {
     color: white !important; }
 
-/*
-* STEPS
-*/
-/*Intro*/
 .step--first {
   text-align: center; }
   .step--first > div {
@@ -336,7 +342,6 @@ body {
             order: 1;
     margin-left: 1em; }
 
-/* About Step */
 .step--about {
   padding: 0 2em; }
 
@@ -363,7 +368,6 @@ body {
   .about__house {
     margin-bottom: 3em; } }
 
-/* Savings Step */
 .step--savings .col-md-6 {
   padding: 0 1em; }
 
@@ -389,7 +393,6 @@ body {
 .step--savings .flex {
   margin-bottom: 3em; }
 
-/* Step People*/
 .step--people .graph-legend {
   text-align: left; }
 
@@ -472,5 +475,15 @@ body {
       font-size: 1.5em; }
     .step--people .graph .label__legend {
       font-weight: 400; }
+
+.step--scenarios .options {
+  padding-left: 1em; }
+
+.step--scenarios .noUi-target {
+  margin-bottom: 50px; }
+
+.step--scenarios .scenario {
+  margin: 0 auto;
+  width: 80%; }
 
 /*# sourceMappingURL=maps/main.css.map */

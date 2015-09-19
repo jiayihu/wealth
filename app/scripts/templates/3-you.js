@@ -1,39 +1,9 @@
-/*global noUiSlider: false, wNumb: false, Chart: false*/
+/*global createSlider: false, wNumb: false, Chart: false*/
 
 var needsSlider = document.getElementsByClassName('about__savings__slider--needs')[0],
     expensesSlider = document.getElementsByClassName('about__savings__slider--expenses')[0];
 
-noUiSlider.create(needsSlider, {
-  start: 20,
-  step: 1,
-  range: {
-    'min': 1,
-    'max': 60
-  },
-  format: wNumb({
-    decimals: 0
-  })
-});
-
-var tipHandles = needsSlider.getElementsByClassName('noUi-handle'),
-  tooltips = [];
-
-for ( var j = 0; j < tipHandles.length; j++ ){
-  tooltips[j] = document.createElement('div');
-  tipHandles[j].appendChild(tooltips[j]);
-}
-
-tooltips[0].className += 'slider-tooltip';
-tooltips[0].innerHTML = '<span></span>';
-tooltips[0] = tooltips[0].getElementsByTagName('span')[0];
-
-// When the slider changes, write the value to the tooltips.
-needsSlider.noUiSlider.on('update', function( values, handle ){
-  tooltips[handle].innerHTML = values[handle] + '%';
-});
-
-
-noUiSlider.create(expensesSlider, {
+var needsOptions = {
   start: 20,
   step: 1,
   range: {
@@ -43,27 +13,33 @@ noUiSlider.create(expensesSlider, {
   format: wNumb({
     decimals: 0
   })
+},
+expensesOptions = {
+  start: 20,
+  step: 1,
+  range: {
+    'min': 1,
+    'max': 60
+  },
+  format: wNumb({
+    decimals: 0
+  })
+};
+
+createSlider(needsSlider, needsOptions);
+needsSlider.noUiSlider.on('update', function( values, handle ){
+  var tooltip = needsSlider.querySelector('.slider-tooltip span');
+  tooltip.innerHTML = values[handle] + '%';
 });
 
-var tipHandles = expensesSlider.getElementsByClassName('noUi-handle'),
-  expensesToolTips = [];
-
-for ( var j = 0; j < tipHandles.length; j++ ){
-  expensesToolTips[j] = document.createElement('div');
-  tipHandles[j].appendChild(expensesToolTips[j]);
-}
-
-expensesToolTips[0].className += 'slider-tooltip';
-expensesToolTips[0].innerHTML = '<span></span>';
-expensesToolTips[0] = expensesToolTips[0].getElementsByTagName('span')[0];
-
-// When the slider changes, write the value to the expensesToolTips.
+createSlider(expensesSlider, expensesOptions);
 expensesSlider.noUiSlider.on('update', function( values, handle ){
-  expensesToolTips[handle].innerHTML = values[handle] + '%';
+  var tooltip = expensesSlider.querySelector('.slider-tooltip span');
+  tooltip.innerHTML = values[handle] + '%';
 });
 
-Chart.defaults.global.tooltipTemplate = '<%if (label){%><%=label%>: <%}%><%= value %> \%';
 
+//Chart
 var savingsCtx = document.getElementsByClassName('about__savings__circle')[0].getContext('2d'),
   savingsLegend = document.getElementsByClassName('circle-legend')[0],
   data = [{
@@ -78,6 +54,7 @@ var savingsCtx = document.getElementsByClassName('about__savings__circle')[0].ge
     }],
   options = {
     percentageInnerCutout : 75,
+    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %> \%',
     legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background:<%=segments[i].value%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
   };
 data[2] = {

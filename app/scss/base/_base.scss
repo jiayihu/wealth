@@ -1,0 +1,18 @@
+/*
+* BASE
+*/
+
+body {
+  font-weight: 300;
+  padding-top: 3.125em;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: $screen-desktop) {
+    display: block;
+  }
+}
