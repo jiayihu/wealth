@@ -245,11 +245,8 @@ body {
       text-align: center; } }
 
 .wrapper {
-  width: 80%;
+  width: 90%;
   margin: 0 auto; }
-  @media (max-width: 768px) {
-    .wrapper {
-      width: 90%; } }
 
 .nav {
   color: #9DACC5;
@@ -427,13 +424,13 @@ body {
   .step--people .graph:nth-child(1) {
     position: relative;
     top: 95px; }
-    @media (max-width: 992px) {
+    @media (max-width: 768px) {
       .step--people .graph:nth-child(1) {
         top: 50px; } }
   .step--people .graph:nth-child(2) {
     position: relative;
     top: 45px; }
-    @media (max-width: 992px) {
+    @media (max-width: 768px) {
       .step--people .graph:nth-child(2) {
         top: 0;
         margin-bottom: 1em; } }
@@ -485,5 +482,86 @@ body {
 .step--scenarios .scenario {
   margin: 0 auto;
   width: 80%; }
+
+.goal {
+  position: relative;
+  margin-bottom: 1em;
+  width: 220px;
+  padding-left: 46px;
+  background-repeat: no-repeat;
+  background-position: 6px center;
+  background-size: 15%;
+  background-color: #30517A;
+  color: #FFF;
+  line-height: 1.125em; }
+  .goal--hide {
+    display: none; }
+  .goal--college {
+    background-image: url(../images/7/school.svg); }
+  .goal--home {
+    background-image: url(../images/7/home.svg); }
+  .goal--car {
+    background-image: url(../images/7/car.svg); }
+  .goal--funds {
+    background-image: url(../images/7/loyalty.svg); }
+  .goal__details {
+    height: 90px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    background-color: #78B6E1; }
+  .goal__date,
+  .goal__success {
+    display: inline-block;
+    text-align: center;
+    font-size: 0.875em; }
+    .goal__date img,
+    .goal__success img {
+      display: block;
+      margin: 0 auto; }
+  .goal__date {
+    width: 100px; }
+  .goal__success {
+    width: 60px; }
+  .goal .add-goal {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    cursor: pointer; }
+  .goal .tooltip {
+    font-size: 12px; }
+
+.picked {
+  margin-bottom: 1em;
+  padding-top: 1em;
+  color: #FFF;
+  display: none;
+  background-color: #30517A;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.28); }
+  .picked--show {
+    display: block; }
+  .picked .dragger {
+    margin: 0 auto;
+    width: 50%;
+    height: 3px;
+    background-color: rgba(254, 254, 254, 0.7);
+    border-radius: 3px;
+    cursor: pointer; }
+  .picked__title {
+    margin-top: 0.5em;
+    font-size: 1.25em; }
+  .picked p img {
+    margin-right: 5px;
+    vertical-align: bottom; }
+  .picked__actions {
+    padding: 10px;
+    text-align: left;
+    background-color: #FFF; }
+    .picked__actions a {
+      color: #000;
+      font-weight: 500;
+      cursor: pointer; }
+    .picked__actions__delete {
+      float: right; }
 
 /*# sourceMappingURL=maps/main.css.map */

@@ -50,7 +50,7 @@
       position: relative;
       top: 95px;
 
-      @media (max-width: $screen-desktop) {
+      @media (max-width: $screen-tablet) {
         top: 50px;
       }
     }
@@ -58,7 +58,7 @@
       position: relative;
       top: 45px;
 
-      @media (max-width: $screen-desktop) {
+      @media (max-width: $screen-tablet) {
         top: 0;
         margin-bottom: 1em;
       }
