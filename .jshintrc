@@ -6,6 +6,14 @@
   "camelcase": true,
   "curly": true,
   "eqeqeq": true,
+  "globals": {
+    "requirejs": false,
+    "createSlider": true,
+    "Chart": false,
+    "define": false,
+    "noUiSlider": false,
+    "wNumb": false
+  },
   "immed": true,
   "indent": 2,
   "newcap": true,
