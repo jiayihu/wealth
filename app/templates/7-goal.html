@@ -1,0 +1,146 @@
+<link rel="stylesheet" href="styles/dragula.min.css">
+<div class="header">
+  <p class="step-title">Pick a goal</p>
+</div>
+<div class="step step--goals">
+  <div class="wrapper">
+    <p class="about__question">Pick one or more goals from the left and set them on the right</p>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="goals">
+          <div class="goal goal--college">
+            <div class="goal__details">
+              <p class="goal__title">Save for college</p>
+              <span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date
+  based on your data">
+                <img alt="Goal date" src="images/7/date.svg">
+                <span>January 2018</span>
+              </span>
+              <span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability
+  based on your data">
+                <img alt="Goal success probability" src="images/7/stats.svg">
+                <span>85%</span>
+              </span>
+            </div>
+            <img alt="Add goal" class="add-goal" data-date="January 2018" data-picked="college" data-success="85%" data-title="Save for college" src="images/7/add.svg" title="Pick this goal"/>
+          </div>
+<!-- /.goal -->
+
+          <div class="goal goal--home">
+            <div class="goal__details">
+              <p class="goal__title">Buy a home</p>
+              <span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date
+  based on your data">
+                <img alt="Goal date" src="images/7/date.svg">
+                <span>March 2017</span>
+              </span>
+              <span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability
+  based on your data">
+                <img alt="Goal success probability" src="images/7/stats.svg">
+                <span>85%</span>
+              </span>
+            </div>
+            <img alt="Add goal" class="add-goal" data-date="March 2017" data-picked="home" data-success="85%" data-title="Buy a home" src="images/7/add.svg" title="Pick this goal"/>
+          </div>
+<!-- /.goal -->
+
+          <div class="goal goal--car">
+            <div class="goal__details">
+              <p class="goal__title">Buy a car</p>
+              <span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date
+  based on your data">
+                <img alt="Goal date" src="images/7/date.svg">
+                <span>March 2016</span>
+              </span>
+              <span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability
+  based on your data">
+                <img alt="Goal success probability" src="images/7/stats.svg">
+                <span>98%</span>
+              </span>
+            </div>
+            <img alt="Add goal" class="add-goal" data-date="March 2016" data-picked="car" data-success="98%" data-title="Buy a car" src="images/7/add.svg" title="Pick this goal"/>
+          </div>
+<!-- /.goal -->
+
+          <div class="goal goal--funds">
+            <div class="goal__details">
+              <p class="goal__title">Emergency funds</p>
+              <span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date
+  based on your data">
+                <img alt="Goal date" src="images/7/date.svg">
+                <span>December 2015</span>
+              </span>
+              <span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability
+  based on your data">
+                <img alt="Goal success probability" src="images/7/stats.svg">
+                <span>92%</span>
+              </span>
+            </div>
+            <img alt="Add goal" class="add-goal" data-date="December 2015" data-picked="funds" data-success="92%" data-title="Emergency Funds" src="images/7/add.svg" title="Pick this goal"/>
+          </div>
+<!-- /.goal -->
+        </div>
+      </div>
+<!-- /col-md-6 -->
+      <div class="col-md-6">
+        <p>
+          <strong>Picked Goals</strong>
+          (Drag & Drop to order)</p>
+        <div class="picked-goals">
+          <div class="picked picked--college">
+            <div class="picked__details">
+              <div class="dragger"></div>
+              <p class="picked__title">Save for college</p>
+              <p class="picked__date"><img src="images/7/date.svg"><span contenteditable="true">January 2018</span></p>
+              <p class="picked__success"><img src="images/7/stats.svg">85%</p>
+            </div>
+            <div class="picked__actions">
+              <a class="picked__actions__edit">EDIT</a>
+              <a class="picked__actions__delete" data-goal="college">DELETE</a>
+            </div>
+          </div>
+          <div class="picked picked--home">
+            <div class="picked__details">
+              <div class="dragger"></div>
+              <p class="picked__title">Buy a home</p>
+              <p class="picked__date"><img src="images/7/date.svg"><span contenteditable="true">March 2017</span></p>
+              <p class="picked__success"><img src="images/7/stats.svg">85%</p>
+            </div>
+            <div class="picked__actions">
+              <a class="picked__actions__edit">EDIT</a>
+              <a class="picked__actions__delete" data-goal="home">DELETE</a>
+            </div>
+          </div>
+          <div class="picked picked--car">
+            <div class="picked__details">
+              <div class="dragger"></div>
+              <p class="picked__title">Buy a car</p>
+              <p class="picked__date"><img src="images/7/date.svg"><span contenteditable="true">March 2016</span></p>
+              <p class="picked__success"><img src="images/7/stats.svg">98%</p>
+            </div>
+            <div class="picked__actions">
+              <a class="picked__actions__edit">EDIT</a>
+              <a class="picked__actions__delete" data-goal="car">DELETE</a>
+            </div>
+          </div>
+          <div class="picked picked--funds">
+            <div class="picked__details">
+              <div class="dragger"></div>
+              <p class="picked__title">Emergency Funds</p>
+              <p class="picked__date"><img src="images/7/date.svg"><span contenteditable="true">December 2015</span></p>
+              <p class="picked__success"><img src="images/7/stats.svg">92%</p>
+            </div>
+            <div class="picked__actions">
+              <a class="picked__actions__edit">EDIT</a>
+              <a class="picked__actions__delete" data-goal="funds">DELETE</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </step> -->
+<div class="continue">
+  <a class="continue__button" data-template="templates/7-goal.html">CONTINUE</a>
+</div>
