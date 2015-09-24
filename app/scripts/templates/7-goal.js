@@ -1,26 +1,31 @@
-$('.goal__details > span').tooltip();
+(function() {
+  var wrapper = document.getElementsByClassName('goal-wrapper')[0];
 
-var addButtons = document.getElementsByClassName('add-goal');
-var displayPickedGoal = function() {
-  var picked = this.dataset.picked;
-  document.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
-  document.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
-};
+  $('.goal__details > span').tooltip();
 
-for(var i=0; i < addButtons.length; i++) {
-  addButtons[i].addEventListener('click', displayPickedGoal);
-}
+  var addButtons = wrapper.getElementsByClassName('add-goal');
+  var displayPickedGoal = function() {
+    var picked = this.dataset.picked;
+    wrapper.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
+    wrapper.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
+  };
 
-var deleteButtons = document.getElementsByClassName('picked__actions__delete');
-var hidePickedGoal = function() {
-  var goal = this.dataset.goal;
-  document.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
-  document.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
-};
+  for(var i=0; i < addButtons.length; i++) {
+    addButtons[i].addEventListener('click', displayPickedGoal);
+  }
 
-for(var i=0; i < deleteButtons.length; i++) {
-  deleteButtons[i].addEventListener('click', hidePickedGoal);
-}
+  var deleteButtons = wrapper.getElementsByClassName('picked__actions__delete');
+  var hidePickedGoal = function() {
+    var goal = this.dataset.goal;
+    wrapper.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
+    wrapper.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
+  };
 
-var pickedContainer = document.getElementsByClassName('picked-goals')[0];
-dragula([pickedContainer]);
+  for(var i=0; i < deleteButtons.length; i++) {
+    deleteButtons[i].addEventListener('click', hidePickedGoal);
+  }
+
+  var pickedContainer = wrapper.getElementsByClassName('picked-goals')[0];
+  dragula([pickedContainer]);
+
+})();

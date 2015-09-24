@@ -1,6 +1,7 @@
-define(['components/createSlider', 'lib/Chart.min', 'lib/wNumb.min'], function(createSlider, Chart) {
-  var needsSlider = document.getElementsByClassName('about__savings__slider--needs')[0],
-      expensesSlider = document.getElementsByClassName('about__savings__slider--expenses')[0];
+(function() {
+  var wrapper = document.getElementsByClassName('you-wrapper')[0],
+      needsSlider = wrapper.getElementsByClassName('about__savings__slider--needs')[0],
+      expensesSlider = wrapper.getElementsByClassName('about__savings__slider--expenses')[0];
 
   var needsOptions = {
     start: 20,
@@ -39,8 +40,8 @@ define(['components/createSlider', 'lib/Chart.min', 'lib/wNumb.min'], function(c
 
 
   //Chart
-  var savingsCtx = document.getElementsByClassName('about__savings__circle')[0].getContext('2d'),
-    savingsLegend = document.getElementsByClassName('circle-legend')[0],
+  var savingsCtx = wrapper.getElementsByClassName('about__savings__circle')[0].getContext('2d'),
+    savingsLegend = wrapper.getElementsByClassName('circle-legend')[0],
     data = [{
         value: 20,
         color: '#D3D3D3',
@@ -76,4 +77,4 @@ define(['components/createSlider', 'lib/Chart.min', 'lib/wNumb.min'], function(c
     savingsChart.update();
   });
 
-});
+})();

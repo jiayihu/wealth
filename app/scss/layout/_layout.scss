@@ -121,6 +121,14 @@
   background-color: $sand;
 }
 
+.step-wrapper {
+  display: none;
+
+  &.show {
+    display: block;
+  }
+}
+
 .step {
   text-align: center;
 

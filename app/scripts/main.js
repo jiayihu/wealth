@@ -1,67 +1,85 @@
-define(function(require) {
-  var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0];
+'use strict';
+// var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-  loadTemplate(TEMPLATE_CONTAINER, 'templates/1-intro.html', runStepFunctions);
-  //Event delegation for changing template
-  var nav = document.querySelector('.nav ul');
-  nav.addEventListener('click', function(e) {
-    var nodeName = e.target.nodeName,
-        templateUrl;
-    if (nodeName === 'SPAN') {
-      templateUrl = e.target.dataset.template;
-      loadTemplate(TEMPLATE_CONTAINER, templateUrl, runStepFunctions);
-      setActive(e.target.parentNode);
-    } else if (nodeName === 'LI') {
-      templateUrl = e.target.firstElementChild.dataset.template;
-      loadTemplate(TEMPLATE_CONTAINER, templateUrl, runStepFunctions);
-      setActive(e.target);
-    }
-  });
+var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0],
+  templates = ['intro', 'about', 'you', 'people', 'pyramid', 'scenarios',
+  'goal', 'retirement'];
 
+loadTemplates(TEMPLATE_CONTAINER, templates);
 
-  // Set the active link on the navigation
-  function setActive(newActive) {
-    var oldActive = document.getElementsByClassName('active')[0];
-    oldActive.classList.remove('active');
-    newActive.classList.add('active');
+//Event delegation for changing template
+var nav = document.querySelector('.nav ul');
+nav.addEventListener('click', function(e) {
+  var nodeName = e.target.nodeName,
+      nextStep, nextStepElement;
+  if (nodeName === 'SPAN') {
+    nextStep = e.target.dataset.template;
+    setActive(e.target.parentNode, 'active');
+  } else if (nodeName === 'LI') {
+    nextStep = e.target.firstElementChild.dataset.template;
+    setActive(e.target, 'active');
   }
+  nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+  setActive(nextStepElement, 'show');
+});
 
-  // Load the HTML Template of the step from the /templates/ folder
-  function loadTemplate(container, templateUrl, callback) {
-    var xhr = new XMLHttpRequest();
+var continueButtons = document.getElementsByClassName('continue');
+for(var i = 0; i < continueButtons.length; i++) {
+  continueButtons[i].addEventListener('click', function() {
+    var nextStep = this.dataset.template,
+      nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+
+    setActive(nextStepElement, 'show');
+  });
+}
+
+// Load the HTML Template of the step from the /templates/ folder
+function loadTemplates(container, templatesUrl) {
+  var xhr, templateUrl, activeStep, stepWrapper;
+  for(var i=0; i < templatesUrl.length; i++) {
+    xhr = new XMLHttpRequest();
+    templateUrl = 'templates/' + (i+1) + '-' + templatesUrl[i] + '.html';
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
-        container.innerHTML = xhr.response;
-        var activeStep = templateUrl.match(/\d+/)[0],
-          continueButton = document.getElementsByClassName('continue')[0];
-        if(continueButton) {
-          continueButton.addEventListener('click', function() {
-            var nextStep = parseInt(activeStep) + 1;
-            var nextTemplateUrl = continueButton.firstElementChild.dataset.template;
-            loadTemplate(container, nextTemplateUrl, runStepFunctions);
-            setActive( document.querySelector('.nav ul li:nth-child(' + nextStep + ')') );
-          });
+        stepWrapper = document.createElement('div');
+        stepWrapper.classList.add('step-wrapper');
+        if(i === 0) {
+          stepWrapper.classList.add('show');
         }
-        callback(activeStep);
+        stepWrapper.classList.add(templatesUrl[i] + '-wrapper');
+        stepWrapper.innerHTML = xhr.response;
+        container.appendChild(stepWrapper);
+        activeStep = templateUrl.match(/\d+/)[0];
+        runStepFunctions(activeStep);
       }
     };
-    xhr.open('GET', templateUrl);
+    xhr.open('GET', templateUrl, false);
     xhr.send();
   }
+}
 
-  function runStepFunctions(stepNumber) {
-    if(stepNumber === '2') {
-      require(['templates/2-about'], function() {
-      });
-    } else if(stepNumber === '3') {
-      require(['templates/3-you'], function() {
-      });
-    } else if(stepNumber === '4') {
-
-    } else if(stepNumber === '6') {
-
-    } else if(stepNumber === '7') {
-
-    }
+function runStepFunctions(stepNumber) {
+  stepNumber = parseInt(stepNumber);
+  var script = document.createElement('script');
+  if(stepNumber === 2) {
+    script.src='scripts/templates/2-about.js';
+  } else if(stepNumber === 3) {
+    script.src='scripts/templates/3-you.js';
+  } else if(stepNumber === 4) {
+    script.src='scripts/templates/4-people.js';
+  } else if(stepNumber === 6) {
+    script.src='scripts/templates/6-scenarios.js';
+  } else if(stepNumber === 7) {
+    script.src='scripts/templates/7-goal.js';
+  } else if(stepNumber === 8) {
+    script.src='scripts/templates/8-retirement.js';
   }
-});
+  TEMPLATE_CONTAINER.appendChild(script);
+}
+
+// Set the active link on the navigation
+function setActive(newActive, className) {
+  var oldActive = document.getElementsByClassName(className)[0];
+  oldActive.classList.remove(className);
+  newActive.classList.add(className);
+}

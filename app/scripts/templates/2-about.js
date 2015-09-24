@@ -1,6 +1,7 @@
-define(['components/createSlider', 'lib/wNumb.min'], function(createSlider) {
-  var ageSlider = document.getElementsByClassName('about__age__slider')[0],
-      incomeSlider = document.getElementsByClassName('about__income__slider')[0];
+(function() {
+  var wrapper = document.getElementsByClassName('about-wrapper')[0],
+    ageSlider = wrapper.getElementsByClassName('about__age__slider')[0],
+    incomeSlider = wrapper.getElementsByClassName('about__income__slider')[0];
 
   var ageOptions = {
     start: 20,
@@ -33,7 +34,6 @@ define(['components/createSlider', 'lib/wNumb.min'], function(createSlider) {
   };
 
   createSlider(ageSlider, ageOptions);
-  console.log('C');
   ageSlider.noUiSlider.on('update', function( values, handle ){
     var tooltip = ageSlider.getElementsByTagName('span')[0];
     tooltip.innerHTML = values[handle];
@@ -45,4 +45,4 @@ define(['components/createSlider', 'lib/wNumb.min'], function(createSlider) {
     tooltip.innerHTML = values[handle];
   });
 
-});
+})();

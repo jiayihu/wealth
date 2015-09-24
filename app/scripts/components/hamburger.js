@@ -1,4 +1,4 @@
-define(function() {
+(function() {
 
   var toggle = document.querySelector('.c-hamburger');
   toggleHandler(toggle);
@@ -16,4 +16,4 @@ define(function() {
     });
   }
 
-});
+})();

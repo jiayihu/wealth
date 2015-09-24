@@ -5,6 +5,9 @@ body {
   font-weight: 300;
   padding-top: 3.125em; }
 
+th {
+  text-align: center; }
+
 .flex {
   display: -webkit-box;
   display: -webkit-flex;
@@ -298,6 +301,11 @@ body {
 .main {
   background-color: #FFFBF3; }
 
+.step-wrapper {
+  display: none; }
+  .step-wrapper.show {
+    display: block; }
+
 .step {
   text-align: center; }
   .step__desc {
@@ -563,5 +571,15 @@ body {
       cursor: pointer; }
     .picked__actions__delete {
       float: right; }
+
+.step--retirement .fa {
+  cursor: pointer; }
+
+.step--retirement .fa-check {
+  font-size: 1.5em;
+  color: #9DACC5; }
+
+.step--retirement .saved {
+  color: #7ED321; }
 
 /*# sourceMappingURL=maps/main.css.map */
