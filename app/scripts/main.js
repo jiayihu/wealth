@@ -30,6 +30,10 @@ for(var i = 0; i < continueButtons.length; i++) {
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
 
     setActive(nextStepElement, 'show');
+    var newActiveNavLink = document.getElementsByClassName('active')[0].nextElementSibling;
+    if(newActiveNavLink) {
+      setActive(newActiveNavLink, 'active');
+    }
   });
 }
 
@@ -42,7 +46,9 @@ function loadTemplates(container, templatesUrl) {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         stepWrapper = document.createElement('div');
-        stepWrapper.classList.add('step-wrapper');
+        if( !(templatesUrl[i] === 'you' || templatesUrl[i] === 'scenarios') ) {
+          stepWrapper.classList.add('step-wrapper');
+        }
         if(i === 0) {
           stepWrapper.classList.add('show');
         }

@@ -1,14 +1,29 @@
 .step--retirement {
   .fa {
     cursor: pointer;
+    color: $textLight;
   }
 
   .fa-check {
     font-size: 1.5em;
-    color: $textLight;
+  }
+
+  .fa-info-circle {
+    font-size: 1.5em;
   }
 
   .saved {
     color: #7ED321;
   }
+
+  .th-todo {
+    color: #fff;
+    background-color: #7ED321;
+
+    &not {
+      color: #fff;
+      background-color: #E97B6C;
+    }
+  }
+
 }

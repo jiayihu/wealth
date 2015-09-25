@@ -2,10 +2,11 @@
 * BASE
 */
 body {
-  font-weight: 300;
-  padding-top: 3.125em; }
+  padding-top: 3.125em;
+  font-weight: 300; }
 
 th {
+  font-weight: normal;
   text-align: center; }
 
 .flex {
@@ -573,13 +574,23 @@ th {
       float: right; }
 
 .step--retirement .fa {
-  cursor: pointer; }
+  cursor: pointer;
+  color: #9DACC5; }
 
 .step--retirement .fa-check {
-  font-size: 1.5em;
-  color: #9DACC5; }
+  font-size: 1.5em; }
+
+.step--retirement .fa-info-circle {
+  font-size: 1.5em; }
 
 .step--retirement .saved {
   color: #7ED321; }
+
+.step--retirement .th-todo {
+  color: #fff;
+  background-color: #7ED321; }
+  .step--retirement .th-todonot {
+    color: #fff;
+    background-color: #E97B6C; }
 
 /*# sourceMappingURL=maps/main.css.map */

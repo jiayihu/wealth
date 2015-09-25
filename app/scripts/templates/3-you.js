@@ -39,42 +39,53 @@
   });
 
 
-  //Chart
-  var savingsCtx = wrapper.getElementsByClassName('about__savings__circle')[0].getContext('2d'),
-    savingsLegend = wrapper.getElementsByClassName('circle-legend')[0],
-    data = [{
-        value: 20,
-        color: '#D3D3D3',
-        label: 'Basic Needs'
-      },
-      {
-        value: 20,
-        color: '#E97B6C',
-        label: 'Discretionary'
-      }],
-    options = {
-      percentageInnerCutout : 75,
-      tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %> \%',
-      legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background:<%=segments[i].value%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
+  var drawChart = function() {
+    //Chart
+    var savingsCtx = wrapper.getElementsByClassName('about__savings__circle')[0].getContext('2d'),
+      savingsLegend = wrapper.getElementsByClassName('circle-legend')[0],
+      data = [{
+          value: 20,
+          color: '#D3D3D3',
+          label: 'Basic Needs'
+        },
+        {
+          value: 20,
+          color: '#E97B6C',
+          label: 'Discretionary'
+        }],
+      options = {
+        percentageInnerCutout : 75,
+        tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %> \%',
+        legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background:<%=segments[i].value%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
+      };
+    data[2] = {
+      value: 100 - data[0].value - data[1].value,
+      color: '#9DDC57',
+      label: 'Savings'
     };
-  data[2] = {
-    value: 100 - data[0].value - data[1].value,
-    color: '#9DDC57',
-    label: 'Savings'
-  };
-  var savingsChart = new Chart(savingsCtx).Doughnut(data, options);
-  savingsLegend.innerHTML = savingsChart.generateLegend();
+    var savingsChart = new Chart(savingsCtx).Doughnut(data, options);
+    savingsLegend.innerHTML = savingsChart.generateLegend();
 
-  //Bind slider changes to circle update
-  needsSlider.noUiSlider.on('change', function( values, handle ){
-    savingsChart.segments[0].value = parseInt(values[0]);
-    savingsChart.segments[2].value = 100 - savingsChart.segments[0].value - savingsChart.segments[1].value;
-    savingsChart.update();
-  });
-  expensesSlider.noUiSlider.on('change', function( values, handle ){
-    savingsChart.segments[1].value = parseInt(values[0]);
-    savingsChart.segments[2].value = 100 - savingsChart.segments[0].value - savingsChart.segments[1].value;
-    savingsChart.update();
-  });
+    //Bind slider changes to circle update
+    needsSlider.noUiSlider.on('change', function( values, handle ){
+      savingsChart.segments[0].value = parseInt(values[0]);
+      savingsChart.segments[2].value = 100 - savingsChart.segments[0].value - savingsChart.segments[1].value;
+      savingsChart.update();
+    });
+    expensesSlider.noUiSlider.on('change', function( values, handle ){
+      savingsChart.segments[1].value = parseInt(values[0]);
+      savingsChart.segments[2].value = 100 - savingsChart.segments[0].value - savingsChart.segments[1].value;
+      savingsChart.update();
+    });
+
+    if(!savingsChart) {
+      console.log(savingsChart);
+      window.setTimeOut(100, drawChart);
+    } else {
+      wrapper.classList.add('step-wrapper');
+    }
+  };
+
+  drawChart();
 
 })();

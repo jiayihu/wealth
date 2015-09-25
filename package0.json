@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "browser-sync": "*",
+    "gulp": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-changed": "*",
+    "gulp-sass": "*",
+    "gulp-sourcemaps": "*"
+  }
+}
