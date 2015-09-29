@@ -297,7 +297,7 @@ th {
 
 @media (max-width: 992px) {
   .menu-open .nav {
-    height: 370px; } }
+    height: 457px; } }
 
 .main {
   background-color: #FFFBF3; }
@@ -314,6 +314,7 @@ th {
     text-transform: uppercase; }
 
 .continue {
+  margin-top: 2em;
   line-height: 50px;
   text-transform: uppercase;
   text-align: center;

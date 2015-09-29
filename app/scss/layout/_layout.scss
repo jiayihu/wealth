@@ -113,7 +113,7 @@
 
 @media (max-width: $screen-desktop) {
   .menu-open .nav {
-    height: 370px;
+    height: 457px;
   }
 }
 
@@ -139,6 +139,7 @@
 }
 
 .continue {
+  margin-top: 2em;
   line-height: 50px;
   text-transform: uppercase;
   text-align: center;
