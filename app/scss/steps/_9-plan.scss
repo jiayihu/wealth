@@ -1,0 +1,62 @@
+.step--plan {
+  text-align: left;
+  
+  form {
+
+  }
+  .form-title {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+}
+
+.action {
+  color: #fff;
+
+  .panel-heading {
+    color: inherit;
+    background-color: $textLight;
+    border: 1px solid darken($textLight, 10%);;
+
+    a {
+      color: #fff;
+    }
+  }
+
+  .panel-body {
+    background-color: #47546A;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .fa {
+    cursor: pointer;
+
+    &-caret-down {
+      vertical-align: middle;
+      transition: transform ease 0.3s;
+    }
+  }
+
+  &__buttons {
+    text-align: center;
+
+    .fa {
+      font-size: 1.25em;
+    }
+  }
+
+  .popover {
+    top: -66px !important;
+    left: -270px !important;
+    color: $text;
+    font-weight: inherit;
+  }
+
+}
+
+.rotate {
+  transform: rotate(180deg);
+}

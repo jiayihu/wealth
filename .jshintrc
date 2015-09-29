@@ -12,6 +12,7 @@
     "createSlider": true,
     "Chart": false,
     "define": false,
+    "gModel": true,
     "noUiSlider": false,
     "wNumb": false
   },

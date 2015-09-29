@@ -1,9 +1,11 @@
 'use strict';
 // var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
+var gModel = {};
+
 var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0],
   templates = ['intro', 'about', 'you', 'people', 'pyramid', 'scenarios',
-  'goal', 'retirement'];
+  'goal', 'retirement', 'plan'];
 
 loadTemplates(TEMPLATE_CONTAINER, templates);
 
@@ -49,7 +51,7 @@ function loadTemplates(container, templatesUrl) {
         if( !(templatesUrl[i] === 'you' || templatesUrl[i] === 'scenarios') ) {
           stepWrapper.classList.add('step-wrapper');
         }
-        if(i === 0) {
+        if(i === 8) {
           stepWrapper.classList.add('show');
         }
         stepWrapper.classList.add(templatesUrl[i] + '-wrapper');
@@ -79,6 +81,8 @@ function runStepFunctions(stepNumber) {
     script.src='scripts/templates/7-goal.js';
   } else if(stepNumber === 8) {
     script.src='scripts/templates/8-retirement.js';
+  } else if(stepNumber === 9) {
+    script.src='scripts/templates/9-plan.js';
   }
   TEMPLATE_CONTAINER.appendChild(script);
 }

@@ -1,6 +1,6 @@
 (function() {
-  var actions = [],
-    savedActions = [];
+  var actions = [];
+  gModel.savedActions = [];
 
   actions = [
     {
@@ -67,13 +67,13 @@
 
   var continueButton = retirementWrapper.getElementsByClassName('continue')[0];
   continueButton.addEventListener('click', function() {
-    savedActions = [];
+    gModel.savedActions = [];
     var checkedActions = retirementWrapper.getElementsByClassName('saved');
     for(var k = 0; k < checkedActions.length; k++) {
-      savedActions.push(actions[parseInt(checkedActions[k].dataset.action)]);
+      gModel.savedActions.push(actions[parseInt(checkedActions[k].dataset.action)]);
     }
-    console.log(savedActions);
+    console.log(gModel.savedActions);
   });
 
-  $('.fa-info-circle').tooltip();
+  $('.retirement-wrapper .fa-info-circle').tooltip();
 })();

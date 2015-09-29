@@ -97,13 +97,10 @@
     incomeRateSlider.noUiSlider.on('change', function( values, handle ){
       for(var i=0; i < 7; i++) {
         scenario.saving = scenario.savingRate * 0.01 * scenario.income;
-        console.log(scenario.saving, scenario.savingRate, scenario.income);
         scenarioChart.datasets[0].points[i].value = scenario.saving * (i+1) * 10;
       }
       scenarioChart.update();
     });
-
-    console.log('A', scenarioChart)
 
     if(!scenarioChart) {
       window.setTimeOut(100, drawChart);

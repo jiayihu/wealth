@@ -593,4 +593,43 @@ th {
     color: #fff;
     background-color: #E97B6C; }
 
+.step--plan {
+  text-align: left; }
+  .step--plan .form-title {
+    font-size: 1.25em;
+    font-weight: 600; }
+
+.action {
+  color: #fff; }
+  .action .panel-heading {
+    color: inherit;
+    background-color: #9DACC5;
+    border: 1px solid #7d91b2; }
+    .action .panel-heading a {
+      color: #fff; }
+  .action .panel-body {
+    background-color: #47546A; }
+  .action p {
+    margin: 0; }
+  .action .fa {
+    cursor: pointer; }
+    .action .fa-caret-down {
+      vertical-align: middle;
+      -webkit-transition: -webkit-transform ease 0.3s;
+              transition: transform ease 0.3s; }
+  .action__buttons {
+    text-align: center; }
+    .action__buttons .fa {
+      font-size: 1.25em; }
+  .action .popover {
+    top: -66px !important;
+    left: -270px !important;
+    color: #30517A;
+    font-weight: inherit; }
+
+.rotate {
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
 /*# sourceMappingURL=maps/main.css.map */

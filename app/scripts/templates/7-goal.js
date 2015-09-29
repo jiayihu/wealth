@@ -28,4 +28,8 @@
   var pickedContainer = wrapper.getElementsByClassName('picked-goals')[0];
   dragula([pickedContainer]);
 
+  $('.goal__date__picker').daterangepicker({
+    singleDatePicker: true
+  });
+
 })();
