@@ -2,6 +2,7 @@
 Private project.
 
 TODO:
-  - Nav links number
-  - Chartist.js implementation
-  - Pick a goal on tablet
+  - [ ] Nav links number
+  - [ ] Chartist.js implementation
+  - [x] Pick a goal on tablet
+  - [ ] Fontastic implementation

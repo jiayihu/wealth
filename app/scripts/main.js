@@ -25,6 +25,7 @@ nav.addEventListener('click', function(e) {
   setActive(nextStepElement, 'show');
 });
 
+// Continue buttons to change to next step
 var continueButtons = document.getElementsByClassName('continue');
 for(var i = 0; i < continueButtons.length; i++) {
   continueButtons[i].addEventListener('click', function() {
@@ -51,7 +52,7 @@ function loadTemplates(container, templatesUrl) {
         if( !(templatesUrl[i] === 'you' || templatesUrl[i] === 'scenarios') ) {
           stepWrapper.classList.add('step-wrapper');
         }
-        if(i === 8) {
+        if(i === 0) {
           stepWrapper.classList.add('show');
         }
         stepWrapper.classList.add(templatesUrl[i] + '-wrapper');

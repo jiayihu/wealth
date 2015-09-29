@@ -1,5 +1,7 @@
 .step--goals {
-
+  .zmdi {
+    font-size: 25px;
+  }
 }
 
 .goal {
@@ -45,7 +47,7 @@
     text-align: center;
     font-size: 0.875em;
 
-    & img {
+    & .zmdi {
       display: block;
       margin: 0 auto;
     }
@@ -96,7 +98,7 @@
     font-size: 1.25em;
   }
 
-  p img {
+  p .zmdi {
     margin-right: 5px;
     vertical-align: bottom;
   }

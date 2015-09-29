@@ -1,6 +1,6 @@
 .step--plan {
   text-align: left;
-  
+
   form {
 
   }
@@ -31,10 +31,11 @@
     margin: 0;
   }
 
-  .fa {
+  .zmdi {
     cursor: pointer;
+    font-size: 1.25em;
 
-    &-caret-down {
+    &-chevron-down {
       vertical-align: middle;
       transition: transform ease 0.3s;
     }
@@ -43,8 +44,8 @@
   &__buttons {
     text-align: center;
 
-    .fa {
-      font-size: 1.25em;
+    .zmdi {
+      font-size: 1.5em;
     }
   }
 

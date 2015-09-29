@@ -23,6 +23,13 @@
   }
 
   .circle-legend {
+
+    @media (max-width: $screen-desktop) {
+      .doughnut-legend {
+        padding-left: 0;
+      }
+    }
+
     li:nth-child(1) span {
       background-color: #D3D3D3;
     }

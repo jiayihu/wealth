@@ -6,11 +6,11 @@
     });
   }
 
-  $('.plan-wrapper .fa-info-circle').popover({
+  $('.plan-wrapper .zmdi-info-outline').popover({
     placement: 'left'
   });
 
-  $('.plan-wrapper .fa-calendar').daterangepicker({
+  $('.plan-wrapper .zmdi-calendar-alt').daterangepicker({
     singleDatePicker: true
   });
 

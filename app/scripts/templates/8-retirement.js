@@ -51,14 +51,14 @@
 
   for(var i = 0; i < actions.length; i++) {
     row = document.createElement('tr');
-    row.innerHTML = '<td><i class="fa fa-check" data-action="' + i + '"></i></td>' +
+    row.innerHTML = '<td><i class="zmdi zmdi-check-circle" data-action="' + i + '"></i></td>' +
       '<td>' + actions[i].todo + '</td>' +
       '<td>' + actions[i].todonot + '</td>' +
-      '<td><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="left" title="' + actions[i].why + '"></i></td>';
+      '<td><i class="zmdi zmdi-info-outline" data-toggle="tooltip" data-placement="left" title="' + actions[i].why + '"></i></td>';
       tbody.appendChild(row);
   }
 
-  var checks = retirementWrapper.getElementsByClassName('fa-check');
+  var checks = retirementWrapper.getElementsByClassName('zmdi-check-circle');
   for(var j = 0; j < checks.length; j++) {
     checks[j].addEventListener('click', function() {
       this.classList.toggle('saved');
@@ -75,5 +75,5 @@
     console.log(gModel.savedActions);
   });
 
-  $('.retirement-wrapper .fa-info-circle').tooltip();
+  $('.retirement-wrapper .zmdi-info-outline').tooltip();
 })();
