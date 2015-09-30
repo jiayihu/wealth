@@ -2,10 +2,8 @@
 Private project.
 
 TODO:
-  - [ ] Nav links number
+  - [x] Nav links number
   - [ ] Chartist.js implementation
   - [x] Pick a goal on tablet
   - [ ] Fontastic implementation
-
-
-  - Controllare utilità blocco in _layout.scss
+  - [ ] Dollar amount for Savings in 'This is you'

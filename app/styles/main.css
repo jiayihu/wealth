@@ -249,6 +249,7 @@ th {
    LAYOUT
    ========================================================================== */
 .hwp {
+  text-align: center;
   background-color: #182C4D;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.38);
   overflow: hidden;
@@ -266,14 +267,12 @@ th {
 
 .brand-name {
   display: block;
-  text-align: center;
   background-color: #4EA1D7;
 }
 
 .brand-name a {
   color: #FFF;
   font-size: 1.25em;
-  text-align: center;
 }
 
 .brand-name a :hover {
@@ -282,6 +281,7 @@ th {
 
 /* Menu toggle */
 .nav {
+  text-align: left;
   color: #9DACC5;
   -webkit-transition: height 0.3s ease-out;
           transition: height 0.3s ease-out;
@@ -304,8 +304,7 @@ th {
 
 .nav ul {
   padding-left: 0;
-  list-style-type: decimal;
-  list-style-position: inside;
+  list-style-type: none;
 }
 
 .nav li {
@@ -318,7 +317,7 @@ th {
 .nav li:before {
   content: " ";
   position: absolute;
-  left: 12px;
+  left: 11px;
   top: 10px;
   display: block;
   width: 25px;
@@ -340,7 +339,7 @@ th {
 }
 
 .nav .step-number {
-  margin-left: 10px;
+  margin-right: 16px;
 }
 
 @media (max-width: 992px) {
@@ -364,6 +363,8 @@ th {
 /* Material Design Icons */
 .zmdi {
   vertical-align: middle;
+  -webkit-transition: -webkit-transform ease-out 0.4s;
+          transition: transform ease-out 0.4s;
 }
 
 /* CONTENT OF EACH STEP
@@ -376,6 +377,7 @@ th {
   margin: 0;
   margin-top: 4px;
   padding-left: 2em;
+  text-align: left;
   font-size: 1.125em;
   text-transform: uppercase;
 }
@@ -399,8 +401,10 @@ th {
   margin: 0 auto;
 }
 
-.step {
-  text-align: center;
+@media (min-width: 992px) {
+  .step {
+    min-height: 360px;
+  }
 }
 
 .step__desc {
@@ -412,13 +416,29 @@ th {
   margin-top: 2em;
   line-height: 50px;
   text-transform: uppercase;
-  text-align: center;
   background-color: #9CBBCF;
+  -webkit-transition: background-color ease-out 1s;
+          transition: background-color ease-out 1s;
   cursor: pointer;
+}
+
+.continue:hover {
+  background-color: #30517A;
+}
+
+.continue:hover .zmdi {
+  -webkit-transform: translateX(20px);
+      -ms-transform: translateX(20px);
+          transform: translateX(20px);
 }
 
 .continue__button {
   color: white !important;
+}
+
+.continue .zmdi {
+  margin-left: 10px;
+  vertical-align: initial;
 }
 
 /* ==========================================================================
@@ -674,6 +694,10 @@ th {
 
 /* 5-PYRAMID
    ========================================================================== */
+.svg-pyramid {
+  max-width: 95%;
+}
+
 /* 6-SCENARIOS
    ========================================================================== */
 .step--scenarios .options {
@@ -881,12 +905,6 @@ th {
 .action .zmdi {
   cursor: pointer;
   font-size: 1.25em;
-}
-
-.action .zmdi-chevron-down {
-  vertical-align: middle;
-  -webkit-transition: -webkit-transform ease 0.3s;
-          transition: transform ease 0.3s;
 }
 
 .action__buttons {

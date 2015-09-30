@@ -37,11 +37,6 @@
   .zmdi {
     cursor: pointer;
     font-size: 1.25em;
-
-    &-chevron-down {
-      vertical-align: middle;
-      transition: transform ease 0.3s;
-    }
   }
 
   &__buttons {

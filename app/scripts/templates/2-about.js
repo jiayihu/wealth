@@ -4,7 +4,7 @@
     incomeSlider = wrapper.getElementsByClassName('about__income__slider')[0];
 
   var ageOptions = {
-    start: 20,
+    start: 35,
     step: 1,
     range: {
       'min': 18,
