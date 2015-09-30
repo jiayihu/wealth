@@ -1,8 +1,5 @@
-/* -----------------------------------------------------------------------------
-
-  HAMBURGER ICONS COMPONENT
-
------------------------------------------------------------------------------ */
+/* HAMBURGER MENU
+   ========================================================================== */
 
 // vars
 
@@ -36,7 +33,7 @@ $button-transistion-duration: 0.1s;     // The transition duration
   appearance: none;
   background: none;
   box-shadow: none;
-  border-radius: none;
+  border-radius: 0;
   border: none;
   cursor: pointer;
   transition: background $button-transistion-duration;

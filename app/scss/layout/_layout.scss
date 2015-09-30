@@ -1,10 +1,14 @@
 .hwp {
   background-color: $primaryDarker;
-  box-shadow: 0px 3px 4px 0px rgba(0,0,0,0.38);
+  box-shadow: 0 3px 4px 0 rgba(0,0,0,0.38);
   overflow: hidden;
 }
 
-.header > * {
+/* HEADER & NAVIGATION
+   ========================================================================== */
+
+/* Header */
+.header span, .header p {
   position: relative;
   padding-top: 1em;
   padding-bottom: 1em;
@@ -27,37 +31,7 @@
   }
 }
 
-.c-hamburger {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  @media (min-width: $screen-desktop) {
-    display: none;
-  }
-}
-
-.zmdi {
-  vertical-align: middle;
-}
-
-.step-title {
-  margin: 0;
-  margin-top: 4px;
-  padding-left: 2em;
-  font-size: 1.125em;
-  text-transform: uppercase;
-
-  @media (max-width: $screen-desktop) {
-    text-align: center;
-  }
-}
-
-.wrapper {
-  width: 90%;
-  margin: 0 auto;
-}
-
+/* Menu toggle */
 .nav {
   color: $textLight;
   transition: height 0.3s ease-out;
@@ -102,6 +76,7 @@
     &.active,
     &:hover {
       color: $sand;
+      background-color: #d8d8d8;
       background-color: rgba(#D8D8D8, 0.08);
 
       &:before {
@@ -121,8 +96,38 @@
   }
 }
 
-.main {
-  background-color: $sand;
+.c-hamburger {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  @media (min-width: $screen-desktop) {
+    display: none;
+  }
+}
+
+/* Material Design Icons */
+.zmdi {
+  vertical-align: middle;
+}
+
+/* CONTENT OF EACH STEP
+   ========================================================================== */
+
+ .main {
+   background-color: $sand;
+ }
+
+.step-title {
+  margin: 0;
+  margin-top: 4px;
+  padding-left: 2em;
+  font-size: 1.125em;
+  text-transform: uppercase;
+
+  @media (max-width: $screen-desktop) {
+    text-align: center;
+  }
 }
 
 .step-wrapper {
@@ -131,6 +136,11 @@
   &.show {
     display: block;
   }
+}
+
+.wrapper {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .step {
