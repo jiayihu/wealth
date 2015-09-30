@@ -14,7 +14,7 @@
     addButtons[i].addEventListener('click', displayPickedGoal);
   }
 
-  var deleteButtons = wrapper.getElementsByClassName('picked__actions__delete');
+  var deleteButtons = wrapper.getElementsByClassName('delete-goal');
   var hidePickedGoal = function() {
     var goal = this.dataset.goal;
     wrapper.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
@@ -31,5 +31,7 @@
   $('.goal__date__picker').daterangepicker({
     singleDatePicker: true
   });
-
+  $('.goal__date__picker').on('apply.daterangepicker', function(ev, picker) {
+    this.textContent = picker.endDate.format('MMM Do YYYY');
+  });
 })();

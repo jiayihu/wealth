@@ -9,7 +9,7 @@
    ========================================================================== */
 
 /* Header */
-.header span, .header p {
+.header > span, .header > p {
   position: relative;
   padding-top: 1em;
   padding-bottom: 1em;
@@ -155,7 +155,8 @@
   }
 }
 
-.continue {
+.continue,
+.print {
   margin-top: 2em;
   line-height: 50px;
   text-transform: uppercase;
