@@ -54,8 +54,8 @@
         donutWidth: 20,
         chartPadding: 10,
         labelOffset: 50,
-        width: '220px',
-        height: '220px'
+        width: '200px',
+        height: '200px'
       };
     data.series[2] = {
       value: 100 - data.series[0].value - data.series[1].value,
