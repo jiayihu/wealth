@@ -1,6 +1,5 @@
 (function() {
   var actions = [];
-  gModel.savedActions = [];
 
   actions = [
     {

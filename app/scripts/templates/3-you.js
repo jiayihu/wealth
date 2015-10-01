@@ -38,54 +38,109 @@
     tooltip.innerHTML = values[handle] + '%';
   });
 
-
-  var drawChart = function() {
     //Chart
-    var savingsCtx = wrapper.getElementsByClassName('about__savings__circle')[0].getContext('2d'),
-      savingsLegend = wrapper.getElementsByClassName('circle-legend')[0],
-      data = [{
+    var data = {
+        series: [{
           value: 20,
-          color: '#D3D3D3',
-          label: 'Basic Needs'
+          name: 'Basic Needs'
         },
         {
           value: 20,
-          color: '#E97B6C',
-          label: 'Discretionary'
-        }],
+          name: 'Discretionary'
+        }]
+      },
       options = {
-        percentageInnerCutout : 75,
-        tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %> \%',
-        legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background:<%=segments[i].value%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
+        donut: true,
+        donutWidth: 20,
+        chartPadding: 10,
+        labelOffset: 50
       };
-    data[2] = {
-      value: 100 - data[0].value - data[1].value,
-      color: '#9DDC57',
-      label: 'Savings'
+    data.series[2] = {
+      value: 100 - data.series[0].value - data.series[1].value,
+      name: 'Savings'
     };
-    var savingsChart = new Chart(savingsCtx).Doughnut(data, options);
-    savingsLegend.innerHTML = savingsChart.generateLegend();
+
+    var $pieChart = new Chartist.Pie('.about__savings__circle', data, options);
+
+    var $chart = $('.about__savings__circle');
+
+    var $toolTip = $chart
+      .append('<div class="pie-tooltip"></div>')
+      .find('.pie-tooltip')
+      .hide();
+    var moneyFormat = wNumb({
+    	thousand: '.',
+    	prefix: '$ '
+    });
+
+    $chart.on('mouseenter', '.ct-slice-donut', function() {
+      var $slice = $(this),
+        value = $slice.attr('ct:value'),
+        seriesName = $slice.parent().attr('ct:series-name');
+      $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
+      moneyFormat.to(parseInt(value)/100 * gModel.aboutIncome) ).show();
+    });
+
+    $chart.on('mouseleave', '.ct-slice-donut', function() {
+      $toolTip.hide();
+    });
+
+    $chart.on('mousemove', function(event) {
+      $toolTip.css({
+        left: (event.offsetX || event.originalEvent.layerX) - $toolTip.width() / 2 - 10,
+        top: (event.offsetY || event.originalEvent.layerY) - $toolTip.height() - 30
+      });
+    });
+
+    $pieChart.on('draw', function(data) {
+      if(data.type === 'slice') {
+        // Get the total path length in order to use for dash array animation
+        var pathLength = data.element._node.getTotalLength();
+
+        // Set a dasharray that matches the path length as prerequisite to animate dashoffset
+        data.element.attr({
+          'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+        });
+
+        // Create animation definition while also assigning an ID to the animation for later sync usage
+        var animationDefinition = {
+          'stroke-dashoffset': {
+            id: 'anim' + data.index,
+            dur: 1000,
+            from: -pathLength + 'px',
+            to:  '0px',
+            easing: Chartist.Svg.Easing.easeOutQuint,
+            // We need to use `fill: 'freeze'` otherwise our animation will fall back to initial (not visible)
+            fill: 'freeze'
+          }
+        };
+
+        // If this was not the first slice, we need to time the animation so that it uses the end sync event of the previous animation
+        if(data.index !== 0) {
+          animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+        }
+
+        // We need to set an initial value before the animation starts as we are not in guided mode which would do that for us
+        data.element.attr({
+          'stroke-dashoffset': -pathLength + 'px'
+        });
+
+        // We can't use guided mode as the animations need to rely on setting begin manually
+        // See http://gionkunz.github.io/chartist-js/api-documentation.html#chartistsvg-function-animate
+        data.element.animate(animationDefinition, false);
+      }
+    });
 
     //Bind slider changes to circle update
     needsSlider.noUiSlider.on('change', function( values, handle ){
-      savingsChart.segments[0].value = parseInt(values[0]);
-      savingsChart.segments[2].value = 100 - savingsChart.segments[0].value - savingsChart.segments[1].value;
-      savingsChart.update();
+      data.series[0].value = parseInt(values[0]);
+      data.series[2].value = 100 - data.series[0].value - data.series[1].value;
+      $pieChart.update();
     });
     expensesSlider.noUiSlider.on('change', function( values, handle ){
-      savingsChart.segments[1].value = parseInt(values[0]);
-      savingsChart.segments[2].value = 100 - savingsChart.segments[0].value - savingsChart.segments[1].value;
-      savingsChart.update();
+      data.series[1].value = parseInt(values[0]);
+      data.series[2].value = 100 - data.series[0].value - data.series[1].value;
+      $pieChart.update();
     });
-
-    if(!savingsChart) {
-      console.log(savingsChart);
-      window.setTimeOut(100, drawChart);
-    } else {
-      wrapper.classList.add('step-wrapper');
-    }
-  };
-
-  drawChart();
 
 })();

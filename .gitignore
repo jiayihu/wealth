@@ -3,6 +3,7 @@ node_modules
 dist
 .tmp
 app.yaml
+app copia
 
 # Compiled source #
 ###################

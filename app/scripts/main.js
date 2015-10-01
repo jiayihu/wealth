@@ -1,7 +1,14 @@
 'use strict';
 // var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
-var gModel = {};
+var gModel = {
+  aboutAge: 20,
+  aboutIncome: 60000,
+  aboutNeeds: 20,
+  aboutDiscretionary: 50,
+  aboutSavings: 30,
+  savedActions: []
+};
 
 var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0],
   templates = ['intro', 'about', 'you', 'people', 'pyramid', 'scenarios',
@@ -49,10 +56,10 @@ function loadTemplates(container, templatesUrl) {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         stepWrapper = document.createElement('div');
-        if( !(templatesUrl[i] === 'you' || templatesUrl[i] === 'scenarios') ) {
+        if( !(templatesUrl[i] === 'scenarios') ) {
           stepWrapper.classList.add('step-wrapper');
         }
-        if(i === 0) {
+        if(i === 5) {
           stepWrapper.classList.add('show');
         }
         stepWrapper.classList.add(templatesUrl[i] + '-wrapper');
