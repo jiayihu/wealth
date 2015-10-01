@@ -2,27 +2,29 @@
   <p class="step-title">What if scenario</p>
 </div>
 <div class="step step--scenarios">
-  <p class="about__question">Play with the options on the left and see on the right how a simple change can affect your future wealth</p>
-  <div class="row">
-    <div class="options col-sm-4">
-      <div class="option">
-        <p class="option__title">Saving Rate %</p>
-        <div class="option__slider option__slider--saving"></div>
+  <div class="wrapper">
+    <p class="about__question">Play with the options on the left and see on the right how a simple change can affect your future wealth</p>
+    <div class="row">
+      <div class="options col-sm-4">
+        <div class="option">
+          <p class="option__title">Saving Rate %</p>
+          <div class="option__slider option__slider--saving"></div>
+        </div>
+        <div class="option">
+          <p class="option__title">Expenses %</p>
+          <div class="option__slider option__slider--expenses"></div>
+        </div>
+        <div class="option">
+          <p class="option__title">Income $</p>
+          <div class="option__slider option__slider--income"></div>
+        </div>
+        <p>*Defaults are based on your peers</p>
       </div>
-      <div class="option">
-        <p class="option__title">Expenses %</p>
-        <div class="option__slider option__slider--expenses"></div>
-      </div>
-      <div class="option">
-        <p class="option__title">Income $</p>
-        <div class="option__slider option__slider--income"></div>
-      </div>
-      <p>*Defaults are based on your peers</p>
-    </div>
-    <div class="col-sm-8">
-      <div class="scenario">
-        <p><strong>Savings</strong> (Age on x-xis & Savings on y-axis)</p>
-        <canvas class="scenario__chart"></canvas>
+      <div class="col-sm-8">
+        <div class="scenario">
+          <p><strong>Savings</strong> (Age on x-xis & Savings on y-axis)</p>
+          <div class="scenario__chart ct-chart ct-golden-section"></div>
+        </div>
       </div>
     </div>
   </div>

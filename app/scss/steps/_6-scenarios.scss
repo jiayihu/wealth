@@ -2,9 +2,6 @@
    ========================================================================== */
 
 .step--scenarios {
-  .options {
-    padding-left: 1em;
-  }
 
   .noUi-target {
     margin-bottom: 50px;
@@ -13,5 +10,9 @@
   .scenario {
     margin: 0 auto;
     width: 80%;
+  }
+
+  .ct-label {
+    font-size: 0.875em;
   }
 }

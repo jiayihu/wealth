@@ -53,7 +53,9 @@
         donut: true,
         donutWidth: 20,
         chartPadding: 10,
-        labelOffset: 50
+        labelOffset: 50,
+        width: '220px',
+        height: '220px'
       };
     data.series[2] = {
       value: 100 - data.series[0].value - data.series[1].value,
@@ -132,12 +134,12 @@
     });
 
     //Bind slider changes to circle update
-    needsSlider.noUiSlider.on('change', function( values, handle ){
+    needsSlider.noUiSlider.on('change', function( values){
       data.series[0].value = parseInt(values[0]);
       data.series[2].value = 100 - data.series[0].value - data.series[1].value;
       $pieChart.update();
     });
-    expensesSlider.noUiSlider.on('change', function( values, handle ){
+    expensesSlider.noUiSlider.on('change', function( values){
       data.series[1].value = parseInt(values[0]);
       data.series[2].value = 100 - data.series[0].value - data.series[1].value;
       $pieChart.update();

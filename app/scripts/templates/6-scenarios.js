@@ -1,16 +1,10 @@
 (function() {
-  var wrapper = document.getElementsByClassName('scenarios-wrapper')[0],
-    savingRateSlider = document.getElementsByClassName('option__slider--saving')[0],
+  var savingRateSlider = document.getElementsByClassName('option__slider--saving')[0],
     expensesRateSlider = document.getElementsByClassName('option__slider--expenses')[0],
     incomeRateSlider = document.getElementsByClassName('option__slider--income')[0];
 
-  var scenario = {};
-  scenario.savingRate = 20;
-  scenario.income = 24000;
-  scenario.saving = scenario.savingRate * 0.01 * scenario.income;
-
   var savingRateOptions = {
-    start: scenario.savingRate,
+    start: gModel.aboutSavings,
     step: 1,
     range: {
       'min': 1,
@@ -32,7 +26,7 @@
     })
   },
   incomeRateOptions = {
-    start: scenario.income,
+    start: gModel.aboutIncome,
     step: 1000,
     range: {
       'min': 18000,
@@ -47,7 +41,7 @@
   createSlider(savingRateSlider, savingRateOptions);
   savingRateSlider.noUiSlider.on('update', function( values, handle ){
     var tooltip = savingRateSlider.querySelector('.slider-tooltip span');
-    scenario.savingRate = parseInt(values[handle]);
+    gModel.aboutSavings = parseInt(values[handle]);
     tooltip.innerHTML = values[handle] + '%';
   });
 
@@ -60,56 +54,37 @@
   createSlider(incomeRateSlider, incomeRateOptions);
   incomeRateSlider.noUiSlider.on('update', function( values, handle ){
     var tooltip = incomeRateSlider.querySelector('.slider-tooltip span');
-    scenario.income = parseInt(values[handle].replace('.', ''));
+    gModel.aboutIncome = parseInt(values[handle].replace('.', ''));
     tooltip.innerHTML = '$' + values[handle];
   });
 
-  var drawChart = function() {
-    var scenarioCtx = document.getElementsByClassName('scenario__chart')[0].getContext('2d');
-    var data = {
-      labels: ['18', '30', '40', '50', '60', '70', '80'],
-      datasets: [
-        {
-            label: 'What if scenario',
-            fillColor: 'rgba(157,220,87,0.1)',
-            strokeColor: '#182C4D',
-            pointColor: '#182C4D',
-            pointStrokeColor: '#fff',
-            pointHighlightFill: '#9DDC57',
-            pointHighlightStroke: 'rgba(220,220,220,1)',
-            data: [scenario.saving*2, scenario.saving*4, scenario.saving*12, scenario.saving*16, scenario.saving*25, scenario.saving*48, scenario.saving*70]
-        }
-      ]
-    };
-    var options = {
-      responsive: true,
-      tooltipTemplate: '<%if (label){%><%=label%>: $<%}%><%= value %>'
-    };
-    var scenarioChart = new Chart(scenarioCtx).Line(data, options);
-
-    savingRateSlider.noUiSlider.on('change', function( values, handle ){
-      for(var i=0; i < 7; i++) {
-        scenario.saving = parseInt(scenario.savingRate) * 0.01 * scenario.income;
-        scenarioChart.datasets[0].points[i].value = scenario.saving * (i+1) * 10;
-      }
-      scenarioChart.update();
-    });
-    incomeRateSlider.noUiSlider.on('change', function( values, handle ){
-      for(var i=0; i < 7; i++) {
-        scenario.saving = scenario.savingRate * 0.01 * scenario.income;
-        scenarioChart.datasets[0].points[i].value = scenario.saving * (i+1) * 10;
-      }
-      scenarioChart.update();
-    });
-
-    if(!scenarioChart) {
-      window.setTimeOut(100, drawChart);
-    } else {
-      wrapper.classList.add('step-wrapper');
-    }
-
+  var data = {
+    labels: [18, 30, 40, 50, 60, 70, 80],
+    series: [
+      [gModel.savings * 1, gModel.savings * 12, gModel.savings * 22, gModel.savings * 32, gModel.savings * 42, gModel.savings * 52, gModel.savings * 62]
+    ]
+  },
+  options = {
+    showArea: true,
+    width: '410px',
+    height: '250px'
   };
 
-  drawChart();
+  var lineChart = new Chartist.Line('.scenario__chart', data, options);
+
+  savingRateSlider.noUiSlider.on('change', function( values ){
+    for(var i=0; i < data.series[0].length; i++) {
+      data.series[0][i] = parseInt(values[0]) * 0.01 * gModel.aboutIncome * (data.labels[i] - 18);
+    }
+    console.log(data.series[0]);
+    lineChart.update(data);
+  });
+  incomeRateSlider.noUiSlider.on('change', function( values ){
+    for(var i=0; i < data.series[0].length; i++) {
+      data.series[0][i] = savingRateSlider.noUiSlider.get() * 0.01 * parseInt(values[0]) * (data.labels[i] - 18);
+    }
+    console.log(data.series[0]);
+    lineChart.update(data);
+  });
 
 })();

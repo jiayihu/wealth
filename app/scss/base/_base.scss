@@ -3,6 +3,11 @@ body {
   font-weight: 300;
 }
 
+img,
+svg {
+  max-width: 100%;
+}
+
 th {
   font-weight: normal;
   text-align: center;

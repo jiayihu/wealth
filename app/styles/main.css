@@ -6,6 +6,11 @@ body {
   font-weight: 300;
 }
 
+img,
+svg {
+  max-width: 100%;
+}
+
 th {
   font-weight: normal;
   text-align: center;
@@ -725,10 +730,6 @@ th {
 
 /* 6-SCENARIOS
    ========================================================================== */
-.step--scenarios .options {
-  padding-left: 1em;
-}
-
 .step--scenarios .noUi-target {
   margin-bottom: 50px;
 }
@@ -736,6 +737,10 @@ th {
 .step--scenarios .scenario {
   margin: 0 auto;
   width: 80%;
+}
+
+.step--scenarios .ct-label {
+  font-size: 0.875em;
 }
 
 /* 7-GOAL

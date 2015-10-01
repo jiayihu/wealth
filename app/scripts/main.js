@@ -7,6 +7,7 @@ var gModel = {
   aboutNeeds: 20,
   aboutDiscretionary: 50,
   aboutSavings: 30,
+  savings: 12000,
   savedActions: []
 };
 
@@ -56,10 +57,8 @@ function loadTemplates(container, templatesUrl) {
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         stepWrapper = document.createElement('div');
-        if( !(templatesUrl[i] === 'scenarios') ) {
-          stepWrapper.classList.add('step-wrapper');
-        }
-        if(i === 5) {
+        stepWrapper.classList.add('step-wrapper');
+        if(i === 0) {
           stepWrapper.classList.add('show');
         }
         stepWrapper.classList.add(templatesUrl[i] + '-wrapper');
