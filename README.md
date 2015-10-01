@@ -10,4 +10,5 @@ TODO:
   - [ ] [Fastclick](https://github.com/ftlabs/fastclick) implementation
   - [ ] Save action plan datepicker value on html5 data-attribute
   - [ ] [Fontastic](http://fontastic.me) implementation
+  - [ ] Green background for saved actions
   - [x] Dollar amount for Savings in 'This is you'
