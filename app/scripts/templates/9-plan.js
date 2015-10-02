@@ -14,6 +14,8 @@
     singleDatePicker: true
   });
 
+
+  //Print page
   var printButton = document.getElementsByClassName('print')[0];
   printButton.addEventListener('click', function() {
     var printPage = document.createElement('div'),

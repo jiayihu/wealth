@@ -1,0 +1,2 @@
+scss_files: "app/scss/**/*.scss"
+exclude: 'app/scss/bootstrap/**'

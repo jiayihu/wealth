@@ -54,15 +54,21 @@
         donutWidth: 20,
         chartPadding: 10,
         labelOffset: 50,
-        width: '200px',
-        height: '200px'
-      };
+        width: '220px',
+        height: '220px'
+      },
+      responsiveOptions = [
+        ['screen and (max-width: 480px)', {
+          width: '180px',
+          height: '180px'
+        }]
+      ];
     data.series[2] = {
       value: 100 - data.series[0].value - data.series[1].value,
       name: 'Savings'
     };
 
-    var $pieChart = new Chartist.Pie('.about__savings__circle', data, options);
+    var $pieChart = new Chartist.Pie('.about__savings__circle', data, options, responsiveOptions);
 
     var $chart = $('.about__savings__circle');
 

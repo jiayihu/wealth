@@ -1,6 +1,9 @@
 body {
-  padding-top: 3.125em;
   font-weight: 300;
+
+  @media (min-width: $screen-desktop) {
+    padding-top: 3.125em;
+  }
 }
 
 img,
@@ -14,10 +17,9 @@ th {
 }
 
 .flex {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
-
   @media (max-width: $screen-desktop) {
     display: block;
   }
