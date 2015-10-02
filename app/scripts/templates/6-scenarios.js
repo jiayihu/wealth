@@ -67,7 +67,29 @@
   options = {
     showArea: true,
     width: '410px',
-    height: '250px'
+    height: '250px',
+    plugins: [
+      Chartist.plugins.ctAxisTitle({
+        axisX: {
+          axisTitle: 'Age',
+          axisClass: 'ct-axis-age',
+          offset: {
+            x: 0,
+            y: 35
+          },
+          textAnchor: 'middle'
+        },
+        axisY: {
+          axisTitle: 'Savings ($)',
+          axisClass: 'ct-axis-savings',
+          offset: {
+            x: 0,
+            y: 20
+          },
+          textAnchor: 'middle'
+        }
+      })
+    ]
   };
 
   var lineChart = new Chartist.Line('.scenario__chart', data, options);

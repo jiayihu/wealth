@@ -745,7 +745,27 @@ th {
 }
 
 .step--scenarios .ct-label {
-  font-size: 0.875em;
+  font-size: .875em;
+}
+
+.step--scenarios .ct-point,
+.step--scenarios .ct-line {
+  stroke: #7ed321;
+}
+
+.step--scenarios .ct-area {
+  fill: #7ed321;
+}
+
+.step--scenarios svg {
+  overflow: visible;
+  padding-left: 15px;
+}
+
+.step--scenarios .ct-axis-age,
+.step--scenarios .ct-axis-savings {
+  fill: #30517A;
+  font-weight: normal;
 }
 
 /* 7-GOAL
@@ -898,8 +918,8 @@ th {
 /* 8-RETIREMENT
    ========================================================================== */
 .step--retirement .zmdi {
-  cursor: pointer;
   color: #9DACC5;
+  cursor: pointer;
 }
 
 .step--retirement .zmdi-check-circle {
@@ -911,12 +931,12 @@ th {
 }
 
 .step--retirement .saved {
-  color: #7ED321;
+  color: #7ed321;
 }
 
 .step--retirement .th-todo {
   color: #fff;
-  background-color: #7ED321;
+  background-color: #7ed321;
 }
 
 .step--retirement .th-todonot {

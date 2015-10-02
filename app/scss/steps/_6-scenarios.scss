@@ -13,6 +13,26 @@
   }
 
   .ct-label {
-    font-size: 0.875em;
+    font-size: .875em;
+  }
+
+  .ct-point,
+  .ct-line {
+    stroke: $accent-green;
+  }
+
+  .ct-area {
+    fill: $accent-green;
+  }
+
+  svg {
+    overflow: visible;
+    padding-left: 15px;
+  }
+
+  .ct-axis-age,
+  .ct-axis-savings {
+    fill: $text;
+    font-weight: normal;
   }
 }

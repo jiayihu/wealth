@@ -3,8 +3,8 @@
 
 .step--retirement {
   .zmdi {
-    cursor: pointer;
     color: $textLight;
+    cursor: pointer;
   }
 
   .zmdi-check-circle {
@@ -16,12 +16,12 @@
   }
 
   .saved {
-    color: #7ED321;
+    color: $accent-green;
   }
 
   .th-todo {
     color: #fff;
-    background-color: #7ED321;
+    background-color: $accent-green;
 
     &not {
       color: #fff;

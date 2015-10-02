@@ -5,8 +5,8 @@ TODO:
   - [x] Nav links number
   - [x] Chartist.js implementation
   - [x] Pick a goal on tablet
-  - [ ] Line chart color
-  - [ ] Line chart axis names
+  - [x] Line chart color
+  - [x] Line chart axis names
   - [x] Doughnut responsiveness
   - [ ] [Fastclick](https://github.com/ftlabs/fastclick) implementation
   - [ ] [Fontastic](http://fontastic.me) implementation
