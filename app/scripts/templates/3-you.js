@@ -59,8 +59,8 @@
       },
       responsiveOptions = [
         ['screen and (max-width: 480px)', {
-          width: '180px',
-          height: '180px'
+          width: '170px',
+          height: '170px'
         }]
       ];
     data.series[2] = {
@@ -81,12 +81,29 @@
     	prefix: '$ '
     });
 
+    var isLabelShown = false;
+
     $chart.on('mouseenter', '.ct-slice-donut', function() {
       var $slice = $(this),
         value = $slice.attr('ct:value'),
         seriesName = $slice.parent().attr('ct:series-name');
       $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
       moneyFormat.to(parseInt(value)/100 * gModel.aboutIncome) ).show();
+    });
+
+    //For mobiles
+    $chart.on('click', '.ct-slice-donut', function() {
+      if(!isLabelShown) {
+        var $slice = $(this),
+          value = $slice.attr('ct:value'),
+          seriesName = $slice.parent().attr('ct:series-name');
+        $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
+        moneyFormat.to(parseInt(value)/100 * gModel.aboutIncome) ).show();
+        isLabelShown = true;
+      } else {
+        $toolTip.hide();
+        isLabelShown = false;
+      }
     });
 
     $chart.on('mouseleave', '.ct-slice-donut', function() {

@@ -8,7 +8,7 @@ TODO:
   - [x] Line chart color
   - [x] Line chart axis names
   - [x] Doughnut responsiveness
-  - [ ] [Fastclick](https://github.com/ftlabs/fastclick) implementation
+  - [x] [Fastclick](https://github.com/ftlabs/fastclick) implementation
   - [ ] [Fontastic](http://fontastic.me) implementation
   - [ ] Green background for saved actions
   - [x] Dollar amount for Savings in 'This is you'
