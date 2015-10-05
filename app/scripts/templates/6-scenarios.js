@@ -1,6 +1,5 @@
 (function() {
   var savingRateSlider = document.getElementsByClassName('option__slider--saving')[0],
-    expensesRateSlider = document.getElementsByClassName('option__slider--expenses')[0],
     incomeRateSlider = document.getElementsByClassName('option__slider--income')[0];
 
   var savingRateOptions = {
@@ -9,17 +8,6 @@
     range: {
       'min': 1,
       'max': 40
-    },
-    format: wNumb({
-      decimals: 0
-    })
-  },
-  expensesRateOptions = {
-    start: 20,
-    step: 1,
-    range: {
-      'min': 1,
-      'max': 60
     },
     format: wNumb({
       decimals: 0
@@ -42,12 +30,6 @@
   savingRateSlider.noUiSlider.on('update', function( values, handle ){
     var tooltip = savingRateSlider.querySelector('.slider-tooltip span');
     gModel.aboutSavingsRate = parseInt(values[handle]);
-    tooltip.innerHTML = values[handle] + '%';
-  });
-
-  createSlider(expensesRateSlider, expensesRateOptions);
-  expensesRateSlider.noUiSlider.on('update', function( values, handle ){
-    var tooltip = expensesRateSlider.querySelector('.slider-tooltip span');
     tooltip.innerHTML = values[handle] + '%';
   });
 
