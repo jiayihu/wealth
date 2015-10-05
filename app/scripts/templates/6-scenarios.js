@@ -4,7 +4,7 @@
     incomeRateSlider = document.getElementsByClassName('option__slider--income')[0];
 
   var savingRateOptions = {
-    start: gModel.aboutSavings,
+    start: gModel.aboutSavingsRate,
     step: 1,
     range: {
       'min': 1,
@@ -41,7 +41,7 @@
   createSlider(savingRateSlider, savingRateOptions);
   savingRateSlider.noUiSlider.on('update', function( values, handle ){
     var tooltip = savingRateSlider.querySelector('.slider-tooltip span');
-    gModel.aboutSavings = parseInt(values[handle]);
+    gModel.aboutSavingsRate = parseInt(values[handle]);
     tooltip.innerHTML = values[handle] + '%';
   });
 

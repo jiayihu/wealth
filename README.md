@@ -9,6 +9,6 @@ TODO:
   - [x] Line chart axis names
   - [x] Doughnut responsiveness
   - [x] [Fastclick](https://github.com/ftlabs/fastclick) implementation
+  - [ ] Modular JS implementation
   - [ ] [Fontastic](http://fontastic.me) implementation
   - [ ] Green background for saved actions
-  - [x] Dollar amount for Savings in 'This is you'

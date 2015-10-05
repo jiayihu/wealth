@@ -10,7 +10,7 @@
     "$": false,
     "requirejs": false,
     "createSlider": true,
-    "Chart": false,
+    "Chartist": false,
     "define": false,
     "gModel": true,
     "noUiSlider": false,

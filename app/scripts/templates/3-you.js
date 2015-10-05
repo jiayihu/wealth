@@ -4,22 +4,22 @@
       expensesSlider = wrapper.getElementsByClassName('about__savings__slider--expenses')[0];
 
   var needsOptions = {
-    start: 20,
+    start: 45,
     step: 1,
     range: {
       'min': 1,
-      'max': 40
+      'max': 60
     },
     format: wNumb({
       decimals: 0
     })
   },
   expensesOptions = {
-    start: 20,
+    start: 25,
     step: 1,
     range: {
       'min': 1,
-      'max': 60
+      'max': 40
     },
     format: wNumb({
       decimals: 0
@@ -41,11 +41,11 @@
     //Chart
     var data = {
         series: [{
-          value: 20,
+          value: 45,
           name: 'Basic Needs'
         },
         {
-          value: 20,
+          value: 25,
           name: 'Discretionary'
         }]
       },
@@ -166,6 +166,18 @@
       data.series[1].value = parseInt(values[0]);
       data.series[2].value = 100 - data.series[0].value - data.series[1].value;
       $pieChart.update();
+    });
+
+    //Save data on global variable
+    var continueButton = wrapper.getElementsByClassName('continue')[0];
+    continueButton.addEventListener('click', function() {
+      gModel.aboutBasicRate = data.series[0].value;
+      gModel.aboutDiscretionaryRate = data.series[1].value;
+      gModel.aboutSavingsRate = data.series[2].value;
+      gModel.basicNeeds = gModel.aboutIncome * gModel.aboutBasicRate * 0.01;
+      gModel.discretionaryExpenses = gModel.aboutIncome * gModel.aboutDiscretionaryRate * 0.01;
+      gModel.savings = gModel.aboutIncome * gModel.aboutSavingsRate * 0.01;
+      console.log(gModel);
     });
 
 })();

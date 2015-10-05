@@ -2,9 +2,9 @@
   <p class="step-title">This is you now</p>
 </div>
 <div class="step step--first">
-  <svg class="svg-pyramid" width="505" height="374" viewBox="0 0 505 374" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <svg width="505" height="374" viewBox="0 0 505 374" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>
-      Pyramid + legend + legend + legend + Calculator
+      Pyramid Chart
     </title>
     <defs>
       <path d="M175.148 32.536l-.26-.33-.182.994-114.2 171.28 77.3 31.23-.042.235.384-.096.248.1.03-.17 164.888-41.112-127.97-161.886.133-.738-.33.492z" id="a"/>
@@ -36,7 +36,7 @@
         <path d="M6.482 67.5l43.724-43.846M50.36 1.5v22" stroke="#D3D3D3" stroke-linecap="square"/>
         <ellipse fill="#D3D3D3" cx="5.485" cy="68.5" rx="1.496" ry="1.5"/>
         <text font-family="Source Sans Pro" font-size="18">
-          <tspan x="58.836" y="18" fill="#E97B6C">Savings</tspan> <tspan x="116.958" y="18" fill="#ACACAC">: $ 3,360/yr</tspan>
+          <tspan x="58.836" y="18" fill="#E97B6C">Savings:</tspan> <tspan id="pyramid-savings" x="120" y="18" fill="#ACACAC">$ 3,360/yr</tspan>
         </text>
       </g>
       <g transform="translate(308.638 169)">
@@ -44,7 +44,8 @@
         <path d="M6.482 67.5l43.724-43.846M50.36 1.5v22" stroke="#D3D3D3" stroke-linecap="square"/>
         <ellipse fill="#D3D3D3" cx="5.485" cy="68.5" rx="1.496" ry="1.5"/>
         <text font-family="Source Sans Pro" font-size="18" fill="#9DACC5">
-          <tspan x="58.836" y="18">Basic Needs</tspan>
+          <tspan x="58.836" y="18">Basic Needs:</tspan>
+          <tspan id="pyramid-basic" x="58.836" y="42" fill="#ACACAC">$ 12,000/yr</tspan>
         </text>
       </g>
       <g transform="translate(238.833 79)">
@@ -52,12 +53,12 @@
         <path d="M6.482 67.5l43.724-43.846M50.36 1.5v22" stroke="#D3D3D3" stroke-linecap="square"/>
         <ellipse fill="#D3D3D3" cx="5.485" cy="68.5" rx="1.496" ry="1.5"/>
         <text font-family="Source Sans Pro" font-size="18">
-          <tspan x="60.009" y="18" fill="#182C4D">Discretionary Spending</tspan> <tspan x="235.671" y="18" fill="#ACACAC">: </tspan> <tspan x="113.181" y="41" fill="#ACACAC">$ 7,680/yr</tspan>
+          <tspan x="60.009" y="18" fill="#182C4D">Discretionary Spending: </tspan><tspan id="pyramid-discretionary" x="113.181" y="41" fill="#ACACAC">$ 7,680/yr</tspan>
         </text>
       </g>
       <g transform="translate(312 326)">
         <text font-family="Source Sans Pro" font-size="20" fill="#30517A">
-          <tspan x="51.739" y="31">$ 48.000 per year</tspan>
+          <tspan id="pyramid-income" x="51.739" y="31">$ 48.000 per year</tspan>
         </text>
         <rect stroke="#30517A" stroke-width="2" width="35.819" height="48" rx="2"/>
         <rect stroke="#30517A" stroke-width="2" x="5.97" y="6" width="23.879" height="10" rx="2"/>

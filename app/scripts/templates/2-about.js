@@ -21,7 +21,7 @@
     })
   },
   incomeOptions = {
-    start: 24000,
+    start: 60000,
     step: 1000,
     range: {
       'min': 18000,
@@ -34,15 +34,23 @@
   };
 
   createSlider(ageSlider, ageOptions);
-  ageSlider.noUiSlider.on('update', function( values, handle ){
+  ageSlider.noUiSlider.on('update', function( values ){
     var tooltip = ageSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = values[handle];
+    tooltip.innerHTML = values[0];
+    gModel.aboutAge = parseInt(values[0]);
   });
 
   createSlider(incomeSlider, incomeOptions);
-  incomeSlider.noUiSlider.on('update', function( values, handle ){
+  incomeSlider.noUiSlider.on('update', function( values ){
     var tooltip = incomeSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = values[handle];
+    tooltip.innerHTML = values[0];
+    gModel.aboutIncome = parseInt(values[0].replace('.', ''));
   });
 
+  var continueButton = wrapper.getElementsByClassName('continue')[0];
+  continueButton.addEventListener('click', function() {
+    gModel.aboutSituation = wrapper.getElementsByClassName('about__select')[0].value;
+    gModel.aboutLiving = wrapper.getElementsByClassName('about__select')[1].value;
+    console.log(gModel);
+  });
 })();

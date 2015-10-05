@@ -1,13 +1,20 @@
 'use strict';
 // var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
+//Global variable with user data
+//Defaul values
 var gModel = {
   aboutAge: 20,
+  aboutSituation: 'married',
+  aboutLiving: 'rent',
   aboutIncome: 60000,
-  aboutNeeds: 20,
-  aboutDiscretionary: 50,
-  aboutSavings: 30,
-  savings: 12000,
+  aboutBasicRate: 45,
+  aboutDiscretionaryRate: 25,
+  aboutSavingsRate: 30,
+  aboutStage: 'home',
+  basicNeeds: 27000,
+  discretionaryExpenses: 15000,
+  savings: 18000,
   savedActions: []
 };
 
@@ -82,6 +89,8 @@ function runStepFunctions(stepNumber) {
     script.src='scripts/templates/3-you.js';
   } else if(stepNumber === 4) {
     script.src='scripts/templates/4-people.js';
+  } else if(stepNumber === 5) {
+    script.src='scripts/templates/5-pyramid.js';
   } else if(stepNumber === 6) {
     script.src='scripts/templates/6-scenarios.js';
   } else if(stepNumber === 7) {
