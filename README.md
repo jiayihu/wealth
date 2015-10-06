@@ -9,6 +9,6 @@ TODO:
   - [x] Line chart axis names
   - [x] Doughnut responsiveness
   - [x] [Fastclick](https://github.com/ftlabs/fastclick) implementation
+  - [ ] Bootstrap Datepicker implemementation
   - [ ] Modular JS implementation
   - [ ] [Fontastic](http://fontastic.me) implementation
-  - [ ] Green background for saved actions
