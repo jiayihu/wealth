@@ -15,6 +15,7 @@ var gModel = {
   basicNeeds: 27000,
   discretionaryExpenses: 15000,
   savings: 18000,
+  pickedGoals: [],
   savedActions: []
 };
 

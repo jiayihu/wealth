@@ -32,4 +32,18 @@
     autoclose: true,
     format: 'M d yyyy'
   });
+
+  var continueButton = wrapper.getElementsByClassName('continue')[0],
+    pickedGoals;
+  continueButton.addEventListener('click', function() {
+    gModel.pickedGoals = [];
+    pickedGoals = wrapper.getElementsByClassName('picked--show');
+    for(var i=0; i < pickedGoals.length; i++) {
+      gModel.pickedGoals.push({
+        name: pickedGoals[i].lastElementChild.dataset.goal,
+        date: pickedGoals[i].getElementsByClassName('goal__date__picker')[0].value
+      });
+    }
+    console.log(gModel.pickedGoals);
+  });
 })();
