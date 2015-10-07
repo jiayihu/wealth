@@ -895,6 +895,16 @@ th {
   cursor: pointer;
 }
 
+.picked .goal__date__picker {
+  width: 100px;
+  padding: 0;
+  text-align: center;
+  background-color: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+
 .picked p .zmdi {
   margin-right: 5px;
   vertical-align: bottom;

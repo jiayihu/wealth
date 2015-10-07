@@ -10,9 +10,15 @@
     placement: 'left'
   });
 
-  $('.plan-wrapper .zmdi-calendar-alt').daterangepicker({
-    singleDatePicker: true
-  });
+  $('.plan-wrapper .zmdi-calendar-alt')
+    .datepicker({
+      autoclose: true,
+      format: 'M d yyyy'
+    })
+    .on('changeDate', function(event) {
+      this.dataset.date = event.format();
+    });
+
 
 
   //Print page

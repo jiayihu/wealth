@@ -80,14 +80,12 @@
     for(var i=0; i < data.series[0].length; i++) {
       data.series[0][i] = parseInt(values[0]) * 0.01 * gModel.aboutIncome * (data.labels[i] - 18);
     }
-    console.log(data.series[0]);
     lineChart.update(data);
   });
   incomeRateSlider.noUiSlider.on('change', function( values ){
     for(var i=0; i < data.series[0].length; i++) {
       data.series[0][i] = savingRateSlider.noUiSlider.get() * 0.01 * parseInt(values[0]) * (data.labels[i] - 18);
     }
-    console.log(data.series[0]);
     lineChart.update(data);
   });
 

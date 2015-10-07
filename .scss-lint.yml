@@ -1,5 +1,4 @@
-scss_files: "app/scss/**/*.scss"
-exclude: 'app/scss/bootstrap/**'
+exclude: 'app/scss/**'
 linters:
   Comment:
     enabled: false
