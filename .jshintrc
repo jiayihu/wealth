@@ -7,14 +7,8 @@
   "curly": true,
   "eqeqeq": true,
   "globals": {
-    "$": false,
-    "requirejs": false,
-    "createSlider": true,
-    "Chartist": false,
     "define": false,
-    "gModel": true,
-    "noUiSlider": false,
-    "wNumb": false
+    "gModel": true
   },
   "immed": true,
   "indent": 2,
