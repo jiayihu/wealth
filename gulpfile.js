@@ -1,20 +1,19 @@
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
+    fileInclude = require('gulp-file-include'),
     sass = require('gulp-sass'),
     sourcemaps = require('gulp-sourcemaps'),
     browserSync = require('browser-sync');
 
-gulp.task('serve', ['sass'], function() {
-
-    browserSync.init({
-        server: './app',
-        browser: 'Google Chrome'
-    });
-
-    gulp.watch('app/scss/**/*.scss', ['sass']);
-    gulp.watch(['app/scss/base/_customVariables.scss', 'app/scss/bootstrap/**/*.scss'], ['bootstrap']);
-    gulp.watch('app/scripts/**/*.js').on('change', browserSync.reload);
-    gulp.watch('app/**/*.html').on('change', browserSync.reload);
+gulp.task('html-partials', function() {
+  gulp.src(['./app/html/index.html'])
+    .pipe(fileInclude({
+      prefix: '@@',
+      basepath: '@file'
+    }))
+      .on('error', console.log)
+    .pipe(gulp.dest('./app/'))
+    .pipe(browserSync.stream());
 });
 
 gulp.task('sass', function() {
@@ -37,4 +36,17 @@ gulp.task('bootstrap', function() {
         .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
-gulp.task('default', ['serve', 'bootstrap', 'sass']);
+gulp.task('serve', ['sass'], function() {
+
+    browserSync.init({
+        server: './app',
+        browser: 'Google Chrome'
+    });
+
+    gulp.watch('app/scss/**/*.scss', ['sass']);
+    gulp.watch(['app/scss/base/_customVariables.scss', 'app/scss/bootstrap/**/*.scss'], ['bootstrap']);
+    gulp.watch('app/scripts/**/*.js').on('change', browserSync.reload);
+    gulp.watch('app/html/**/*.html', ['html-partials']);
+});
+
+gulp.task('default', ['serve', 'html-partials', 'bootstrap', 'sass']);

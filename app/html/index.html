@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HWP Story Board</title>
+  <link rel="stylesheet" href="styles/bootstrap.css">
+  <link rel="stylesheet" href="styles/nouislider.min.css">
+  <link rel="stylesheet" href="styles/chartist.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,300italic,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="styles/mdif.min.css">
+  <link rel="stylesheet" href="styles/dragula.min.css">
+  <link rel="stylesheet" href="styles/bootstrap-datepicker.min.css">
+
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="hwp">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="header">
+            <span class="brand-name"><a href="/">HWP Story Board</a></span>
+            <button class="c-hamburger c-hamburger--htx">
+              <span>Toggle Menu</span>
+            </button>
+          </div>
+          <div class="nav">
+            <p class="nav__label">Navigation</p>
+            <ul>
+              <li class="active">
+                <span class="step-name" data-template="intro"><span class="step-number">1</span>Introduction</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="about"><span class="step-number">2</span>Tell us about you</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="you"><span class="step-number">3</span>Your savings & expenses</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="people"><span class="step-number">4</span>How others save money</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="pyramid"><span class="step-number">5</span>This is you now</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="scenarios"><span class="step-number">6</span>What if</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="goal"><span class="step-number">7</span>Pick a goal</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="retirement"><span class="step-number">8</span>Saving for retirement</span>
+              </li>
+              <li>
+                <span class="step-name" data-template="plan"><span class="step-number">9</span>Action Plan</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="main col-md-9">
+          @@include('./templates/1-intro.html')
+          @@include('./templates/2-about.html')
+          @@include('./templates/3-you.html')
+          @@include('./templates/4-people.html')
+          @@include('./templates/5-pyramid.html')
+          @@include('./templates/6-scenarios.html')
+          @@include('./templates/7-goal.html')
+          @@include('./templates/8-retirement.html')
+          @@include('./templates/9-plan.html')
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/lib/jquery.min.js" charset="utf-8"></script>
+  <script src="scripts/lib/bootstrap.min.js" charset="utf-8"></script>
+  <!-- Slider -->
+  <script src="scripts/lib/wNumb.min.js" charset="utf-8"></script>
+  <script src="scripts/lib/nouislider.min.js" charset="utf-8"></script>
+  <!-- Chartist.js -->
+  <script src="scripts/lib/chartist.min.js" charset="utf-8"></script>
+  <script src="scripts/lib/chartist-plugin-axistitle.min.js" charset="utf-8"></script>
+  <!-- Dragula.js -->
+  <script src="scripts/lib/dragula.min.js" charset="utf-8"></script>
+  <!-- Bootstrap Datepicker -->
+  <script src="scripts/lib/bootstrap-datepicker.min.js" charset="utf-8"></script>
+  <!-- Custom JS -->
+  <script src="scripts/main.js" charset="utf-8"></script>
+  <!-- Other Components -->
+  <script src="scripts/lib/fastclick.js" charset="utf-8"></script>
+  <script src="scripts/components/hamburger.js" charset="utf-8"></script>
+</body>
+
+</html>

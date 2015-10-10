@@ -19,11 +19,11 @@ var gModel = {
   savedActions: []
 };
 
-var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0],
-  templates = ['intro', 'about', 'you', 'people', 'pyramid', 'scenarios',
-  'goal', 'retirement', 'plan'];
+var TEMPLATE_CONTAINER = document.getElementsByClassName('main')[0];
 
-loadTemplates(TEMPLATE_CONTAINER, templates);
+for(var i=2; i<=9; i++) {
+  runStepFunctions(i);
+}
 
 //Event delegation for changing template
 var nav = document.querySelector('.nav ul');
@@ -56,33 +56,7 @@ for(var i = 0; i < continueButtons.length; i++) {
   });
 }
 
-// Load the HTML Template of the step from the /templates/ folder
-function loadTemplates(container, templatesUrl) {
-  var xhr, templateUrl, activeStep, stepWrapper;
-  for(var i=0; i < templatesUrl.length; i++) {
-    xhr = new XMLHttpRequest();
-    templateUrl = 'templates/' + (i+1) + '-' + templatesUrl[i] + '.html';
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        stepWrapper = document.createElement('div');
-        stepWrapper.classList.add('step-wrapper');
-        if(i === 0) {
-          stepWrapper.classList.add('show');
-        }
-        stepWrapper.classList.add(templatesUrl[i] + '-wrapper');
-        stepWrapper.innerHTML = xhr.response;
-        container.appendChild(stepWrapper);
-        activeStep = templateUrl.match(/\d+/)[0];
-        runStepFunctions(activeStep);
-      }
-    };
-    xhr.open('GET', templateUrl, false);
-    xhr.send();
-  }
-}
-
 function runStepFunctions(stepNumber) {
-  stepNumber = parseInt(stepNumber);
   var script = document.createElement('script');
   if(stepNumber === 2) {
     script.src='scripts/templates/2-about.js';
@@ -109,4 +83,15 @@ function setActive(newActive, className) {
   var oldActive = document.getElementsByClassName(className)[0];
   oldActive.classList.remove(className);
   newActive.classList.add(className);
+}
+
+function createSlider(element, options) { //jshint ignore:line
+  noUiSlider.create(element, options);
+  element.handle = element.getElementsByClassName('noUi-handle')[0];
+  element.tooltip = document.createElement('div');
+  element.handle.appendChild(element.tooltip);
+
+  element.tooltip.classList.add('slider-tooltip');
+  element.tooltip.innerHTML = '<span></span>';
+  element.tooltip = element.tooltip.firstElementChild;
 }

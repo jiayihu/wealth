@@ -10,5 +10,5 @@ TODO:
   - [x] Doughnut responsiveness
   - [x] [Fastclick](https://github.com/ftlabs/fastclick) implementation
   - [x] Bootstrap Datepicker implemementation
-  - [ ] Gulp-include for HTML partials
+  - [x] Gulp-include for HTML partials
   - [ ] Modular JS implementation
