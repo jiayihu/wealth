@@ -80,6 +80,8 @@
       gModel.aboutIncome = parseInt(income.replace('.', ''));
       gModel.aboutSituation = situation;
       gModel.aboutLiving = living;
+
+      console.log(gModel);
     }
 
   };
