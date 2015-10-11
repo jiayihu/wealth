@@ -76,8 +76,8 @@
         situation = aboutModule.wrapper.getElementsByClassName('about__select')[0].value,
         living = aboutModule.wrapper.getElementsByClassName('about__select')[1].value;
 
-      gModel.aboutAge = age;
-      gModel.aboutIncome = income;
+      gModel.aboutAge = parseInt(age);
+      gModel.aboutIncome = parseInt(income.replace('.', ''));
       gModel.aboutSituation = situation;
       gModel.aboutLiving = living;
     }
