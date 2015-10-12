@@ -16,6 +16,16 @@ gulp.task('html-partials', function() {
     .pipe(browserSync.stream());
 });
 
+gulp.task('js-partials', function() {
+  gulp.src('./app/scripts/development/main.js')
+    .pipe(fileInclude({
+      prefix: '//@@'
+    }))
+      .on('error', console.log)
+    .pipe(gulp.dest('./app/scripts/'))
+    .pipe(browserSync.stream());
+});
+
 gulp.task('sass', function() {
     gulp.src('./app/scss/main.scss')
         .pipe(sourcemaps.init())
@@ -45,8 +55,8 @@ gulp.task('serve', ['sass'], function() {
 
     gulp.watch('app/scss/**/*.scss', ['sass']);
     gulp.watch(['app/scss/base/_customVariables.scss', 'app/scss/bootstrap/**/*.scss'], ['bootstrap']);
-    gulp.watch('app/scripts/**/*.js').on('change', browserSync.reload);
+    gulp.watch('app/scripts/**/*.js', ['js-partials']);
     gulp.watch('app/html/**/*.html', ['html-partials']);
 });
 
-gulp.task('default', ['serve', 'html-partials', 'bootstrap', 'sass']);
+gulp.task('default', ['serve', 'html-partials', 'bootstrap', 'sass', 'js-partials']);
