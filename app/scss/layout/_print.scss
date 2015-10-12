@@ -2,10 +2,16 @@
    PRINT
    ========================================================================== */
 
-.no-print > * {
+.print-page {
   display: none;
 }
 
-.print-page {
-  display: block;
+@media print {
+  .no-print > * {
+    display: none;
+  }
+
+  .print-page {
+    display: block;
+  }
 }
