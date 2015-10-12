@@ -1,49 +1,72 @@
 (function() {
-  var wrapper = document.getElementsByClassName('goal-wrapper')[0];
+  var goalModule = {
+    config: {
+      wrapper: 'goal-wrapper',
+      tooltipsClass: '.goal__details > span',
+      addButtonsClass: 'add-goal',
+      deleteButtonsClass: 'delete-goal',
+      pickedGoalsClass: 'picked-goals',
+      datepickerClass: '.goal__date__picker'
+    },
 
-  $('.goal__details > span').tooltip();
+    init: function() {
+      goalModule.wrapper = document.getElementsByClassName(goalModule.config.wrapper)[0];
 
-  var addButtons = wrapper.getElementsByClassName('add-goal');
-  var displayPickedGoal = function() {
-    var picked = this.dataset.picked;
-    wrapper.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
-    wrapper.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
-  };
+      //Create tooltips
+      $(goalModule.config.tooltipsClass).tooltip();
 
-  for(var i=0; i < addButtons.length; i++) {
-    addButtons[i].addEventListener('click', displayPickedGoal);
-  }
-
-  var deleteButtons = wrapper.getElementsByClassName('delete-goal');
-  var hidePickedGoal = function() {
-    var goal = this.dataset.goal;
-    wrapper.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
-    wrapper.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
-  };
-
-  for(var i=0; i < deleteButtons.length; i++) {
-    deleteButtons[i].addEventListener('click', hidePickedGoal);
-  }
-
-  var pickedContainer = wrapper.getElementsByClassName('picked-goals')[0];
-  dragula([pickedContainer]);
-
-  $('.goal__date__picker').datepicker({
-    autoclose: true,
-    format: 'M d yyyy'
-  });
-
-  var continueButton = wrapper.getElementsByClassName('continue')[0],
-    pickedGoals;
-  continueButton.addEventListener('click', function() {
-    gModel.pickedGoals = [];
-    pickedGoals = wrapper.getElementsByClassName('picked--show');
-    for(var i=0; i < pickedGoals.length; i++) {
-      gModel.pickedGoals.push({
-        name: pickedGoals[i].lastElementChild.dataset.goal,
-        date: pickedGoals[i].getElementsByClassName('goal__date__picker')[0].value
+      //Buttons to add and delete goals
+      var addButtons = goalModule.wrapper.getElementsByClassName(goalModule.config.addButtonsClass);
+      Array.prototype.forEach.call(addButtons, function(element) {
+        element.addEventListener('click', goalModule.displayPickedGoal);
       });
+
+      var deleteButtons = goalModule.wrapper.getElementsByClassName(goalModule.config.deleteButtonsClass);
+      Array.prototype.forEach.call(deleteButtons, function(element) {
+        element.addEventListener('click', goalModule.hidePickedGoal);
+      });
+
+      //Implement drag & drop picked goals
+      var pickedContainer = goalModule.wrapper.getElementsByClassName(goalModule.config.pickedGoalsClass)[0];
+      dragula([pickedContainer]);
+
+      //Datepicker
+      $(goalModule.config.datepickerClass).datepicker({
+        autoclose: true,
+        format: 'M d yyyy'
+      });
+
+      //Update the model when 'Continue' is pressed
+      goalModule.continueButton = goalModule.wrapper.getElementsByClassName('continue')[0];
+      goalModule.continueButton.addEventListener('click', goalModule.updateModel);
+    },
+
+    displayPickedGoal: function() {
+      var picked = this.dataset.picked;
+      goalModule.wrapper.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
+      goalModule.wrapper.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
+    },
+
+    hidePickedGoal: function() {
+      var goal = this.dataset.goal;
+      goalModule.wrapper.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
+      goalModule.wrapper.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
+    },
+
+    updateModel: function() {
+      gModel.pickedGoals = [];
+      var pickedGoals = goalModule.wrapper.getElementsByClassName('picked--show');
+
+      Array.prototype.forEach.call(pickedGoals, function(element) {
+        gModel.pickedGoals.push({
+          name: element.lastElementChild.dataset.goal,
+          date: element.getElementsByClassName('goal__date__picker')[0].value
+        });
+      });
+      console.log(gModel.pickedGoals);
     }
-    console.log(gModel.pickedGoals);
-  });
+  };
+
+  goalModule.init();
+
 })();
