@@ -12,6 +12,7 @@
     "createSlider": true,
     "Chartist": false,
     "define": false,
+    "dragula": false,
     "gModel": true,
     "noUiSlider": false,
     "wNumb": false
