@@ -1,16 +1,30 @@
 (function() {
-  var savingsText = document.getElementById('pyramid-savings'),
-    basicText = document.getElementById('pyramid-basic'),
-    discretionaryText = document.getElementById('pyramid-discretionary'),
-    incomeText = document.getElementById('pyramid-income');
+  var pyramidModule = {
+    config: {
+      savingsId: 'pyramid-savings',
+      basicId: 'pyramid-basic',
+      discretiotionaryId: 'pyramid-discretionary',
+      incomeId: 'pyramid-income'
+    },
 
-  var moneyFormat = wNumb({
-    thousand: '.',
-    prefix: '$ '
-  });
+    init: function() {
+      var savingsText = document.getElementById(pyramidModule.config.savingsId),
+        basicText = document.getElementById(pyramidModule.config.basicId),
+        discretionaryText = document.getElementById(pyramidModule.config.discretiotionaryId),
+        incomeText = document.getElementById(pyramidModule.config.incomeId);
 
-  savingsText.textContent = ' ' + moneyFormat.to(gModel.savings) + '/yr';
-  basicText.textContent = moneyFormat.to(gModel.basicNeeds) + '/yr';
-  discretionaryText.textContent = moneyFormat.to(gModel.discretionaryExpenses) + '/yr';
-  incomeText.textContent = moneyFormat.to(gModel.aboutIncome) + ' per year';
+      var moneyFormat = wNumb({
+        thousand: '.',
+        prefix: '$ '
+      });
+
+      savingsText.textContent = ' ' + moneyFormat.to(gModel.savings) + '/yr';
+      basicText.textContent = moneyFormat.to(gModel.basicNeeds) + '/yr';
+      discretionaryText.textContent = moneyFormat.to(gModel.discretionaryExpenses) + '/yr';
+      incomeText.textContent = moneyFormat.to(gModel.aboutIncome) + ' per year';
+    }
+  };
+
+  pyramidModule.init();
+
 })();
