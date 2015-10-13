@@ -123,7 +123,7 @@
       });
       scenariosModule.incomeRateSlider.noUiSlider.on('change', function( values ){
         for(var i=0; i < scenariosModule.chartData.series[0].length; i++) {
-          scenariosModule.chartData.series[0][i] = scenariosModule.savingRateSlider.noUiSlider.get() * 0.01 * parseInt(values[0]) * (scenariosModule.chartData.labels[i] - 18);
+          scenariosModule.chartData.series[0][i] = scenariosModule.savingRateSlider.noUiSlider.get() * 0.01 * parseInt(values[0].replace('.', '')) * (scenariosModule.chartData.labels[i] - 18);
         }
         scenariosModule.lineChart.update(scenariosModule.chartData);
       });

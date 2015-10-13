@@ -98,10 +98,10 @@
       Array.prototype.forEach.call(actionTitles, function(element) {
         element.addEventListener('click', function() {
           this.firstElementChild.classList.toggle('rotate');
-        })
+        });
       });
     }
-  }
+  };
 
   planModule.init();
 

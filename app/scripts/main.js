@@ -1,5 +1,8 @@
+/**
+ * Including JS Partials 
+ */
+
 'use strict';
-// var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
 //Global variable with user data
 //Defaul values
@@ -19,54 +22,57 @@ var gModel = {
   savedActions: []
 };
 
-//Event delegation for changing template
-var nav = document.querySelector('.nav ul');
-nav.addEventListener('click', function(e) {
-  var nodeName = e.target.nodeName,
-      nextStep, nextStepElement;
-  if (nodeName === 'SPAN') {
-    nextStep = e.target.dataset.template;
-    setActive(e.target.parentNode, 'active');
-  } else if (nodeName === 'LI') {
-    nextStep = e.target.firstElementChild.dataset.template;
-    setActive(e.target, 'active');
-  }
-  nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
-  setActive(nextStepElement, 'show');
-});
+(function() {
+  var app = {
+    config: {
+      navClass: '.nav ul'
+    },
 
-// Continue buttons to change to next step
-var continueButtons = document.getElementsByClassName('continue');
-for(var i = 0; i < continueButtons.length; i++) {
-  continueButtons[i].addEventListener('click', function() {
-    var nextStep = this.dataset.template,
+    init: function() {
+      var nav = document.querySelector(app.config.navClass);
+      nav.addEventListener('click', app.onNavClick);
+
+      var continueButtons = document.getElementsByClassName('continue');
+      Array.prototype.forEach.call(continueButtons, function(element) {
+        element.addEventListener('click', app.onContinueClick);
+      });
+    },
+
+    onNavClick: function(e) {
+      var nodeName = e.target.nodeName,
+        nextStep, nextStepElement;
+      if (nodeName === 'SPAN') {
+        nextStep = e.target.dataset.template;
+        app.setActive(e.target.parentNode, 'active');
+      } else if (nodeName === 'LI') {
+        nextStep = e.target.firstElementChild.dataset.template;
+        app.setActive(e.target, 'active');
+      }
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+      app.setActive(nextStepElement, 'show');
+    },
 
-    setActive(nextStepElement, 'show');
-    var newActiveNavLink = document.getElementsByClassName('active')[0].nextElementSibling;
-    if(newActiveNavLink) {
-      setActive(newActiveNavLink, 'active');
+    onContinueClick: function() {
+      var nextStep = this.dataset.template,
+        nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+
+      app.setActive(nextStepElement, 'show');
+      var newActiveNavLink = document.getElementsByClassName('active')[0].nextElementSibling;
+      //Check if it is the last nav link
+      if(newActiveNavLink) {
+        app.setActive(newActiveNavLink, 'active');
+      }
+    },
+
+    setActive: function(newActive, className) {
+      var oldActive = document.getElementsByClassName(className)[0];
+      oldActive.classList.remove(className);
+      newActive.classList.add(className);
     }
-  });
-}
+  };
 
-// Set the active link on the navigation
-function setActive(newActive, className) {
-  var oldActive = document.getElementsByClassName(className)[0];
-  oldActive.classList.remove(className);
-  newActive.classList.add(className);
-}
-
-function createSlider(element, options) { //jshint ignore:line
-  noUiSlider.create(element, options);
-  element.handle = element.getElementsByClassName('noUi-handle')[0];
-  element.tooltip = document.createElement('div');
-  element.handle.appendChild(element.tooltip);
-
-  element.tooltip.classList.add('slider-tooltip');
-  element.tooltip.innerHTML = '<span></span>';
-  element.tooltip = element.tooltip.firstElementChild;
-}
+  app.init();
+})();
 
 
 (function() {
@@ -592,7 +598,7 @@ function createSlider(element, options) { //jshint ignore:line
       });
       scenariosModule.incomeRateSlider.noUiSlider.on('change', function( values ){
         for(var i=0; i < scenariosModule.chartData.series[0].length; i++) {
-          scenariosModule.chartData.series[0][i] = scenariosModule.savingRateSlider.noUiSlider.get() * 0.01 * parseInt(values[0]) * (scenariosModule.chartData.labels[i] - 18);
+          scenariosModule.chartData.series[0][i] = scenariosModule.savingRateSlider.noUiSlider.get() * 0.01 * parseInt(values[0].replace('.', '')) * (scenariosModule.chartData.labels[i] - 18);
         }
         scenariosModule.lineChart.update(scenariosModule.chartData);
       });
@@ -853,10 +859,10 @@ function createSlider(element, options) { //jshint ignore:line
       Array.prototype.forEach.call(actionTitles, function(element) {
         element.addEventListener('click', function() {
           this.firstElementChild.classList.toggle('rotate');
-        })
+        });
       });
     }
-  }
+  };
 
   planModule.init();
 
