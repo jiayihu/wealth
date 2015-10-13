@@ -5,4 +5,5 @@ TODO:
   - [x] Bootstrap Datepicker implemementation
   - [x] Gulp-include for HTML partials
   - [x] Gulp-include for JS partials
-  - [ ] Modular JS implementation
+  - [x] Modular JS implementation
+  - [ ] Model data binding
