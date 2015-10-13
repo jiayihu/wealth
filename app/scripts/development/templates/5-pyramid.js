@@ -1,4 +1,4 @@
-(function() {
+var Pyramid = (function() {
   var pyramidModule = {
     config: {
       savingsId: 'pyramid-savings',
@@ -8,6 +8,10 @@
     },
 
     init: function() {
+      pyramidModule.updateLabels();
+    },
+
+    updateLabels: function() {
       var savingsText = document.getElementById(pyramidModule.config.savingsId),
         basicText = document.getElementById(pyramidModule.config.basicId),
         discretionaryText = document.getElementById(pyramidModule.config.discretiotionaryId),
@@ -26,5 +30,9 @@
   };
 
   pyramidModule.init();
+
+  return {
+    updateLabels: pyramidModule.updateLabels
+  };
 
 })();

@@ -67,17 +67,19 @@
 
     eventHandler: function(slider, values) {
       var tooltip = slider.getElementsByTagName('span')[0];
-      tooltip.innerHTML = values[0];
+      if(slider.classList.contains(aboutModule.config.incomeSlider)) {
+        tooltip.innerHTML = '$' + values[0];
+      } else {
+        tooltip.innerHTML = values[0];
+      }
     },
 
     updateModel: function() {
       var age = aboutModule.ageSlider.noUiSlider.get(),
-        income = aboutModule.incomeSlider.noUiSlider.get(),
         situation = aboutModule.wrapper.getElementsByClassName('about__select')[0].value,
         living = aboutModule.wrapper.getElementsByClassName('about__select')[1].value;
 
       gModel.aboutAge = parseInt(age);
-      gModel.aboutIncome = parseInt(income.replace('.', ''));
       gModel.aboutSituation = situation;
       gModel.aboutLiving = living;
 

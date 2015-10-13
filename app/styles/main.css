@@ -632,11 +632,11 @@ th {
   border-color: #182C4D;
 }
 
-.step--people input[value="retire"]:checked ~ .row .graph:nth-child(4) .label__circle {
+.step--people input[value="retirement"]:checked ~ .row .graph:nth-child(4) .label__circle {
   border-color: #182C4D;
 }
 
-.step--people input[value="retire"]:checked ~ .row .graph:nth-child(4) .label__circle:before {
+.step--people input[value="retirement"]:checked ~ .row .graph:nth-child(4) .label__circle:before {
   border-color: #182C4D;
 }
 

@@ -1,4 +1,4 @@
-(function() {
+var Scenarios = (function() {
   var scenariosModule = {
     config: {
       wrapper: 'scenarios-wrapper',
@@ -133,4 +133,6 @@
 
   scenariosModule.init();
 
+  return scenariosModule;
+  
 })();

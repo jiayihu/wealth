@@ -1,5 +1,5 @@
 /**
- * Including JS Partials 
+ * Including JS Partials
  */
 
 'use strict';
@@ -75,6 +75,9 @@ var gModel = {
 })();
 
 
+/* Templates */
+
+
 (function() {
   var aboutModule = {
     config: {
@@ -144,17 +147,19 @@ var gModel = {
 
     eventHandler: function(slider, values) {
       var tooltip = slider.getElementsByTagName('span')[0];
-      tooltip.innerHTML = values[0];
+      if(slider.classList.contains(aboutModule.config.incomeSlider)) {
+        tooltip.innerHTML = '$' + values[0];
+      } else {
+        tooltip.innerHTML = values[0];
+      }
     },
 
     updateModel: function() {
       var age = aboutModule.ageSlider.noUiSlider.get(),
-        income = aboutModule.incomeSlider.noUiSlider.get(),
         situation = aboutModule.wrapper.getElementsByClassName('about__select')[0].value,
         living = aboutModule.wrapper.getElementsByClassName('about__select')[1].value;
 
       gModel.aboutAge = parseInt(age);
-      gModel.aboutIncome = parseInt(income.replace('.', ''));
       gModel.aboutSituation = situation;
       gModel.aboutLiving = living;
 
@@ -442,7 +447,7 @@ var gModel = {
 
 })();
 
-(function() {
+var Pyramid = (function() {
   var pyramidModule = {
     config: {
       savingsId: 'pyramid-savings',
@@ -452,6 +457,10 @@ var gModel = {
     },
 
     init: function() {
+      pyramidModule.updateLabels();
+    },
+
+    updateLabels: function() {
       var savingsText = document.getElementById(pyramidModule.config.savingsId),
         basicText = document.getElementById(pyramidModule.config.basicId),
         discretionaryText = document.getElementById(pyramidModule.config.discretiotionaryId),
@@ -471,9 +480,13 @@ var gModel = {
 
   pyramidModule.init();
 
+  return {
+    updateLabels: pyramidModule.updateLabels
+  };
+
 })();
 
-(function() {
+var Scenarios = (function() {
   var scenariosModule = {
     config: {
       wrapper: 'scenarios-wrapper',
@@ -608,6 +621,8 @@ var gModel = {
 
   scenariosModule.init();
 
+  return scenariosModule;
+  
 })();
 
 (function() {
@@ -865,6 +880,59 @@ var gModel = {
   };
 
   planModule.init();
+
+})();
+
+
+(function() {
+  var bindings = {
+    config: {
+      incomeSliderClass: 'about__income__slider'
+    },
+
+    init: function() {
+      bindings.incomeBinding();
+    },
+
+    incomeBinding: function() {
+      var slider = document.getElementsByClassName(bindings.config.incomeSliderClass)[0];
+      slider.noUiSlider.on('change', function(values) {
+        gModel.aboutIncome = parseInt(values[0].replace('.', ''));
+        gModel.savings = gModel.aboutSavingsRate * 0.01 * gModel.aboutIncome;
+
+        Pyramid.updateLabels();
+
+        Scenarios.chartData.series = [
+          [gModel.savings * 1, gModel.savings * 12, gModel.savings * 22, gModel.savings * 32, gModel.savings * 42, gModel.savings * 52, gModel.savings * 62]
+        ];
+        Scenarios.incomeRateSlider.noUiSlider.set(values[0]);
+        Scenarios.lineChart.update(Scenarios.chartData);
+      });
+    }
+  };
+
+  bindings.init();
+})();
+
+
+/* Components */
+(function() {
+
+  var toggle = document.querySelector('.c-hamburger');
+  toggleHandler(toggle);
+
+  function toggleHandler(toggle) {
+    toggle.addEventListener( 'click', function(e) {
+      e.preventDefault();
+      if(this.classList.contains('is-active')) {
+        document.body.classList.remove('menu-open');
+        this.classList.remove('is-active');
+      } else {
+        document.body.classList.add('menu-open');
+        this.classList.add('is-active');
+      }
+    });
+  }
 
 })();
 

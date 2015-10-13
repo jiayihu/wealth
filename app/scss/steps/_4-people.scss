@@ -34,7 +34,7 @@
     }
   }
 
-  input[value="retire"]:checked ~ .row .graph:nth-child(4) .label__circle {
+  input[value="retirement"]:checked ~ .row .graph:nth-child(4) .label__circle {
     border-color: $primaryDarker;
 
     &:before {
