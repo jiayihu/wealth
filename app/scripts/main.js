@@ -499,7 +499,7 @@ var Scenarios = (function() {
         step: 1,
         range: {
           'min': 1,
-          'max': 40
+          'max': 100
         },
         format: wNumb({
           decimals: 0
@@ -892,12 +892,14 @@ var Scenarios = (function() {
   var bindings = {
     config: {
       incomeSliderClass: 'about__income__slider',
-      basicRateSliderClass: 'about__savings__slider--needs'
+      basicRateSliderClass: 'about__savings__slider--needs',
+      discretionaryRateSliderClass: 'about__savings__slider--expenses'
     },
 
     init: function() {
       bindings.incomeBinding();
       bindings.basicRateBinding();
+      bindings.discretionaryRateBinding();
     },
 
     incomeBinding: function() {
@@ -922,6 +924,22 @@ var Scenarios = (function() {
       slider.noUiSlider.on('change', function(values) {
         gModel.aboutBasicRate = parseInt(values[0]);
         gModel.basicNeeds = gModel.aboutIncome * gModel.aboutBasicRate * 0.01;
+        gModel.aboutSavingsRate = 100 - gModel.aboutBasicRate - gModel.aboutDiscretionaryRate;
+        gModel.savings = gModel.aboutSavingsRate * 0.01 * gModel.aboutIncome;
+
+        Pyramid.updateLabels();
+
+        Scenarios.chartData.series[0] = Scenarios.updateSeries();
+        Scenarios.savingRateSlider.noUiSlider.set(gModel.aboutSavingsRate);
+        Scenarios.lineChart.update(Scenarios.chartData);
+      });
+    },
+
+    discretionaryRateBinding: function() {
+      var slider = document.getElementsByClassName(bindings.config.discretionaryRateSliderClass)[0];
+      slider.noUiSlider.on('change', function(values) {
+        gModel.aboutDiscretionaryRate = parseInt(values[0]);
+        gModel.discretionaryExpenses = gModel.aboutIncome * gModel.aboutDiscretionaryRate * 0.01;
         gModel.aboutSavingsRate = 100 - gModel.aboutBasicRate - gModel.aboutDiscretionaryRate;
         gModel.savings = gModel.aboutSavingsRate * 0.01 * gModel.aboutIncome;
 

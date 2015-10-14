@@ -11,7 +11,7 @@ var Scenarios = (function() {
         step: 1,
         range: {
           'min': 1,
-          'max': 40
+          'max': 100
         },
         format: wNumb({
           decimals: 0
