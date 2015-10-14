@@ -6,4 +6,4 @@ TODO:
   - [x] Gulp-include for HTML partials
   - [x] Gulp-include for JS partials
   - [x] Modular JS implementation
-  - [ ] Model data binding
+  - [x] Model data binding
