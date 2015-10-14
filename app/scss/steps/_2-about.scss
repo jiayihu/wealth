@@ -34,4 +34,10 @@
       margin-bottom: 3em;
     }
   }
+
+  &__income {
+    .slider-tooltip {
+      left: -16px;
+    }
+  }
 }

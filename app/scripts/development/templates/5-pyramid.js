@@ -25,7 +25,7 @@ var Pyramid = (function() {
       savingsText.textContent = ' ' + moneyFormat.to(gModel.savings) + '/yr';
       basicText.textContent = moneyFormat.to(gModel.basicNeeds) + '/yr';
       discretionaryText.textContent = moneyFormat.to(gModel.discretionaryExpenses) + '/yr';
-      incomeText.textContent = moneyFormat.to(gModel.aboutIncome) + ' per year';
+      incomeText.textContent = moneyFormat.to(gModel.aboutIncome) + '/yr';
     }
   };
 

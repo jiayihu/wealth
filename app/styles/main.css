@@ -537,6 +537,10 @@ th {
   }
 }
 
+.about__income .slider-tooltip {
+  left: -16px;
+}
+
 /* 3-YOU
    ========================================================================== */
 .step--savings .col-md-6 {
@@ -742,6 +746,10 @@ th {
 .step--scenarios .scenario {
   margin: 0 auto;
   width: 80%;
+}
+
+.step--scenarios .option--income .slider-tooltip {
+  left: -16px;
 }
 
 .step--scenarios .ct-label {

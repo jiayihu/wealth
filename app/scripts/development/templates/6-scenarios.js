@@ -127,6 +127,10 @@ var Scenarios = (function() {
         }
         scenariosModule.lineChart.update(scenariosModule.chartData);
       });
+    },
+
+    updateSeries: function() {
+      return [gModel.savings * 1, gModel.savings * 12, gModel.savings * 22, gModel.savings * 32, gModel.savings * 42, gModel.savings * 52, gModel.savings * 62];
     }
 
   };
@@ -134,5 +138,5 @@ var Scenarios = (function() {
   scenariosModule.init();
 
   return scenariosModule;
-  
+
 })();

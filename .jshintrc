@@ -8,10 +8,9 @@
   "eqeqeq": true,
   "globals": {
     "$": false,
-    "requirejs": false,
-    "createSlider": true,
+    "Scenarios": true,
+    "Pyramid": true,
     "Chartist": false,
-    "define": false,
     "dragula": false,
     "gModel": true,
     "noUiSlider": false,
