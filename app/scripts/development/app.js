@@ -1,5 +1,3 @@
-'use strict';
-
 //Global variable with user data
 //Defaul values
 var gModel = {
