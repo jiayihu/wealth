@@ -1,8 +1,8 @@
+'use strict';
+
 /**
  * Including JS Partials
  */
-
-'use strict';
 
 //Global variable with user data
 //Defaul values

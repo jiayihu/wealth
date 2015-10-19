@@ -29,7 +29,7 @@ gulp.task('js-partials', function() {
 gulp.task('sass', function() {
     gulp.src('./app/scss/main.scss')
         .pipe(sourcemaps.init())
-        .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(autoprefixer())
         .pipe(sourcemaps.write('./maps'))
         .pipe(gulp.dest('./app/styles'))
@@ -39,7 +39,7 @@ gulp.task('sass', function() {
 gulp.task('bootstrap', function() {
     gulp.src('./app/scss/bootstrap.scss')
         .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
         .pipe(autoprefixer())
         .pipe(sourcemaps.write('./maps'))
         .pipe(gulp.dest('./app/styles'))
