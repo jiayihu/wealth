@@ -11,6 +11,10 @@
     font-size: 1.125em;
     font-weight: normal;
     border-bottom: 1px solid rgba(#B8BBC6, .22);
+
+    @media (max-width: $screen-phone) {
+      font-size: 1em;
+    }
   }
 
   &__age .slider-tooltip {
@@ -27,6 +31,11 @@
     padding: 4px 15px;
     background: none;
     border: 1px solid $textLight;
+
+    @media (max-width: $screen-phone) {
+      width: 150px;
+      height: 36px;
+    }
   }
 
   &__house {

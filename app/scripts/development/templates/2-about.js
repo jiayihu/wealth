@@ -26,7 +26,7 @@
         step: 1000,
         range: {
           'min': 18000,
-          'max': 100000
+          'max': 200000
         },
         format: wNumb({
           decimals: 1,
