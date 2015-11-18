@@ -21,4 +21,5 @@
 //@@include('./data-binding/bind.js')
 
 /* Components */
+//@@include('./components/nav.js')
 //@@include('./components/hamburger.js')

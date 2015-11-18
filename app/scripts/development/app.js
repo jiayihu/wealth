@@ -23,27 +23,10 @@ var gModel = {
     },
 
     init: function() {
-      var nav = document.querySelector(app.config.navClass);
-      nav.addEventListener('click', app.onNavClick);
-
       var continueButtons = document.getElementsByClassName('continue');
       Array.prototype.forEach.call(continueButtons, function(element) {
         element.addEventListener('click', app.onContinueClick);
       });
-    },
-
-    onNavClick: function(e) {
-      var nodeName = e.target.nodeName,
-        nextStep, nextStepElement;
-      if (nodeName === 'SPAN') {
-        nextStep = e.target.dataset.template;
-        app.setActive(e.target.parentNode, 'active');
-      } else if (nodeName === 'LI') {
-        nextStep = e.target.firstElementChild.dataset.template;
-        app.setActive(e.target, 'active');
-      }
-      nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
-      app.setActive(nextStepElement, 'show');
     },
 
     onContinueClick: function() {
@@ -54,6 +37,10 @@ var gModel = {
       var newActiveNavLink = document.getElementsByClassName('active')[0].nextElementSibling;
       //Check if it is the last nav link
       if(newActiveNavLink) {
+        //Active the navigation item
+        if(newActiveNavLink.classList.contains('disabled')) {
+          newActiveNavLink.classList.remove('disabled');
+        }
         app.setActive(newActiveNavLink, 'active');
       }
     },

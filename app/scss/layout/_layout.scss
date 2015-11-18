@@ -60,6 +60,10 @@
     padding-left: 20px;
     cursor: pointer;
 
+    &.disabled {
+      opacity: .3;
+    }
+
     &:before {
       content: " ";
       position: absolute;
@@ -73,7 +77,7 @@
     }
 
     &.active,
-    &:hover {
+    &:not(.disabled):hover {
       color: $sand;
       background-color: #d8d8d8;
       background-color: rgba(#D8D8D8, 0.08);
