@@ -4,6 +4,7 @@ dist
 .tmp
 app.yaml
 app copia
+.tf
 
 # Compiled source #
 ###################
