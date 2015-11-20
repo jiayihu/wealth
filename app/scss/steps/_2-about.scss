@@ -17,6 +17,10 @@
     }
   }
 
+  &__age__slider {
+    margin-bottom: 80px;
+  }
+
   &__age .slider-tooltip {
     left: 0;
   }
@@ -45,6 +49,7 @@
   }
 
   &__income {
+
     .slider-tooltip {
       left: -16px;
     }
