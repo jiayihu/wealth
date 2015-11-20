@@ -8,7 +8,7 @@ var gModel = {
   aboutBasicRate: 45,
   aboutDiscretionaryRate: 25,
   aboutSavingsRate: 30,
-  aboutStage: 'home',
+  //aboutStage: 'home',
   basicNeeds: 27000,
   discretionaryExpenses: 15000,
   savings: 18000,

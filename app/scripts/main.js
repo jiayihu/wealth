@@ -14,7 +14,7 @@ var gModel = {
   aboutBasicRate: 45,
   aboutDiscretionaryRate: 25,
   aboutSavingsRate: 30,
-  aboutStage: 'home',
+  //aboutStage: 'home',
   basicNeeds: 27000,
   discretionaryExpenses: 15000,
   savings: 18000,
@@ -403,37 +403,6 @@ var gModel = {
 
 })();
 
-(function() {
-  var peopleModule = {
-    config: {
-      wrapper: 'people-wrapper',
-      tooltips: '.label'
-    },
-
-    init: function() {
-      peopleModule.wrapper = document.getElementsByClassName(peopleModule.config.wrapper)[0];
-
-      peopleModule.createTooltips();
-
-      peopleModule.continueButton = peopleModule.wrapper.getElementsByClassName('continue')[0];
-      peopleModule.continueButton.addEventListener('click', peopleModule.updateModel);
-    },
-
-    createTooltips: function() {
-      $(peopleModule.config.tooltips).tooltip();
-    },
-
-    updateModel: function() {
-      gModel.aboutStage = peopleModule.wrapper.querySelector('input:checked').value;
-      console.log(gModel);
-    }
-
-  };
-
-  peopleModule.init();
-
-})();
-
 var Pyramid = (function() {
   var pyramidModule = {
     config: {
@@ -497,7 +466,7 @@ var Scenarios = (function() {
         step: 1000,
         range: {
           'min': 18000,
-          'max': 100000
+          'max': 200000
         },
         format: wNumb({
           decimals: 1,
