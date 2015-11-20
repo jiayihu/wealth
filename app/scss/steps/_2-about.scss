@@ -13,7 +13,7 @@
     border-bottom: 1px solid rgba(#B8BBC6, .22);
 
     @media (max-width: $screen-phone) {
-      font-size: 1em;
+      font-size: .9em;
     }
   }
 
@@ -33,7 +33,7 @@
     border: 1px solid $textLight;
 
     @media (max-width: $screen-phone) {
-      width: 150px;
+      width: 145px;
       height: 36px;
     }
   }
