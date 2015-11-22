@@ -477,9 +477,9 @@ var Scenarios = (function() {
       //Line chart options
       chartClass: '.scenario__chart',
       chartData: {
-        labels: [18, 30, 40, 50, 60, 70, 80],
+        labels: [18, 25, 35, 45, 55, 65],
         series: [
-          [gModel.savings * 1, gModel.savings * 12, gModel.savings * 22, gModel.savings * 32, gModel.savings * 42, gModel.savings * 52, gModel.savings * 62]
+          [gModel.savings * 1, gModel.savings * 7, gModel.savings * 17, gModel.savings * 27, gModel.savings * 37, gModel.savings * 47]
         ]
       },
       chartOptions: {
@@ -574,7 +574,7 @@ var Scenarios = (function() {
     },
 
     updateSeries: function() {
-      return [gModel.savings * 1, gModel.savings * 12, gModel.savings * 22, gModel.savings * 32, gModel.savings * 42, gModel.savings * 52, gModel.savings * 62];
+      return [gModel.savings * 1, gModel.savings * 7, gModel.savings * 17, gModel.savings * 27, gModel.savings * 37, gModel.savings * 47];
     }
 
   };
