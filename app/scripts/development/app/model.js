@@ -23,7 +23,7 @@
 	 * @constructor
 	 * @param {object} storage A reference to the client side storage class
 	 */
-	function Model(name) {
+	var Model = function(name) {
     this._dbName = name;
 
     if(typeof Storage === undefined) {

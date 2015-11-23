@@ -4,9 +4,10 @@
  * Including JS Partials
  */
 
-//@@include('./app.js')
 //@@include('./helpers.js')
 //@@include('./app/model.js')
+
+//@@include('./app.js')
 
 /* Templates */
 
@@ -24,3 +25,4 @@
 /* Components */
 //@@include('./components/nav.js')
 //@@include('./components/hamburger.js')
+//@@include('./components/continue.js')
