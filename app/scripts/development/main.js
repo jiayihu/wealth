@@ -5,6 +5,8 @@
  */
 
 //@@include('./app.js')
+//@@include('./helpers.js')
+//@@include('./app/model.js')
 
 /* Templates */
 

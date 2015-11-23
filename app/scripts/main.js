@@ -61,6 +61,148 @@ var gModel = {
   app.init();
 })();
 
+(function (window) {
+	'use strict';
+
+	// Get element(s) by CSS selector:
+	window.qs = function (selector, scope) {
+		return (scope || document).querySelector(selector);
+	};
+	window.qsa = function (selector, scope) {
+		return (scope || document).querySelectorAll(selector);
+	};
+
+	// addEventListener wrapper:
+	window.$on = function (target, type, callback, useCapture) {
+		target.addEventListener(type, callback, !!useCapture);
+	};
+
+	// Attach a handler to event for all elements that match the selector,
+	// now or in the future, based on a root element
+	window.$delegate = function (target, selector, type, handler) {
+		function dispatchEvent(event) {
+			var targetElement = event.target;
+			var potentialElements = window.qsa(selector, target);
+			var hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0;
+
+			if (hasMatch) {
+				handler.call(targetElement, event);
+			}
+		}
+
+		// https://developer.mozilla.org/en-US/docs/Web/Events/blur
+		var useCapture = type === 'blur' || type === 'focus';
+
+		window.$on(target, type, dispatchEvent, useCapture);
+	};
+
+	// Find the element's parent with the given tag name:
+	// $parent(qs('a'), 'div');
+	window.$parent = function (element, tagName) {
+		if (!element.parentNode) {
+			return;
+		}
+		if (element.parentNode.tagName.toLowerCase() === tagName.toLowerCase()) {
+			return element.parentNode;
+		}
+		return window.$parent(element.parentNode, tagName);
+	};
+
+	// Allow for looping on nodes by chaining:
+	// qsa('.foo').forEach(function () {})
+	NodeList.prototype.forEach = Array.prototype.forEach;
+})(window);
+
+(function (window) {
+	'use strict';
+
+  var defaultModel = {
+    aboutAge: 20,
+    aboutSituation: 'married',
+    aboutLiving: 'rent',
+    aboutIncome: 60000,
+    aboutBasicRate: 45,
+    aboutDiscretionaryRate: 25,
+    aboutSavingsRate: 30,
+    //aboutStage: 'home',
+    basicNeeds: 27000,
+    discretionaryExpenses: 15000,
+    savings: 18000,
+    pickedGoals: [],
+    savedActions: []
+  };
+
+	/**
+	 * Creates a new Model instance which saves data on local storage.
+	 *
+	 * @constructor
+	 * @param {object} storage A reference to the client side storage class
+	 */
+	function Model(name) {
+    this._dbName = name;
+
+    if(typeof Storage === undefined) {
+      console.log('Error: localStorage is not supported.');
+      return;
+    }
+
+		var data = {
+			user: defaultModel
+		};
+
+		localStorage[name] = JSON.stringify(data);
+	}
+
+  /**
+   * Returns the value of the property in the model.
+   * @param  {string} property The name of the property
+   */
+  Model.prototype.read = function(property) {
+    var data = JSON.parse(localStorage[this._dbName]);
+    var user = data.user;
+
+    return user[property];
+  };
+
+	/**
+	 * Updates model by giving it the property name and its value.
+	 * @param  {string} property   The name of the property to update
+	 * @param  {object} updateData The new value of the property
+	 */
+	Model.prototype.update = function (property, updateData) {
+	   var data = JSON.parse(localStorage[this._dbName]);
+     var user = data.user;
+
+     user[property] = updateData;
+
+     localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
+	 * [remove description]
+	 * @param  {string} property The name of the property to be removed from model.
+	 */
+	Model.prototype.remove = function (property) {
+    var data = JSON.parse(localStorage[this._dbName]);
+    var user = data.user;
+
+    delete user[property];
+
+    localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
+	 * WARNING: Will remove ALL data from storage.
+	 */
+	Model.prototype.reset = function () {
+		localStorage[this._dbName] = JSON.stringify({ user: defaultModel });
+	};
+
+	// Export to window
+	window.app = window.app || {};
+	window.app.Model = Model;
+})(window);
+
 
 /* Templates */
 
@@ -930,11 +1072,11 @@ var Scenarios = (function() {
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    if(!clickedLink.classList.contains('disabled')) {
+    // if(!clickedLink.classList.contains('disabled')) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    }
+    // }
   };
 
   var nav = document.querySelector('.nav');

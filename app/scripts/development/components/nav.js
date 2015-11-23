@@ -15,11 +15,11 @@
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    if(!clickedLink.classList.contains('disabled')) {
+    // if(!clickedLink.classList.contains('disabled')) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    }
+    // }
   };
 
   var nav = document.querySelector('.nav');
