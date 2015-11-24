@@ -19,8 +19,6 @@
 
 	/**
 	 * Creates a new Model instance which saves data on local storage.
-	 *
-	 * @constructor
 	 * @param {object} storage A reference to the client side storage class
 	 */
 	var Model = function(name) {
@@ -31,11 +29,13 @@
       return;
     }
 
-		var data = {
-			user: defaultModel
-		};
+		if(!localStorage[name]) {
+			var data = {
+				user: defaultModel
+			};
 
-		localStorage[name] = JSON.stringify(data);
+			localStorage[name] = JSON.stringify(data);
+		}
 	}
 
   /**
