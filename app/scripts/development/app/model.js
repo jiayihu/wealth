@@ -19,13 +19,13 @@
 
 	/**
 	 * Creates a new Model instance which saves data on local storage.
-	 * @param {object} storage A reference to the client side storage class
+	 * @param {string} name The name of the localstorage
 	 */
 	var Model = function(name) {
     this._dbName = name;
 
     if(typeof Storage === undefined) {
-      console.log('Error: localStorage is not supported.');
+      window.makeError('localStorage support', 'Error: localStorage is not supported.');
       return;
     }
 
@@ -36,7 +36,7 @@
 
 			localStorage[name] = JSON.stringify(data);
 		}
-	}
+	};
 
   /**
    * Returns the value of the property in the model.

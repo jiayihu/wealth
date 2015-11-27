@@ -7,6 +7,10 @@
 (function (window) {
 	'use strict';
 
+	/**
+	 * 	JQUERY FUNCTIONS
+	 */
+
 	// Get element(s) by CSS selector:
 	window.qs = function (selector, scope) {
 		return (scope || document).querySelector(selector);
@@ -51,6 +55,32 @@
 		return window.$parent(element.parentNode, tagName);
 	};
 
+	/**
+	 * [function description]
+	 * @param  {Function} callback Callback
+	 */
+	window.$ready = function(callback) {
+		if(document.readyState !== 'loading') {
+			callback();
+		} else {
+			document.addEventListener('DOMContentLoaded', callback);
+		}
+	};
+
+	/**
+	 * 	NO JQUERY FUNCTIONS
+	 */
+
+	window.makeError = function(name, msg, data) {
+		var error = new Error();
+		error.name = name;
+		error.msg = msg;
+		if(data) {
+			error.data = data;
+		}
+		return error;
+	};
+
 	// Allow for looping on nodes by chaining:
 	// qsa('.foo').forEach(function () {})
 	NodeList.prototype.forEach = Array.prototype.forEach;
@@ -77,13 +107,13 @@
 
 	/**
 	 * Creates a new Model instance which saves data on local storage.
-	 * @param {object} storage A reference to the client side storage class
+	 * @param {string} name The name of the localstorage
 	 */
 	var Model = function(name) {
     this._dbName = name;
 
     if(typeof Storage === undefined) {
-      console.log('Error: localStorage is not supported.');
+      window.makeError('localStorage support', 'Error: localStorage is not supported.');
       return;
     }
 
@@ -94,7 +124,7 @@
 
 			localStorage[name] = JSON.stringify(data);
 		}
-	}
+	};
 
   /**
    * Returns the value of the property in the model.
@@ -146,8 +176,28 @@
 	window.app.Model = Model;
 })(window);
 
+var app = window.app || {};
 
-/*global app, $on */
+app.shell = (function(window) {
+  var config = {
+
+  },
+  stateMap = {
+
+  };
+
+
+  var initModule = function(container) {
+
+  };
+
+  return {
+    initModule: initModule
+  };
+
+})(window);
+
+
 var gModel = {
   aboutAge: 20,
   aboutSituation: 'married',
@@ -175,6 +225,17 @@ var gModel = {
 
 
 })(window);
+
+var app = (function() {
+
+  var initModule = function(container) {
+    app.shell.initModule(container);
+  };
+
+  return {
+    initModule: initModule
+  };
+})();
 
 
 /* Templates */

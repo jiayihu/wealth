@@ -1,6 +1,10 @@
 (function (window) {
 	'use strict';
 
+	/**
+	 * 	JQUERY FUNCTIONS
+	 */
+
 	// Get element(s) by CSS selector:
 	window.qs = function (selector, scope) {
 		return (scope || document).querySelector(selector);
@@ -43,6 +47,32 @@
 			return element.parentNode;
 		}
 		return window.$parent(element.parentNode, tagName);
+	};
+
+	/**
+	 * [function description]
+	 * @param  {Function} callback Callback
+	 */
+	window.$ready = function(callback) {
+		if(document.readyState !== 'loading') {
+			callback();
+		} else {
+			document.addEventListener('DOMContentLoaded', callback);
+		}
+	};
+
+	/**
+	 * 	NO JQUERY FUNCTIONS
+	 */
+
+	window.makeError = function(name, msg, data) {
+		var error = new Error();
+		error.name = name;
+		error.msg = msg;
+		if(data) {
+			error.data = data;
+		}
+		return error;
 	};
 
 	// Allow for looping on nodes by chaining:

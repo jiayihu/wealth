@@ -1,4 +1,3 @@
-/*global app, $on */
 var gModel = {
   aboutAge: 20,
   aboutSituation: 'married',
@@ -26,3 +25,14 @@ var gModel = {
 
 
 })(window);
+
+var app = (function() {
+
+  var initModule = function(container) {
+    app.shell.initModule(container);
+  };
+
+  return {
+    initModule: initModule
+  };
+})();

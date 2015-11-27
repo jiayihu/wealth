@@ -4,8 +4,9 @@
  * Including JS Partials
  */
 
-//@@include('./helpers.js')
+//@@include('./app/helpers.js')
 //@@include('./app/model.js')
+//@@include('./app/shell.js')
 
 //@@include('./app.js')
 
@@ -20,7 +21,7 @@
 //@@include('./templates/8-retirement.js')
 //@@include('./templates/9-plan.js')
 
-//@@include('./data-binding/bind.js')
+//@@include('./controllers/bind.js')
 
 /* Components */
 //@@include('./components/nav.js')
