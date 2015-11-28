@@ -25,6 +25,4 @@
 
   };
 
-  peopleModule.init();
-
 })();

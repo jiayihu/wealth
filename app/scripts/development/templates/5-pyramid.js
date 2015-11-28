@@ -29,8 +29,6 @@ var Pyramid = (function() {
     }
   };
 
-  pyramidModule.init();
-
   return {
     updateLabels: pyramidModule.updateLabels
   };

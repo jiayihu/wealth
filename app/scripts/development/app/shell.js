@@ -9,12 +9,12 @@ app.shell = (function(window) {
   };
 
 
-  var initModule = function(container) {
-
+  var init = function() {
+    app.views.you.init();
   };
 
   return {
-    initModule: initModule
+    init: init
   };
 
 })(window);

@@ -70,6 +70,4 @@
 
   };
 
-  retirementModule.init();
-
 })();

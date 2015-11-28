@@ -1,6 +1,6 @@
-(function(window) {
+app.views.about = (function(window) {
   var config = {
-    wrapper: 'about-wrapper',
+    container: 'about-container',
     ageSlider: 'about__age__slider',
     incomeSlider: 'about__income__slider',
     ageOptions: {
@@ -34,8 +34,9 @@
     },
     optionLists: 'about__select'
   };
-  var wrapper = document.getElementsByClassName(config.wrapper)[0];
-  var wealthApp = window.wealthApp;
+
+  var ageSlider,
+    incomeSlider;
 
   var createSlider = function(element, options) {
     noUiSlider.create(element, options);
@@ -57,38 +58,35 @@
     }
   };
 
-  var ageSlider = wrapper.getElementsByClassName(config.ageSlider)[0];
-  var incomeSlider = wrapper.getElementsByClassName(config.incomeSlider)[0];
+  var init = function(container) {
+    ageSlider = container.getElementsByClassName(config.ageSlider)[0];
+    incomeSlider = container.getElementsByClassName(config.incomeSlider)[0];
 
-  createSlider(ageSlider, config.ageOptions);
-  ageSlider.noUiSlider.on('update', function(values) {
-    eventHandler(ageSlider, values);
-  });
-  ageSlider.noUiSlider.on('change', function(values) {
-    wealthApp.model.update('aboutAge', parseInt(values[0]));
-  });
+    createSlider(ageSlider, config.ageOptions);
+    ageSlider.noUiSlider.on('update', function(values) {
+      eventHandler(ageSlider, values);
+    });
+    ageSlider.noUiSlider.on('change', function(values) {
+      wealthApp.model.update('aboutAge', parseInt(values[0]));
+    });
 
-  createSlider(incomeSlider, config.incomeOptions);
-  incomeSlider.noUiSlider.on('update', function(values) {
-    eventHandler(incomeSlider, values);
-  });
-  incomeSlider.noUiSlider.on('change', function(values) {
-    wealthApp.model.update('aboutIncome', parseInt(values[0].replace('.', '')));
-  });
+    createSlider(incomeSlider, config.incomeOptions);
+    incomeSlider.noUiSlider.on('update', function(values) {
+      eventHandler(incomeSlider, values);
+    });
+    incomeSlider.noUiSlider.on('change', function(values) {
+      wealthApp.model.update('aboutIncome', parseInt(values[0].replace('.', '')));
+    });
 
-  var situation = wrapper.getElementsByClassName('about__select')[0],
-    living = wrapper.getElementsByClassName('about__select')[1];
+    var situation = container.getElementsByClassName('about__select')[0],
+      living = container.getElementsByClassName('about__select')[1];
 
-  situation.addEventListener('change', function(event){
-    wealthApp.model.update('aboutSituation', event.target.value);
-  } );
-  living.addEventListener('change', function(event){
-    wealthApp.model.update('aboutLiving', event.target.value);
-  } );
-
-  window.app.Views = window.app.Views || {};
-  window.app.Views.About = {
-
+    situation.addEventListener('change', function(event){
+      wealthApp.model.update('aboutSituation', event.target.value);
+    } );
+    living.addEventListener('change', function(event){
+      wealthApp.model.update('aboutLiving', event.target.value);
+    } );
   };
 
 })(window);

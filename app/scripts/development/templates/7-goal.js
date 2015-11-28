@@ -67,6 +67,4 @@
     }
   };
 
-  goalModule.init();
-
 })();

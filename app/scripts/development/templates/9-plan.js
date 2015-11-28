@@ -103,6 +103,4 @@
     }
   };
 
-  planModule.init();
-
 })();

@@ -135,8 +135,6 @@ var Scenarios = (function() {
 
   };
 
-  scenariosModule.init();
-
   return scenariosModule;
 
 })();

@@ -75,6 +75,22 @@
 		return error;
 	};
 
+	/**
+	 * [function description]
+	 * @param  {DOM Node} element HTML Node of the slider
+	 * @param  {object} options Slider options
+	 */
+	window.createSlider = function(element, options) {
+		noUiSlider.create(element, options);
+		element.handle = element.getElementsByClassName('noUi-handle')[0];
+		element.tooltip = document.createElement('div');
+		element.handle.appendChild(element.tooltip);
+
+		element.tooltip.classList.add('slider-tooltip');
+		element.tooltip.innerHTML = '<span></span>';
+		element.tooltip = element.tooltip.firstElementChild;
+	}
+
 	// Allow for looping on nodes by chaining:
 	// qsa('.foo').forEach(function () {})
 	NodeList.prototype.forEach = Array.prototype.forEach;
