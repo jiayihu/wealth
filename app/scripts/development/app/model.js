@@ -46,7 +46,11 @@
     var data = JSON.parse(localStorage[this._dbName]);
     var user = data.user;
 
-    return user[property];
+    if(typeof property === 'undefined') {
+			return user;
+		}
+
+		return user[property];
   };
 
 	/**

@@ -16,4 +16,4 @@
 
 })();
 
-window.$ready(app.init);
+app.init(window);

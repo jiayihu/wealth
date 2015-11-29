@@ -11,7 +11,6 @@ app.shell = (function(window) {
 
   var init = function() {
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
-    app.views.about.configModule({});
     app.views.about.init(aboutContainer);
   };
 
