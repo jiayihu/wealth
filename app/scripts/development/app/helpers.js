@@ -81,6 +81,9 @@
 	 * @param  {object} options Slider options
 	 */
 	window.createSlider = function(element, options) {
+		if(typeof noUiSlider === 'undefined') {
+			window.makeError('Nouislider', 'nouislider object is not declared.');
+		}
 		noUiSlider.create(element, options);
 		element.handle = element.getElementsByClassName('noUi-handle')[0];
 		element.tooltip = document.createElement('div');
@@ -89,7 +92,17 @@
 		element.tooltip.classList.add('slider-tooltip');
 		element.tooltip.innerHTML = '<span></span>';
 		element.tooltip = element.tooltip.firstElementChild;
-	}
+	};
+
+	window.setConfigMap = function(inputMap, configMap) {
+		var key;
+
+		for(key in inputMap) {
+			if(inputMap.hasOwnProperty(key)) {
+				configMap[key] = inputMap[key];
+			}
+		}
+	};
 
 	// Allow for looping on nodes by chaining:
 	// qsa('.foo').forEach(function () {})

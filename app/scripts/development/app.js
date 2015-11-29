@@ -1,4 +1,4 @@
-app = (function() {
+(function() {
 
   var init = function(window) {
     var WealthApp = function(name) {
@@ -10,9 +10,10 @@ app = (function() {
     app.shell.init();
   };
 
-  return {
-    init: init
-  };
+  // Export to window
+	window.app = window.app || {};
+	window.app.init = init;
+
 })();
 
-app.init(window);
+window.$ready(app.init);

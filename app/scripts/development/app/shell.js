@@ -10,7 +10,9 @@ app.shell = (function(window) {
 
 
   var init = function() {
-    app.views.you.init();
+    var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
+    app.views.about.configModule({});
+    app.views.about.init(aboutContainer);
   };
 
   return {
