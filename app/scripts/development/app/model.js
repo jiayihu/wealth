@@ -68,6 +68,20 @@
 	};
 
 	/**
+	 * Update basic needs, discretionary and savings actual values based on rates
+	 */
+	Model.prototype.updateMoneyValues = function() {
+		var data = JSON.parse(localStorage[this._dbName]);
+    var user = data.user;
+
+		user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
+		user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
+		user.savings = user.aboutIncome * user.aboutSavingsRate * 0.01;
+
+		localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
 	 * [remove description]
 	 * @param  {string} property The name of the property to be removed from model.
 	 */

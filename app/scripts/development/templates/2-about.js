@@ -21,6 +21,10 @@ app.views.about = (function(window) {
   var ageSlider, incomeSlider,
       situation, living;
 
+  /**
+   * DOM FUNCTIONS
+   */
+
   var createSliders = function() {
     window.createSlider(ageSlider, configMap.ageOptions);
     window.createSlider(incomeSlider, configMap.incomeOptions);
@@ -34,6 +38,10 @@ app.views.about = (function(window) {
       tooltip.innerHTML = values[0];
     }
   };
+
+  /**
+   * EVENT HANDLERS
+   */
 
   var bindSlidersEvents = function() {
     ageSlider.noUiSlider.on('update', function(values) {
@@ -59,6 +67,10 @@ app.views.about = (function(window) {
       wealthApp.model.update('aboutLiving', event.target.value);
     });
   };
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
 
   var configModule = function(inputMap) {
     window.setConfigMap(inputMap, configMap);
