@@ -65,6 +65,9 @@
 	 * 	NO JQUERY FUNCTIONS
 	 */
 
+	/**
+	 * Throws a new Error
+	 */
 	window.makeError = function(name, msg, data) {
 		var error = new Error();
 		error.name = name;
@@ -76,7 +79,7 @@
 	};
 
 	/**
-	 * [function description]
+	 * Create a slider using noUiSlider
 	 * @param  {DOM Node} element HTML Node of the slider
 	 * @param  {object} options Slider options
 	 */
@@ -94,6 +97,9 @@
 		element.tooltip = element.tooltip.firstElementChild;
 	};
 
+	/**
+	 * Set the configMap of the module
+	 */
 	window.setConfigMap = function(inputMap, configMap) {
 		var key;
 

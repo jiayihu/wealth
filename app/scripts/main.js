@@ -71,6 +71,9 @@
 	 * 	NO JQUERY FUNCTIONS
 	 */
 
+	/**
+	 * Throws a new Error
+	 */
 	window.makeError = function(name, msg, data) {
 		var error = new Error();
 		error.name = name;
@@ -82,7 +85,7 @@
 	};
 
 	/**
-	 * [function description]
+	 * Create a slider using noUiSlider
 	 * @param  {DOM Node} element HTML Node of the slider
 	 * @param  {object} options Slider options
 	 */
@@ -100,6 +103,9 @@
 		element.tooltip = element.tooltip.firstElementChild;
 	};
 
+	/**
+	 * Set the configMap of the module
+	 */
 	window.setConfigMap = function(inputMap, configMap) {
 		var key;
 
@@ -289,6 +295,7 @@ app.views.about = (function(window) {
     });
     incomeSlider.noUiSlider.on('change', function(values) {
       wealthApp.model.update('aboutIncome', parseInt(values[0].replace('.', '')));
+      wealthApp.model.updateMoneyValues();
     });
   };
 
@@ -546,7 +553,52 @@ app.views.you = (function(window) {
 
 })(window);
 
-//include('./templates/5-pyramid.js')
+app.views.pyramid = (function() {
+  var configMap = {
+    savingsId: '#pyramid-savings',
+    basicId: '#pyramid-basic',
+    discretiotionaryId: '#pyramid-discretionary',
+    incomeId: '#pyramid-income'
+  };
+
+  var savingsText, basicText, discretionaryText, incomeText;
+
+  /**
+   * DOM FUNCTIONS
+   */
+
+  var updateLabels = function() {
+    var moneyFormat = wNumb({
+      thousand: '.',
+      prefix: '$ '
+    });
+
+    savingsText.textContent = ' ' + moneyFormat.to( wealthApp.model.read('savings') ) + '/yr';
+    basicText.textContent = moneyFormat.to( wealthApp.model.read('basicNeeds') ) + '/yr';
+    discretionaryText.textContent = moneyFormat.to( wealthApp.model.read('discretionaryExpenses') ) + '/yr';
+    incomeText.textContent = moneyFormat.to( wealthApp.model.read('aboutIncome') ) + '/yr';
+  };
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
+  var init = function(container) {
+    savingsText = container.querySelector(configMap.savingsId);
+    basicText = container.querySelector(configMap.basicId);
+    discretionaryText = container.querySelector(configMap.discretiotionaryId);
+    incomeText = container.querySelector(configMap.incomeId);
+
+    updateLabels();
+  };
+
+  return {
+    updateLabels: updateLabels,
+    init: init
+  };
+
+})();
+
 //include('./templates/6-scenarios.js')
 //include('./templates/7-goal.js')
 //include('./templates/8-retirement.js')
@@ -644,13 +696,9 @@ app.views.you = (function(window) {
 var app = window.app || {};
 
 app.shell = (function(window) {
-  var config = {
-
-  },
-  stateMap = {
+  var configMap = {
 
   };
-
 
   var init = function() {
     //Screen #2
@@ -660,6 +708,10 @@ app.shell = (function(window) {
     //Screen #3
     var youContainer = document.getElementsByClassName('you-wrapper')[0];
     app.views.you.init(youContainer);
+
+    //Screen #3
+    var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
+    app.views.pyramid.init(pyramidContainer);
   };
 
   return {

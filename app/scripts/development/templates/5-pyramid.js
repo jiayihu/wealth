@@ -1,36 +1,45 @@
-var Pyramid = (function() {
-  var pyramidModule = {
-    config: {
-      savingsId: 'pyramid-savings',
-      basicId: 'pyramid-basic',
-      discretiotionaryId: 'pyramid-discretionary',
-      incomeId: 'pyramid-income'
-    },
+app.views.pyramid = (function() {
+  var configMap = {
+    savingsId: '#pyramid-savings',
+    basicId: '#pyramid-basic',
+    discretiotionaryId: '#pyramid-discretionary',
+    incomeId: '#pyramid-income'
+  };
 
-    init: function() {
-      pyramidModule.updateLabels();
-    },
+  var savingsText, basicText, discretionaryText, incomeText;
 
-    updateLabels: function() {
-      var savingsText = document.getElementById(pyramidModule.config.savingsId),
-        basicText = document.getElementById(pyramidModule.config.basicId),
-        discretionaryText = document.getElementById(pyramidModule.config.discretiotionaryId),
-        incomeText = document.getElementById(pyramidModule.config.incomeId);
+  /**
+   * DOM FUNCTIONS
+   */
 
-      var moneyFormat = wNumb({
-        thousand: '.',
-        prefix: '$ '
-      });
+  var updateLabels = function() {
+    var moneyFormat = wNumb({
+      thousand: '.',
+      prefix: '$ '
+    });
 
-      savingsText.textContent = ' ' + moneyFormat.to(gModel.savings) + '/yr';
-      basicText.textContent = moneyFormat.to(gModel.basicNeeds) + '/yr';
-      discretionaryText.textContent = moneyFormat.to(gModel.discretionaryExpenses) + '/yr';
-      incomeText.textContent = moneyFormat.to(gModel.aboutIncome) + '/yr';
-    }
+    savingsText.textContent = ' ' + moneyFormat.to( wealthApp.model.read('savings') ) + '/yr';
+    basicText.textContent = moneyFormat.to( wealthApp.model.read('basicNeeds') ) + '/yr';
+    discretionaryText.textContent = moneyFormat.to( wealthApp.model.read('discretionaryExpenses') ) + '/yr';
+    incomeText.textContent = moneyFormat.to( wealthApp.model.read('aboutIncome') ) + '/yr';
+  };
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
+  var init = function(container) {
+    savingsText = container.querySelector(configMap.savingsId);
+    basicText = container.querySelector(configMap.basicId);
+    discretionaryText = container.querySelector(configMap.discretiotionaryId);
+    incomeText = container.querySelector(configMap.incomeId);
+
+    updateLabels();
   };
 
   return {
-    updateLabels: pyramidModule.updateLabels
+    updateLabels: updateLabels,
+    init: init
   };
 
 })();

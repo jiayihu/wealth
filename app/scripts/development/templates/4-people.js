@@ -1,3 +1,5 @@
+/* Removed for now*/
+
 (function() {
   var peopleModule = {
     config: {

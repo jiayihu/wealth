@@ -56,6 +56,7 @@ app.views.about = (function(window) {
     });
     incomeSlider.noUiSlider.on('change', function(values) {
       wealthApp.model.update('aboutIncome', parseInt(values[0].replace('.', '')));
+      wealthApp.model.updateMoneyValues();
     });
   };
 
