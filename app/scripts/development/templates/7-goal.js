@@ -1,70 +1,71 @@
-(function() {
-  var goalModule = {
-    config: {
-      wrapper: 'goal-wrapper',
-      tooltipsClass: '.goal__details > span',
-      addButtonsClass: 'add-goal',
-      deleteButtonsClass: 'delete-goal',
-      pickedGoalsClass: 'picked-goals',
-      datepickerClass: '.goal__date__picker'
-    },
+app.views.goal = (function() {
+  var configMap = {
+    tooltipsClass: '.goal__details > span',
+    addButtonsClass: 'add-goal',
+    deleteButtonsClass: 'delete-goal',
+    pickedGoalsClass: 'picked-goals',
+    datepickerClass: '.goal__date__picker'
+  };
 
-    init: function() {
-      goalModule.wrapper = document.getElementsByClassName(goalModule.config.wrapper)[0];
+  var container;
 
-      //Create tooltips
-      $(goalModule.config.tooltipsClass).tooltip();
+  var displayPickedGoal = function() {
+    var picked = this.dataset.picked;
+    container.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
+    container.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
+  };
 
-      //Buttons to add and delete goals
-      var addButtons = goalModule.wrapper.getElementsByClassName(goalModule.config.addButtonsClass);
-      Array.prototype.forEach.call(addButtons, function(element) {
-        element.addEventListener('click', goalModule.displayPickedGoal);
+  var hidePickedGoal = function() {
+    var goal = this.dataset.goal;
+    container.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
+    container.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
+  };
+
+  var updateModel = function() {
+    gModel.pickedGoals = [];
+    var pickedGoals = container.getElementsByClassName('picked--show');
+
+    Array.prototype.forEach.call(pickedGoals, function(element) {
+      gModel.pickedGoals.push({
+        name: element.lastElementChild.dataset.goal,
+        date: element.getElementsByClassName('goal__date__picker')[0].value
       });
+    });
+  };
 
-      var deleteButtons = goalModule.wrapper.getElementsByClassName(goalModule.config.deleteButtonsClass);
-      Array.prototype.forEach.call(deleteButtons, function(element) {
-        element.addEventListener('click', goalModule.hidePickedGoal);
-      });
+  var init = function(container) {
+    container = container;
+    //Create tooltips
+    $(configMap.tooltipsClass).tooltip();
 
-      //Implement drag & drop picked goals
-      var pickedContainer = goalModule.wrapper.getElementsByClassName(goalModule.config.pickedGoalsClass)[0];
-      dragula([pickedContainer]);
+    //Buttons to add and delete goals
+    var addButtons = container.getElementsByClassName(configMap.addButtonsClass);
+    Array.prototype.forEach.call(addButtons, function(element) {
+      element.addEventListener('click', displayPickedGoal);
+    });
 
-      //Datepicker
-      $(goalModule.config.datepickerClass).datepicker({
-        autoclose: true,
-        format: 'M d yyyy'
-      });
+    var deleteButtons = container.getElementsByClassName(configMap.deleteButtonsClass);
+    Array.prototype.forEach.call(deleteButtons, function(element) {
+      element.addEventListener('click', hidePickedGoal);
+    });
 
-      //Update the model when 'Continue' is pressed
-      goalModule.continueButton = goalModule.wrapper.getElementsByClassName('continue')[0];
-      goalModule.continueButton.addEventListener('click', goalModule.updateModel);
-    },
+    //Implement drag & drop picked goals
+    var pickedContainer = container.getElementsByClassName(configMap.pickedGoalsClass)[0];
+    dragula([pickedContainer]);
 
-    displayPickedGoal: function() {
-      var picked = this.dataset.picked;
-      goalModule.wrapper.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
-      goalModule.wrapper.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
-    },
+    //Datepicker
+    $(configMap.datepickerClass).datepicker({
+      autoclose: true,
+      format: 'M d yyyy'
+    });
 
-    hidePickedGoal: function() {
-      var goal = this.dataset.goal;
-      goalModule.wrapper.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
-      goalModule.wrapper.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
-    },
+    //Update the model when 'Continue' is pressed
+    var continueButton = container.getElementsByClassName('continue')[0];
+    continueButton.addEventListener('click', updateModel);
+  };
 
-    updateModel: function() {
-      gModel.pickedGoals = [];
-      var pickedGoals = goalModule.wrapper.getElementsByClassName('picked--show');
-
-      Array.prototype.forEach.call(pickedGoals, function(element) {
-        gModel.pickedGoals.push({
-          name: element.lastElementChild.dataset.goal,
-          date: element.getElementsByClassName('goal__date__picker')[0].value
-        });
-      });
-      console.log(gModel.pickedGoals);
-    }
+  return {
+    init: init
   };
 
 })();

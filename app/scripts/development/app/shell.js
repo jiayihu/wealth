@@ -21,6 +21,10 @@ app.shell = (function(window) {
     //Screen #6
     var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
     app.views.scenarios.init(scenariosContainer);
+
+    //Screen #7
+    var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
+    app.views.goal.init(goalContainer);
   };
 
   return {
