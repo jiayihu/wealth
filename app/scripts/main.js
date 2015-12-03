@@ -206,6 +206,29 @@
 	};
 
 	/**
+	 * Update the array of picked goals adding or removing the goal
+	 * @param  {object} goal The goal to remove or add to the list
+	 */
+	Model.prototype.toggleGoal = function(goal) {
+		var data = JSON.parse(localStorage[this._dbName]);
+		var goals = data.user.pickedGoals;
+
+		var i = 0, alreadyPicked = false;
+		for(i = 0; i < goals.length && !alreadyPicked; i++) {
+			if(goals[i].name === goal.name) {
+				goals.splice(i, 1);
+				alreadyPicked = true;
+			}
+		}
+
+		if(!alreadyPicked) {
+			goals.push(goal);
+		}
+
+		localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
 	 * [remove description]
 	 * @param  {string} property The name of the property to be removed from model.
 	 */
@@ -745,30 +768,28 @@ app.views.goal = (function() {
 
   var displayPickedGoal = function() {
     var picked = this.dataset.picked;
-    container.getElementsByClassName('picked--' + picked)[0].classList.add('picked--show');
+    var pickedGoal = container.getElementsByClassName('picked--' + picked)[0];
+    pickedGoal.classList.add('picked--show');
     container.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
+    var date = pickedGoal.querySelector(configMap.datepickerClass).value;
+    wealthApp.model.toggleGoal({
+      name: picked,
+      date: date
+    });
   };
 
   var hidePickedGoal = function() {
     var goal = this.dataset.goal;
-    container.getElementsByClassName('picked--' + goal)[0].classList.remove('picked--show');
+    var removedGoal = container.getElementsByClassName('picked--' + goal)[0];
+    removedGoal.classList.remove('picked--show');
     container.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
-  };
-
-  var updateModel = function() {
-    gModel.pickedGoals = [];
-    var pickedGoals = container.getElementsByClassName('picked--show');
-
-    Array.prototype.forEach.call(pickedGoals, function(element) {
-      gModel.pickedGoals.push({
-        name: element.lastElementChild.dataset.goal,
-        date: element.getElementsByClassName('goal__date__picker')[0].value
-      });
+    wealthApp.model.toggleGoal({
+      name: goal
     });
   };
 
-  var init = function(container) {
-    container = container;
+  var init = function(initContainer) {
+    container = initContainer;
     //Create tooltips
     $(configMap.tooltipsClass).tooltip();
 
@@ -792,10 +813,6 @@ app.views.goal = (function() {
       autoclose: true,
       format: 'M d yyyy'
     });
-
-    //Update the model when 'Continue' is pressed
-    var continueButton = container.getElementsByClassName('continue')[0];
-    continueButton.addEventListener('click', updateModel);
   };
 
   return {

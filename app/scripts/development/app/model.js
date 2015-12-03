@@ -82,6 +82,29 @@
 	};
 
 	/**
+	 * Update the array of picked goals adding or removing the goal
+	 * @param  {object} goal The goal to remove or add to the list
+	 */
+	Model.prototype.toggleGoal = function(goal) {
+		var data = JSON.parse(localStorage[this._dbName]);
+		var goals = data.user.pickedGoals;
+
+		var i = 0, alreadyPicked = false;
+		for(i = 0; i < goals.length && !alreadyPicked; i++) {
+			if(goals[i].name === goal.name) {
+				goals.splice(i, 1);
+				alreadyPicked = true;
+			}
+		}
+
+		if(!alreadyPicked) {
+			goals.push(goal);
+		}
+
+		localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
 	 * [remove description]
 	 * @param  {string} property The name of the property to be removed from model.
 	 */
