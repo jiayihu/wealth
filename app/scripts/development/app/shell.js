@@ -1,7 +1,7 @@
 var app = window.app || {};
 
 app.shell = (function(window) {
-  
+
   var init = function() {
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
@@ -26,6 +26,10 @@ app.shell = (function(window) {
     //Screen #8
     var retirementContainer = document.getElementsByClassName('retirement-wrapper')[0];
     app.views.retirement.init(retirementContainer);
+
+    //Screen #9
+    var planContainer = document.getElementsByClassName('plan-wrapper')[0];
+    app.views.plan.init(planContainer);
   };
 
   return {
