@@ -119,6 +119,7 @@
 	// Allow for looping on nodes by chaining:
 	// qsa('.foo').forEach(function () {})
 	NodeList.prototype.forEach = Array.prototype.forEach;
+	HTMLCollection.prototype.forEach = Array.prototype.forEach;
 })(window);
 
 
@@ -223,6 +224,29 @@
 
 		if(!alreadyPicked) {
 			goals.push(goal);
+		}
+
+		localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
+	 * Update the array of saved adding or removing the goal
+	 * @param  {object} action The action to remove or add to the list
+	 */
+	Model.prototype.toggleActions = function(action) {
+		var data = JSON.parse(localStorage[this._dbName]);
+		var actions = data.user.savedActions;
+
+		var i = 0, alreadySaved = false;
+		for(i = 0; i < actions.length && !alreadySaved; i++) {
+			if(actions[i].id === action.id) {
+				actions.splice(i, 1);
+				alreadySaved = true;
+			}
+		}
+
+		if(!alreadySaved) {
+			actions.push(action);
 		}
 
 		localStorage[this._dbName] = JSON.stringify(data);
@@ -766,6 +790,10 @@ app.views.goal = (function() {
 
   var container;
 
+  /**
+   * DOM FUNCTIONS
+   */
+
   var displayPickedGoal = function() {
     var picked = this.dataset.picked;
     var pickedGoal = container.getElementsByClassName('picked--' + picked)[0];
@@ -787,6 +815,10 @@ app.views.goal = (function() {
       name: goal
     });
   };
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
 
   var init = function(initContainer) {
     container = initContainer;
@@ -821,7 +853,71 @@ app.views.goal = (function() {
 
 })();
 
-//include('./templates/8-retirement.js')
+app.views.retirement = (function() {
+  var configMap = {
+    jsonUrl: 'scripts/model/actions.json'
+  };
+
+  /**
+   * DOM FUNCTIONS
+   */
+
+   var createActions = function(data) {
+     var docFragment = document.createDocumentFragment(),
+     row;
+
+     data.actions.forEach(function(element, index) {
+       row = document.createElement('tr');
+       row.innerHTML = '<td><i class="zmdi zmdi-check-circle" data-action="' + index + '"></i></td>' +
+         '<td>' + element.todo + '</td>' +
+         '<td>' + element.todonot + '</td>' +
+         '<td><i class="zmdi zmdi-info-outline" data-toggle="tooltip" data-placement="left" title="' + element.why + '"></i></td>';
+         docFragment.appendChild(row);
+     });
+     return docFragment;
+   };
+
+   /**
+    * EVENT HANDLERS
+    */
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
+  var init = function(container) {
+    var request = new XMLHttpRequest();
+    request.open('GET', configMap.jsonUrl, true);
+    request.onload = function() {
+      if(request.status >=200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        var tbody = container.getElementsByTagName('tbody')[0];
+        tbody.appendChild(createActions(data));
+        var checks = container.getElementsByClassName('zmdi-check-circle');
+        checks.forEach(function(element) {
+          element.addEventListener('click', function() {
+            this.classList.toggle('saved');
+            wealthApp.model.toggleActions(data.actions[parseInt(this.dataset.action)]);
+          });
+        });
+        //Tooltips
+        $('.retirement-wrapper .zmdi-info-outline').tooltip();
+      } else {
+        console.log('Error with the connection.');
+      }
+    };
+    request.onerror = function() {
+      console.log('Error with the connection.');
+    };
+    request.send();
+  };
+
+  return {
+    init: init
+  };
+
+})();
+
 //include('./templates/9-plan.js')
 
 /* Components */
@@ -916,10 +1012,7 @@ app.views.goal = (function() {
 var app = window.app || {};
 
 app.shell = (function(window) {
-  var configMap = {
-
-  };
-
+  
   var init = function() {
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
@@ -940,6 +1033,10 @@ app.shell = (function(window) {
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
     app.views.goal.init(goalContainer);
+
+    //Screen #8
+    var retirementContainer = document.getElementsByClassName('retirement-wrapper')[0];
+    app.views.retirement.init(retirementContainer);
   };
 
   return {

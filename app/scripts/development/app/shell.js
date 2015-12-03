@@ -1,10 +1,7 @@
 var app = window.app || {};
 
 app.shell = (function(window) {
-  var configMap = {
-
-  };
-
+  
   var init = function() {
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
@@ -25,6 +22,10 @@ app.shell = (function(window) {
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
     app.views.goal.init(goalContainer);
+
+    //Screen #8
+    var retirementContainer = document.getElementsByClassName('retirement-wrapper')[0];
+    app.views.retirement.init(retirementContainer);
   };
 
   return {

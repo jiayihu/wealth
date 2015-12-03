@@ -105,6 +105,29 @@
 	};
 
 	/**
+	 * Update the array of saved adding or removing the goal
+	 * @param  {object} action The action to remove or add to the list
+	 */
+	Model.prototype.toggleActions = function(action) {
+		var data = JSON.parse(localStorage[this._dbName]);
+		var actions = data.user.savedActions;
+
+		var i = 0, alreadySaved = false;
+		for(i = 0; i < actions.length && !alreadySaved; i++) {
+			if(actions[i].id === action.id) {
+				actions.splice(i, 1);
+				alreadySaved = true;
+			}
+		}
+
+		if(!alreadySaved) {
+			actions.push(action);
+		}
+
+		localStorage[this._dbName] = JSON.stringify(data);
+	};
+
+	/**
 	 * [remove description]
 	 * @param  {string} property The name of the property to be removed from model.
 	 */

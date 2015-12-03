@@ -110,7 +110,8 @@
 		}
 	};
 
-	// Allow for looping on nodes by chaining:
+	// Allow for looping on nodes by chaining and using forEach on both Nodelists and HTMLCollections
 	// qsa('.foo').forEach(function () {})
 	NodeList.prototype.forEach = Array.prototype.forEach;
+	HTMLCollection.prototype.forEach = Array.prototype.forEach;
 })(window);

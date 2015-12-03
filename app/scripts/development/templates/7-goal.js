@@ -9,6 +9,10 @@ app.views.goal = (function() {
 
   var container;
 
+  /**
+   * DOM FUNCTIONS
+   */
+
   var displayPickedGoal = function() {
     var picked = this.dataset.picked;
     var pickedGoal = container.getElementsByClassName('picked--' + picked)[0];
@@ -30,6 +34,10 @@ app.views.goal = (function() {
       name: goal
     });
   };
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
 
   var init = function(initContainer) {
     container = initContainer;

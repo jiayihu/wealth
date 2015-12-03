@@ -16,7 +16,7 @@
 //@@include('./templates/5-pyramid.js')
 //@@include('./templates/6-scenarios.js')
 //@@include('./templates/7-goal.js')
-//include('./templates/8-retirement.js')
+//@@include('./templates/8-retirement.js')
 //include('./templates/9-plan.js')
 
 /* Components */
