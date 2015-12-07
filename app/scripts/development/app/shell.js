@@ -34,6 +34,18 @@ app.shell = (function(window) {
     });
   };
 
+  var goalController = function() {
+    app.views.goal.bind('goalToggled', function(goal) {
+      wealthApp.model.toggleGoal(goal);
+    });
+  };
+
+  var retirementController = function() {
+    app.views.retirement.bind('actionToggled', function(action) {
+      wealthApp.model.toggleActions(action);
+    });
+  };
+
   // var pyramidController = function() {
   //
   // };
@@ -73,15 +85,26 @@ app.shell = (function(window) {
 
     //Screen #6
     var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
+    app.views.scenarios.configModule({
+      savings: data.savings,
+      savingRateOptions: {
+        start: data.aboutSavingsRate
+      },
+      incomeOptions: {
+        start: data.aboutIncome
+      }
+    });
     app.views.scenarios.init(scenariosContainer);
 
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
     app.views.goal.init(goalContainer);
+    goalController();
 
     //Screen #8
     var retirementContainer = document.getElementsByClassName('retirement-wrapper')[0];
     app.views.retirement.init(retirementContainer);
+    retirementController();
 
     //Screen #9
     var planContainer = document.getElementsByClassName('plan-wrapper')[0];

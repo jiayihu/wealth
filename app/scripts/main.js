@@ -660,6 +660,7 @@ app.views.pyramid = (function() {
 
 app.views.scenarios = (function(window) {
   var configMap = {
+    savings: 18000,
     //Sliders options
     savingRateSlider: 'option__slider--saving',
     incomeRateSlider: 'option__slider--income',
@@ -730,9 +731,8 @@ app.views.scenarios = (function(window) {
 
   var updateLineChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
-      var savings = wealthApp.model.read('aboutIncome');
       for(var i=0; i < configMap.chartData.series[0].length; i++) {
-        configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * savings * (configMap.chartData.labels[i] - 18);
+        configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * configMap.savings * (configMap.chartData.labels[i] - 18);
       }
       lineChart.update(configMap.chartData);
     });
@@ -750,8 +750,7 @@ app.views.scenarios = (function(window) {
    */
 
   var calculateSeries = function() {
-    var savings = wealthApp.model.read('savings');
-    configMap.chartData.series[0] = [savings * 1, savings * 7, savings * 17, savings * 27, savings * 37, savings * 47];
+    configMap.chartData.series[0] = [configMap.savings * 1, configMap.savings * 7, configMap.savings * 17, configMap.savings * 27, configMap.savings * 37, configMap.savings * 47];
     return configMap.chartData.series[0];
   };
 
@@ -760,8 +759,6 @@ app.views.scenarios = (function(window) {
   };
 
   var init = function(container) {
-    configMap.savingRateOptions.start = wealthApp.model.read('aboutSavingsRate');
-    configMap.incomeOptions.start = wealthApp.model.read('aboutIncome');
 
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
@@ -794,43 +791,34 @@ app.views.scenarios = (function(window) {
 app.views.goal = (function() {
   var configMap = {
     tooltipsClass: '.goal__details > span',
-    addButtonsClass: 'add-goal',
-    deleteButtonsClass: 'delete-goal',
+    toggleButtonsClass: 'toggle-goal',
     pickedGoalsClass: 'picked-goals',
     datepickerClass: '.goal__date__picker'
   };
 
-  var container;
-
-  /**
-   * DOM FUNCTIONS
-   */
-
-  var displayPickedGoal = function() {
-    var picked = this.dataset.picked;
-    var pickedGoal = container.getElementsByClassName('picked--' + picked)[0];
-    pickedGoal.classList.add('picked--show');
-    container.getElementsByClassName('goal--' + picked)[0].classList.add('goal--hide');
-    var date = pickedGoal.querySelector(configMap.datepickerClass).value;
-    wealthApp.model.toggleGoal({
-      name: picked,
-      date: date
-    });
-  };
-
-  var hidePickedGoal = function() {
-    var goal = this.dataset.goal;
-    var removedGoal = container.getElementsByClassName('picked--' + goal)[0];
-    removedGoal.classList.remove('picked--show');
-    container.getElementsByClassName('goal--' + goal)[0].classList.remove('goal--hide');
-    wealthApp.model.toggleGoal({
-      name: goal
-    });
-  };
+  var container, toggleButtons;
 
   /**
    * PUBLIC FUNCTIONS
    */
+
+  var bind = function(event, handler) {
+    if(event === 'goalToggled') {
+      toggleButtons.forEach(function(element) {
+        element.addEventListener('click', function() {
+          var goalName = this.dataset.goal;
+          var toggledGoal = container.getElementsByClassName('picked--' + goalName)[0];
+          toggledGoal.classList.toggle('picked--show');
+          container.getElementsByClassName('goal--' + goalName)[0].classList.toggle('goal--hide');
+          var date = toggledGoal.querySelector(configMap.datepickerClass).value;
+          handler({
+            name: goalName,
+            date: date
+          });
+        });
+      });
+    }
+  };
 
   var init = function(initContainer) {
     container = initContainer;
@@ -838,15 +826,7 @@ app.views.goal = (function() {
     $(configMap.tooltipsClass).tooltip();
 
     //Buttons to add and delete goals
-    var addButtons = container.getElementsByClassName(configMap.addButtonsClass);
-    Array.prototype.forEach.call(addButtons, function(element) {
-      element.addEventListener('click', displayPickedGoal);
-    });
-
-    var deleteButtons = container.getElementsByClassName(configMap.deleteButtonsClass);
-    Array.prototype.forEach.call(deleteButtons, function(element) {
-      element.addEventListener('click', hidePickedGoal);
-    });
+    toggleButtons = container.getElementsByClassName(configMap.toggleButtonsClass);
 
     //Implement drag & drop picked goals
     var pickedContainer = container.getElementsByClassName(configMap.pickedGoalsClass)[0];
@@ -860,6 +840,7 @@ app.views.goal = (function() {
   };
 
   return {
+    bind: bind,
     init: init
   };
 
@@ -869,6 +850,9 @@ app.views.retirement = (function() {
   var configMap = {
     jsonUrl: 'scripts/model/actions.json'
   };
+
+  var tbody,
+      data;
 
   /**
    * DOM FUNCTIONS
@@ -897,21 +881,27 @@ app.views.retirement = (function() {
    * PUBLIC FUNCTIONS
    */
 
+  var bind = function(event, handler) {
+    if(event === 'actionToggled') {
+      tbody.addEventListener('click', function(event) {
+        var target = event.target;
+        if(target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
+          target.classList.toggle('saved');
+          handler(data.actions[parseInt(target.dataset.action)]);
+        }
+      });
+    }
+  };
+
   var init = function(container) {
+    tbody = container.getElementsByTagName('tbody')[0];
+
     var request = new XMLHttpRequest();
     request.open('GET', configMap.jsonUrl, true);
     request.onload = function() {
       if(request.status >=200 && request.status < 400) {
-        var data = JSON.parse(request.responseText);
-        var tbody = container.getElementsByTagName('tbody')[0];
+        data = JSON.parse(request.responseText);
         tbody.appendChild(createActions(data));
-        var checks = container.getElementsByClassName('zmdi-check-circle');
-        checks.forEach(function(element) {
-          element.addEventListener('click', function() {
-            this.classList.toggle('saved');
-            wealthApp.model.toggleActions(data.actions[parseInt(this.dataset.action)]);
-          });
-        });
         //Tooltips
         $('.retirement-wrapper .zmdi-info-outline').tooltip();
       } else {
@@ -925,6 +915,7 @@ app.views.retirement = (function() {
   };
 
   return {
+    bind: bind,
     init: init
   };
 
@@ -1167,6 +1158,18 @@ app.shell = (function(window) {
     });
   };
 
+  var goalController = function() {
+    app.views.goal.bind('goalToggled', function(goal) {
+      wealthApp.model.toggleGoal(goal);
+    });
+  };
+
+  var retirementController = function() {
+    app.views.retirement.bind('actionToggled', function(action) {
+      wealthApp.model.toggleActions(action);
+    });
+  };
+
   // var pyramidController = function() {
   //
   // };
@@ -1206,15 +1209,26 @@ app.shell = (function(window) {
 
     //Screen #6
     var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
+    app.views.scenarios.configModule({
+      savings: data.savings,
+      savingRateOptions: {
+        start: data.aboutSavingsRate
+      },
+      incomeOptions: {
+        start: data.aboutIncome
+      }
+    });
     app.views.scenarios.init(scenariosContainer);
 
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
     app.views.goal.init(goalContainer);
+    goalController();
 
     //Screen #8
     var retirementContainer = document.getElementsByClassName('retirement-wrapper')[0];
     app.views.retirement.init(retirementContainer);
+    retirementController();
 
     //Screen #9
     var planContainer = document.getElementsByClassName('plan-wrapper')[0];

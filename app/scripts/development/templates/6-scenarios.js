@@ -1,5 +1,6 @@
 app.views.scenarios = (function(window) {
   var configMap = {
+    savings: 18000,
     //Sliders options
     savingRateSlider: 'option__slider--saving',
     incomeRateSlider: 'option__slider--income',
@@ -70,9 +71,8 @@ app.views.scenarios = (function(window) {
 
   var updateLineChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
-      var savings = wealthApp.model.read('aboutIncome');
       for(var i=0; i < configMap.chartData.series[0].length; i++) {
-        configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * savings * (configMap.chartData.labels[i] - 18);
+        configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * configMap.savings * (configMap.chartData.labels[i] - 18);
       }
       lineChart.update(configMap.chartData);
     });
@@ -90,8 +90,7 @@ app.views.scenarios = (function(window) {
    */
 
   var calculateSeries = function() {
-    var savings = wealthApp.model.read('savings');
-    configMap.chartData.series[0] = [savings * 1, savings * 7, savings * 17, savings * 27, savings * 37, savings * 47];
+    configMap.chartData.series[0] = [configMap.savings * 1, configMap.savings * 7, configMap.savings * 17, configMap.savings * 27, configMap.savings * 37, configMap.savings * 47];
     return configMap.chartData.series[0];
   };
 
@@ -100,8 +99,6 @@ app.views.scenarios = (function(window) {
   };
 
   var init = function(container) {
-    configMap.savingRateOptions.start = wealthApp.model.read('aboutSavingsRate');
-    configMap.incomeOptions.start = wealthApp.model.read('aboutIncome');
 
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];

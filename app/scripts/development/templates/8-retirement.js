@@ -3,6 +3,9 @@ app.views.retirement = (function() {
     jsonUrl: 'scripts/model/actions.json'
   };
 
+  var tbody,
+      data;
+
   /**
    * DOM FUNCTIONS
    */
@@ -30,21 +33,27 @@ app.views.retirement = (function() {
    * PUBLIC FUNCTIONS
    */
 
+  var bind = function(event, handler) {
+    if(event === 'actionToggled') {
+      tbody.addEventListener('click', function(event) {
+        var target = event.target;
+        if(target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
+          target.classList.toggle('saved');
+          handler(data.actions[parseInt(target.dataset.action)]);
+        }
+      });
+    }
+  };
+
   var init = function(container) {
+    tbody = container.getElementsByTagName('tbody')[0];
+
     var request = new XMLHttpRequest();
     request.open('GET', configMap.jsonUrl, true);
     request.onload = function() {
       if(request.status >=200 && request.status < 400) {
-        var data = JSON.parse(request.responseText);
-        var tbody = container.getElementsByTagName('tbody')[0];
+        data = JSON.parse(request.responseText);
         tbody.appendChild(createActions(data));
-        var checks = container.getElementsByClassName('zmdi-check-circle');
-        checks.forEach(function(element) {
-          element.addEventListener('click', function() {
-            this.classList.toggle('saved');
-            wealthApp.model.toggleActions(data.actions[parseInt(this.dataset.action)]);
-          });
-        });
         //Tooltips
         $('.retirement-wrapper .zmdi-info-outline').tooltip();
       } else {
@@ -58,6 +67,7 @@ app.views.retirement = (function() {
   };
 
   return {
+    bind: bind,
     init: init
   };
 
