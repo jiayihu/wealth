@@ -98,17 +98,21 @@
 	};
 
 	/**
-	 * Set the configMap of the module
+	 * Set the configMap of the module - It goes deep in the object
 	 */
-	window.setConfigMap = function(inputMap, configMap) {
-		var key;
+	 window.setConfigMap = function(inputMap, configMap) {
+ 	  var key;
 
-		for(key in inputMap) {
-			if(inputMap.hasOwnProperty(key)) {
-				configMap[key] = inputMap[key];
-			}
-		}
-	};
+ 	  for(key in inputMap) {
+ 	    if(inputMap.hasOwnProperty(key)) {
+ 	      if(inputMap[key] instanceof Object) {
+ 	        window.setConfigMap(inputMap[key], configMap[key]);
+ 	      } else {
+ 	        configMap[key] = inputMap[key];
+ 	      }
+ 	    }
+ 	  }
+ 	};
 
 	// Allow for looping on nodes by chaining and using forEach on both Nodelists and HTMLCollections
 	// qsa('.foo').forEach(function () {})

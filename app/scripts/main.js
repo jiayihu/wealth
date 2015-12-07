@@ -104,17 +104,21 @@
 	};
 
 	/**
-	 * Set the configMap of the module
+	 * Set the configMap of the module - It goes deep in the object
 	 */
-	window.setConfigMap = function(inputMap, configMap) {
-		var key;
+	 window.setConfigMap = function(inputMap, configMap) {
+ 	  var key;
 
-		for(key in inputMap) {
-			if(inputMap.hasOwnProperty(key)) {
-				configMap[key] = inputMap[key];
-			}
-		}
-	};
+ 	  for(key in inputMap) {
+ 	    if(inputMap.hasOwnProperty(key)) {
+ 	      if(inputMap[key] instanceof Object) {
+ 	        window.setConfigMap(inputMap[key], configMap[key]);
+ 	      } else {
+ 	        configMap[key] = inputMap[key];
+ 	      }
+ 	    }
+ 	  }
+ 	};
 
 	// Allow for looping on nodes by chaining and using forEach on both Nodelists and HTMLCollections
 	// qsa('.foo').forEach(function () {})
@@ -387,6 +391,7 @@ app.views.about = (function(window) {
 
 app.views.you = (function(window) {
   var configMap = {
+    income: 60000,
     needsSlider: 'about__savings__slider--needs',
     expensesSlider: 'about__savings__slider--expenses',
     //Slider options
@@ -423,7 +428,8 @@ app.views.you = (function(window) {
       ]
   };
 
-  var $pieChart, needsSlider, expensesSlider;
+  var $pieChart, needsSlider, expensesSlider,
+      income;
 
   /**
    * DOM FUNCTIONS
@@ -477,7 +483,7 @@ app.views.you = (function(window) {
         value = $slice.attr('ct:value'),
         seriesName = $slice.parent().attr('ct:series-name');
       $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-      moneyFormat.to(parseInt(value)/100 * wealthApp.model.read('aboutIncome') ) ).show();
+      moneyFormat.to(parseInt(value)/100 * configMap.income ) ).show();
     });
 
     //For mobiles
@@ -487,7 +493,7 @@ app.views.you = (function(window) {
           value = $slice.attr('ct:value'),
           seriesName = $slice.parent().attr('ct:series-name');
         $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-        moneyFormat.to(parseInt(value)/100 * wealthApp.model.read('aboutIncome') ) ).show();
+        moneyFormat.to(parseInt(value)/100 * configMap.income ) ).show();
         isTooltipShown = true;
       } else {
         $toolTip.hide();
@@ -527,48 +533,47 @@ app.views.you = (function(window) {
    * EVENT HANDLERS
    */
 
-  var sliderEventHandler = function(slider, values) {
+  var showSliderTooltip = function(slider, values) {
     var tooltip = slider.getElementsByTagName('span')[0];
     tooltip.innerHTML = values[0] + '%';
   };
 
 
   /**
-   * Update Doughnut when sliders value change
+   * Update the view of the Doughnut when sliders value change
+   * @param {string} slider The name of the slider which changed
    */
-  var updateDoughnut = function() {
-    needsSlider.noUiSlider.on('change', function(values){
+  var updateDOMDoughnut = function(slider, values) {
+    if(slider === 'needsSlider') {
       configMap.doughnutData.series[0].value = parseInt(values[0]);
-      configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
-      $pieChart.update();
-    });
-    expensesSlider.noUiSlider.on('change', function(values){
+    } else {
       configMap.doughnutData.series[1].value = parseInt(values[0]);
-      configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
-      $pieChart.update();
-    });
-  };
-
-  var bindSlidersEvents = function() {
-    needsSlider.noUiSlider.on('change', function(){
-      wealthApp.model.update('aboutBasicRate', configMap.doughnutData.series[0].value);
-      wealthApp.model.update('aboutSavingsRate', configMap.doughnutData.series[2].value);
-      wealthApp.model.updateMoneyValues();
-    });
-    expensesSlider.noUiSlider.on('change', function(){
-      wealthApp.model.update('aboutDiscretionaryRate', configMap.doughnutData.series[1].value);
-      wealthApp.model.update('aboutSavingsRate', configMap.doughnutData.series[2].value);
-      wealthApp.model.updateMoneyValues();
-    });
+    }
+    configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
+    $pieChart.update();
   };
 
   /**
    * PUBLIC FUNCTIONS
    */
 
-   var configModule = function(inputMap) {
-     window.setConfigMap(inputMap, configMap);
-   };
+  var bind = function(event, handler) {
+    if(event === 'basicNeedsChanged') {
+      needsSlider.noUiSlider.on('change', function(values){
+        updateDOMDoughnut('needsSlider', values);
+        handler(configMap.doughnutData.series[0].value, configMap.doughnutData.series[2].value);
+      });
+    } else if(event === 'expensesChanged') {
+      expensesSlider.noUiSlider.on('change', function(values){
+        updateDOMDoughnut('expensesSlider', values);
+        handler(configMap.doughnutData.series[1].value, configMap.doughnutData.series[2].value);
+      });
+    }
+  };
+
+  var configModule = function(inputMap) {
+    window.setConfigMap(inputMap, configMap);
+  };
 
   var init = function(container) {
     needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
@@ -577,23 +582,21 @@ app.views.you = (function(window) {
     //Create sliders
     window.createSlider(needsSlider, configMap.needsOptions);
     needsSlider.noUiSlider.on('update', function(values) {
-      sliderEventHandler(needsSlider, values);
+      showSliderTooltip(needsSlider, values);
     });
 
     window.createSlider(expensesSlider, configMap.expensesOptions);
     expensesSlider.noUiSlider.on('update', function(values) {
-      sliderEventHandler(expensesSlider, values);
+      showSliderTooltip(expensesSlider, values);
     });
 
     //Init Doughnut Chart
     var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
     createChart(doughnutHtml);
-
-    updateDoughnut();
-    bindSlidersEvents();
   };
 
   return {
+    bind: bind,
     configModule: configModule,
     init: init
   };
@@ -605,7 +608,11 @@ app.views.pyramid = (function() {
     savingsId: '#pyramid-savings',
     basicId: '#pyramid-basic',
     discretiotionaryId: '#pyramid-discretionary',
-    incomeId: '#pyramid-income'
+    incomeId: '#pyramid-income',
+    basic: 0,
+    savings: 0,
+    discretionary: 0,
+    income: 0
   };
 
   var savingsText, basicText, discretionaryText, incomeText;
@@ -630,6 +637,10 @@ app.views.pyramid = (function() {
    * PUBLIC FUNCTIONS
    */
 
+  var configModule = function(inputMap) {
+    window.setConfigMap(inputMap, configMap);
+  };
+
   var init = function(container) {
     savingsText = container.querySelector(configMap.savingsId);
     basicText = container.querySelector(configMap.basicId);
@@ -640,8 +651,9 @@ app.views.pyramid = (function() {
   };
 
   return {
-    updateLabels: updateLabels,
-    init: init
+    configModule: configModule,
+    init: init,
+    updateLabels: updateLabels
   };
 
 })();
@@ -1142,18 +1154,54 @@ app.shell = (function(window) {
     });
   };
 
+  var youController = function() {
+    app.views.you.bind('basicNeedsChanged', function(basicRate, savingRate) {
+      wealthApp.model.update('aboutBasicRate', basicRate);
+      wealthApp.model.update('aboutSavingsRate', savingRate);
+      wealthApp.model.updateMoneyValues();
+    });
+    app.views.you.bind('expensesChanged', function(expensesRate, savingRate) {
+      wealthApp.model.update('aboutDiscretionaryRate', expensesRate);
+      wealthApp.model.update('aboutSavingsRate', savingRate);
+      wealthApp.model.updateMoneyValues();
+    });
+  };
+
+  // var pyramidController = function() {
+  //
+  // };
+
   var init = function() {
+    var data = wealthApp.model.read();
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
+    app.views.about.configModule({
+      ageOptions: {
+        start: data.aboutAge
+      },
+      incomeOptions: {
+        start: data.aboutIncome
+      }
+    });
     app.views.about.init(aboutContainer);
     aboutController();
 
     //Screen #3
     var youContainer = document.getElementsByClassName('you-wrapper')[0];
+    app.views.you.configModule({
+      income: data.aboutIncome
+    });
     app.views.you.init(youContainer);
+    youController();
 
     //Screen #5
     var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
+    app.views.pyramid.configModule({
+      basic: data.basicNeeds,
+      savings: data.savings,
+      discretionary: data.discretionaryExpenses,
+      income: data.aboutIncome
+    });
     app.views.pyramid.init(pyramidContainer);
 
     //Screen #6

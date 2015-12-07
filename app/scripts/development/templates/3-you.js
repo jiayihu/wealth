@@ -1,5 +1,6 @@
 app.views.you = (function(window) {
   var configMap = {
+    income: 60000,
     needsSlider: 'about__savings__slider--needs',
     expensesSlider: 'about__savings__slider--expenses',
     //Slider options
@@ -36,7 +37,8 @@ app.views.you = (function(window) {
       ]
   };
 
-  var $pieChart, needsSlider, expensesSlider;
+  var $pieChart, needsSlider, expensesSlider,
+      income;
 
   /**
    * DOM FUNCTIONS
@@ -90,7 +92,7 @@ app.views.you = (function(window) {
         value = $slice.attr('ct:value'),
         seriesName = $slice.parent().attr('ct:series-name');
       $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-      moneyFormat.to(parseInt(value)/100 * wealthApp.model.read('aboutIncome') ) ).show();
+      moneyFormat.to(parseInt(value)/100 * configMap.income ) ).show();
     });
 
     //For mobiles
@@ -100,7 +102,7 @@ app.views.you = (function(window) {
           value = $slice.attr('ct:value'),
           seriesName = $slice.parent().attr('ct:series-name');
         $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-        moneyFormat.to(parseInt(value)/100 * wealthApp.model.read('aboutIncome') ) ).show();
+        moneyFormat.to(parseInt(value)/100 * configMap.income ) ).show();
         isTooltipShown = true;
       } else {
         $toolTip.hide();
@@ -140,48 +142,47 @@ app.views.you = (function(window) {
    * EVENT HANDLERS
    */
 
-  var sliderEventHandler = function(slider, values) {
+  var showSliderTooltip = function(slider, values) {
     var tooltip = slider.getElementsByTagName('span')[0];
     tooltip.innerHTML = values[0] + '%';
   };
 
 
   /**
-   * Update Doughnut when sliders value change
+   * Update the view of the Doughnut when sliders value change
+   * @param {string} slider The name of the slider which changed
    */
-  var updateDoughnut = function() {
-    needsSlider.noUiSlider.on('change', function(values){
+  var updateDOMDoughnut = function(slider, values) {
+    if(slider === 'needsSlider') {
       configMap.doughnutData.series[0].value = parseInt(values[0]);
-      configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
-      $pieChart.update();
-    });
-    expensesSlider.noUiSlider.on('change', function(values){
+    } else {
       configMap.doughnutData.series[1].value = parseInt(values[0]);
-      configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
-      $pieChart.update();
-    });
-  };
-
-  var bindSlidersEvents = function() {
-    needsSlider.noUiSlider.on('change', function(){
-      wealthApp.model.update('aboutBasicRate', configMap.doughnutData.series[0].value);
-      wealthApp.model.update('aboutSavingsRate', configMap.doughnutData.series[2].value);
-      wealthApp.model.updateMoneyValues();
-    });
-    expensesSlider.noUiSlider.on('change', function(){
-      wealthApp.model.update('aboutDiscretionaryRate', configMap.doughnutData.series[1].value);
-      wealthApp.model.update('aboutSavingsRate', configMap.doughnutData.series[2].value);
-      wealthApp.model.updateMoneyValues();
-    });
+    }
+    configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
+    $pieChart.update();
   };
 
   /**
    * PUBLIC FUNCTIONS
    */
 
-   var configModule = function(inputMap) {
-     window.setConfigMap(inputMap, configMap);
-   };
+  var bind = function(event, handler) {
+    if(event === 'basicNeedsChanged') {
+      needsSlider.noUiSlider.on('change', function(values){
+        updateDOMDoughnut('needsSlider', values);
+        handler(configMap.doughnutData.series[0].value, configMap.doughnutData.series[2].value);
+      });
+    } else if(event === 'expensesChanged') {
+      expensesSlider.noUiSlider.on('change', function(values){
+        updateDOMDoughnut('expensesSlider', values);
+        handler(configMap.doughnutData.series[1].value, configMap.doughnutData.series[2].value);
+      });
+    }
+  };
+
+  var configModule = function(inputMap) {
+    window.setConfigMap(inputMap, configMap);
+  };
 
   var init = function(container) {
     needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
@@ -190,23 +191,21 @@ app.views.you = (function(window) {
     //Create sliders
     window.createSlider(needsSlider, configMap.needsOptions);
     needsSlider.noUiSlider.on('update', function(values) {
-      sliderEventHandler(needsSlider, values);
+      showSliderTooltip(needsSlider, values);
     });
 
     window.createSlider(expensesSlider, configMap.expensesOptions);
     expensesSlider.noUiSlider.on('update', function(values) {
-      sliderEventHandler(expensesSlider, values);
+      showSliderTooltip(expensesSlider, values);
     });
 
     //Init Doughnut Chart
     var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
     createChart(doughnutHtml);
-
-    updateDoughnut();
-    bindSlidersEvents();
   };
 
   return {
+    bind: bind,
     configModule: configModule,
     init: init
   };

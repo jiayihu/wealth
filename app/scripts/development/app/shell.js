@@ -21,18 +21,54 @@ app.shell = (function(window) {
     });
   };
 
+  var youController = function() {
+    app.views.you.bind('basicNeedsChanged', function(basicRate, savingRate) {
+      wealthApp.model.update('aboutBasicRate', basicRate);
+      wealthApp.model.update('aboutSavingsRate', savingRate);
+      wealthApp.model.updateMoneyValues();
+    });
+    app.views.you.bind('expensesChanged', function(expensesRate, savingRate) {
+      wealthApp.model.update('aboutDiscretionaryRate', expensesRate);
+      wealthApp.model.update('aboutSavingsRate', savingRate);
+      wealthApp.model.updateMoneyValues();
+    });
+  };
+
+  // var pyramidController = function() {
+  //
+  // };
+
   var init = function() {
+    var data = wealthApp.model.read();
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
+    app.views.about.configModule({
+      ageOptions: {
+        start: data.aboutAge
+      },
+      incomeOptions: {
+        start: data.aboutIncome
+      }
+    });
     app.views.about.init(aboutContainer);
     aboutController();
 
     //Screen #3
     var youContainer = document.getElementsByClassName('you-wrapper')[0];
+    app.views.you.configModule({
+      income: data.aboutIncome
+    });
     app.views.you.init(youContainer);
+    youController();
 
     //Screen #5
     var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
+    app.views.pyramid.configModule({
+      basic: data.basicNeeds,
+      savings: data.savings,
+      discretionary: data.discretionaryExpenses,
+      income: data.aboutIncome
+    });
     app.views.pyramid.init(pyramidContainer);
 
     //Screen #6

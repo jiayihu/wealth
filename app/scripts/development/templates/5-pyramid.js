@@ -3,7 +3,11 @@ app.views.pyramid = (function() {
     savingsId: '#pyramid-savings',
     basicId: '#pyramid-basic',
     discretiotionaryId: '#pyramid-discretionary',
-    incomeId: '#pyramid-income'
+    incomeId: '#pyramid-income',
+    basic: 0,
+    savings: 0,
+    discretionary: 0,
+    income: 0
   };
 
   var savingsText, basicText, discretionaryText, incomeText;
@@ -28,6 +32,10 @@ app.views.pyramid = (function() {
    * PUBLIC FUNCTIONS
    */
 
+  var configModule = function(inputMap) {
+    window.setConfigMap(inputMap, configMap);
+  };
+
   var init = function(container) {
     savingsText = container.querySelector(configMap.savingsId);
     basicText = container.querySelector(configMap.basicId);
@@ -38,8 +46,9 @@ app.views.pyramid = (function() {
   };
 
   return {
-    updateLabels: updateLabels,
-    init: init
+    configModule: configModule,
+    init: init,
+    updateLabels: updateLabels
   };
 
 })();
