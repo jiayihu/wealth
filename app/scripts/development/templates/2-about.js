@@ -43,29 +43,12 @@ app.views.about = (function(window) {
    * EVENT HANDLERS
    */
 
-  var bindSlidersEvents = function() {
+  var sliderDOMEvents = function() {
     ageSlider.noUiSlider.on('update', function(values) {
       onSliderUpdate(ageSlider, values);
     });
-    ageSlider.noUiSlider.on('change', function(values) {
-      wealthApp.model.update('aboutAge', parseInt(values[0]));
-    });
-
     incomeSlider.noUiSlider.on('update', function(values) {
       onSliderUpdate(incomeSlider, values);
-    });
-    incomeSlider.noUiSlider.on('change', function(values) {
-      wealthApp.model.update('aboutIncome', parseInt(values[0].replace('.', '')));
-      wealthApp.model.updateMoneyValues();
-    });
-  };
-
-  var bindSelectListsEvent = function() {
-    situation.addEventListener('change', function(event){
-      wealthApp.model.update('aboutSituation', event.target.value);
-    });
-    living.addEventListener('change', function(event){
-      wealthApp.model.update('aboutLiving', event.target.value);
     });
   };
 
@@ -73,26 +56,43 @@ app.views.about = (function(window) {
    * PUBLIC FUNCTIONS
    */
 
+  var bind = function(event, handler) {
+    if(event === 'ageChanged') {
+      ageSlider.noUiSlider.on('change', function(values) {
+        handler( parseInt(values[0]) );
+      });
+    } else if(event === 'incomeChanged') {
+      incomeSlider.noUiSlider.on('change', function(values) {
+        handler( parseInt(values[0].replace('.', '')) );
+      });
+    } else if(event === 'situationChanged') {
+      situation.addEventListener('change', function(event){
+        handler(event.target.value);
+      });
+    } else if(event === 'livingChanged') {
+      living.addEventListener('change', function(event){
+        handler(event.target.value);
+      });
+    }
+  };
+
   var configModule = function(inputMap) {
     window.setConfigMap(inputMap, configMap);
   };
 
   var init = function(container) {
-    //init sliders
+    //DOM elements
     ageSlider = container.getElementsByClassName(configMap.ageSlider)[0];
     incomeSlider = container.getElementsByClassName(configMap.incomeSlider)[0];
-
-    createSliders();
-    bindSlidersEvents();
-
-    //init situation and living select lists
     situation = container.getElementsByClassName('about__select')[0];
     living = container.getElementsByClassName('about__select')[1];
 
-    bindSelectListsEvent();
+    createSliders();
+    sliderDOMEvents();
   };
 
   return {
+    bind: bind,
     configModule: configModule,
     init: init
   };
