@@ -79,6 +79,12 @@
 		user.savings = user.aboutIncome * user.aboutSavingsRate * 0.01;
 
 		localStorage[this._dbName] = JSON.stringify(data);
+
+		return {
+			basicNeeds: user.basicNeeds,
+			discretionaryExpenses: user.discretionaryExpenses,
+			savings: user.savings
+		};
 	};
 
 	/**

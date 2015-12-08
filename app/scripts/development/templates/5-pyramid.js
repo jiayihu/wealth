@@ -4,10 +4,10 @@ app.views.pyramid = (function() {
     basicId: '#pyramid-basic',
     discretiotionaryId: '#pyramid-discretionary',
     incomeId: '#pyramid-income',
-    basic: 0,
+    basicNeeds: 0,
     savings: 0,
-    discretionary: 0,
-    income: 0
+    discretionaryExpenses: 0,
+    aboutIncome: 0
   };
 
   var savingsText, basicText, discretionaryText, incomeText;
@@ -22,10 +22,10 @@ app.views.pyramid = (function() {
       prefix: '$ '
     });
 
-    savingsText.textContent = ' ' + moneyFormat.to( wealthApp.model.read('savings') ) + '/yr';
-    basicText.textContent = moneyFormat.to( wealthApp.model.read('basicNeeds') ) + '/yr';
-    discretionaryText.textContent = moneyFormat.to( wealthApp.model.read('discretionaryExpenses') ) + '/yr';
-    incomeText.textContent = moneyFormat.to( wealthApp.model.read('aboutIncome') ) + '/yr';
+    savingsText.textContent = ' ' + moneyFormat.to(configMap.savings) + '/yr';
+    basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
+    discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
+    incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';
   };
 
   /**

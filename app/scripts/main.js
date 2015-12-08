@@ -75,13 +75,13 @@
 	 * Throws a new Error
 	 */
 	window.makeError = function(name, msg, data) {
-		var error = new Error();
+		var error = {};
 		error.name = name;
 		error.msg = msg;
 		if(data) {
 			error.data = data;
 		}
-		return error;
+		console.error(error.msg);
 	};
 
 	/**
@@ -110,13 +110,15 @@
  	  var key;
 
  	  for(key in inputMap) {
- 	    if(inputMap.hasOwnProperty(key)) {
+ 	    if(configMap.hasOwnProperty(key)) {
  	      if(inputMap[key] instanceof Object) {
  	        window.setConfigMap(inputMap[key], configMap[key]);
  	      } else {
  	        configMap[key] = inputMap[key];
  	      }
- 	    }
+ 	    } else {
+				window.makeError('Wrong inputMap', 'Property "' + key + '" is not available in configMap');
+			}
  	  }
  	};
 
@@ -208,6 +210,12 @@
 		user.savings = user.aboutIncome * user.aboutSavingsRate * 0.01;
 
 		localStorage[this._dbName] = JSON.stringify(data);
+
+		return {
+			basicNeeds: user.basicNeeds,
+			discretionaryExpenses: user.discretionaryExpenses,
+			savings: user.savings
+		};
 	};
 
 	/**
@@ -288,7 +296,7 @@ var app = window.app || {};
 app.views = {};
 
 
-app.views.about = (function(window) {
+app.views.about = (function(window, noUiSlider) {
   var configMap = {
     ageSlider: 'about__age__slider',
     incomeSlider: 'about__income__slider',
@@ -387,7 +395,7 @@ app.views.about = (function(window) {
     init: init
   };
 
-})(window);
+})(window, noUiSlider);
 
 app.views.you = (function(window) {
   var configMap = {
@@ -609,10 +617,10 @@ app.views.pyramid = (function() {
     basicId: '#pyramid-basic',
     discretiotionaryId: '#pyramid-discretionary',
     incomeId: '#pyramid-income',
-    basic: 0,
+    basicNeeds: 0,
     savings: 0,
-    discretionary: 0,
-    income: 0
+    discretionaryExpenses: 0,
+    aboutIncome: 0
   };
 
   var savingsText, basicText, discretionaryText, incomeText;
@@ -627,10 +635,10 @@ app.views.pyramid = (function() {
       prefix: '$ '
     });
 
-    savingsText.textContent = ' ' + moneyFormat.to( wealthApp.model.read('savings') ) + '/yr';
-    basicText.textContent = moneyFormat.to( wealthApp.model.read('basicNeeds') ) + '/yr';
-    discretionaryText.textContent = moneyFormat.to( wealthApp.model.read('discretionaryExpenses') ) + '/yr';
-    incomeText.textContent = moneyFormat.to( wealthApp.model.read('aboutIncome') ) + '/yr';
+    savingsText.textContent = ' ' + moneyFormat.to(configMap.savings) + '/yr';
+    basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
+    discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
+    incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';
   };
 
   /**
@@ -1129,13 +1137,18 @@ app.shell = (function(window) {
    * VIEWS CONTROLLERS
    */
 
+  /**
+   * 2-About
+   */
   var aboutController = function() {
     app.views.about.bind('ageChanged', function(value) {
       wealthApp.model.update('aboutAge', value);
     });
     app.views.about.bind('incomeChanged', function(value) {
       wealthApp.model.update('aboutIncome', value);
-      wealthApp.model.updateMoneyValues();
+      PubSub.publish('aboutIncomeChanged', value);
+      var moneyValues = wealthApp.model.updateMoneyValues();
+      PubSub.publish('moneyValuesChanged', moneyValues);
     });
     app.views.about.bind('situationChanged', function(value) {
       wealthApp.model.update('aboutSituation', value);
@@ -1145,6 +1158,9 @@ app.shell = (function(window) {
     });
   };
 
+  /**
+   * 3-You
+   */
   var youController = function() {
     app.views.you.bind('basicNeedsChanged', function(basicRate, savingRate) {
       wealthApp.model.update('aboutBasicRate', basicRate);
@@ -1158,21 +1174,42 @@ app.shell = (function(window) {
     });
   };
 
+  /**
+   * 5-Pyramid
+   */
+  var pyramidSubscriber = function(topic, data) {
+    if(topic === 'aboutIncomeChanged') {
+      app.views.pyramid.configModule({
+        aboutIncome: data
+      });
+    } else if(topic === 'moneyValuesChanged') {
+      app.views.pyramid.configModule(data);
+    }
+    app.views.pyramid.updateLabels();
+  };
+
+  var pyramidController = function() {
+    PubSub.subscribe('aboutIncomeChanged', pyramidSubscriber);
+    PubSub.subscribe('moneyValuesChanged', pyramidSubscriber);
+  };
+
+  /**
+   * 7-Goal
+   */
   var goalController = function() {
     app.views.goal.bind('goalToggled', function(goal) {
       wealthApp.model.toggleGoal(goal);
     });
   };
 
+  /**
+   * 8-Retirement
+   */
   var retirementController = function() {
     app.views.retirement.bind('actionToggled', function(action) {
       wealthApp.model.toggleActions(action);
     });
   };
-
-  // var pyramidController = function() {
-  //
-  // };
 
   var init = function() {
     var data = wealthApp.model.read();
@@ -1200,12 +1237,13 @@ app.shell = (function(window) {
     //Screen #5
     var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
     app.views.pyramid.configModule({
-      basic: data.basicNeeds,
+      basicNeeds: data.basicNeeds,
       savings: data.savings,
-      discretionary: data.discretionaryExpenses,
-      income: data.aboutIncome
+      discretionaryExpenses: data.discretionaryExpenses,
+      aboutIncome: data.aboutIncome
     });
     app.views.pyramid.init(pyramidContainer);
+    pyramidController();
 
     //Screen #6
     var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];

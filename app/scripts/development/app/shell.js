@@ -5,13 +5,18 @@ app.shell = (function(window) {
    * VIEWS CONTROLLERS
    */
 
+  /**
+   * 2-About
+   */
   var aboutController = function() {
     app.views.about.bind('ageChanged', function(value) {
       wealthApp.model.update('aboutAge', value);
     });
     app.views.about.bind('incomeChanged', function(value) {
       wealthApp.model.update('aboutIncome', value);
-      wealthApp.model.updateMoneyValues();
+      PubSub.publish('aboutIncomeChanged', value);
+      var moneyValues = wealthApp.model.updateMoneyValues();
+      PubSub.publish('moneyValuesChanged', moneyValues);
     });
     app.views.about.bind('situationChanged', function(value) {
       wealthApp.model.update('aboutSituation', value);
@@ -21,6 +26,9 @@ app.shell = (function(window) {
     });
   };
 
+  /**
+   * 3-You
+   */
   var youController = function() {
     app.views.you.bind('basicNeedsChanged', function(basicRate, savingRate) {
       wealthApp.model.update('aboutBasicRate', basicRate);
@@ -34,21 +42,42 @@ app.shell = (function(window) {
     });
   };
 
+  /**
+   * 5-Pyramid
+   */
+  var pyramidSubscriber = function(topic, data) {
+    if(topic === 'aboutIncomeChanged') {
+      app.views.pyramid.configModule({
+        aboutIncome: data
+      });
+    } else if(topic === 'moneyValuesChanged') {
+      app.views.pyramid.configModule(data);
+    }
+    app.views.pyramid.updateLabels();
+  };
+
+  var pyramidController = function() {
+    PubSub.subscribe('aboutIncomeChanged', pyramidSubscriber);
+    PubSub.subscribe('moneyValuesChanged', pyramidSubscriber);
+  };
+
+  /**
+   * 7-Goal
+   */
   var goalController = function() {
     app.views.goal.bind('goalToggled', function(goal) {
       wealthApp.model.toggleGoal(goal);
     });
   };
 
+  /**
+   * 8-Retirement
+   */
   var retirementController = function() {
     app.views.retirement.bind('actionToggled', function(action) {
       wealthApp.model.toggleActions(action);
     });
   };
-
-  // var pyramidController = function() {
-  //
-  // };
 
   var init = function() {
     var data = wealthApp.model.read();
@@ -76,12 +105,13 @@ app.shell = (function(window) {
     //Screen #5
     var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
     app.views.pyramid.configModule({
-      basic: data.basicNeeds,
+      basicNeeds: data.basicNeeds,
       savings: data.savings,
-      discretionary: data.discretionaryExpenses,
-      income: data.aboutIncome
+      discretionaryExpenses: data.discretionaryExpenses,
+      aboutIncome: data.aboutIncome
     });
     app.views.pyramid.init(pyramidContainer);
+    pyramidController();
 
     //Screen #6
     var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];

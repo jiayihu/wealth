@@ -12,6 +12,7 @@
     "Chartist": false,
     "dragula": false,
     "noUiSlider": false,
+    "PubSub": false,
     "wealthApp": true,
     "wNumb": false
   },

@@ -1,4 +1,4 @@
-app.views.about = (function(window) {
+app.views.about = (function(window, noUiSlider) {
   var configMap = {
     ageSlider: 'about__age__slider',
     incomeSlider: 'about__income__slider',
@@ -97,4 +97,4 @@ app.views.about = (function(window) {
     init: init
   };
 
-})(window);
+})(window, noUiSlider);
