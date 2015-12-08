@@ -69,13 +69,13 @@
 	 * Throws a new Error
 	 */
 	window.makeError = function(name, msg, data) {
-		var error = new Error();
+		var error = {};
 		error.name = name;
 		error.msg = msg;
 		if(data) {
 			error.data = data;
 		}
-		return error;
+		console.error(error.msg);
 	};
 
 	/**
@@ -104,13 +104,15 @@
  	  var key;
 
  	  for(key in inputMap) {
- 	    if(inputMap.hasOwnProperty(key)) {
+ 	    if(configMap.hasOwnProperty(key)) {
  	      if(inputMap[key] instanceof Object) {
  	        window.setConfigMap(inputMap[key], configMap[key]);
  	      } else {
  	        configMap[key] = inputMap[key];
  	      }
- 	    }
+ 	    } else {
+				window.makeError('Wrong inputMap', 'Property "' + key + '" is not available in configMap');
+			}
  	  }
  	};
 
