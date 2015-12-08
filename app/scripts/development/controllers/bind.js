@@ -6,22 +6,6 @@
       discretionaryRateSliderClass: 'about__savings__slider--expenses'
     },
 
-    init: function() {
-      bindings.incomeBinding();
-      bindings.basicRateBinding();
-      bindings.discretionaryRateBinding();
-    },
-
-    incomeBinding: function() {
-      var slider = document.getElementsByClassName(bindings.config.incomeSliderClass)[0];
-      slider.noUiSlider.on('change', function(values) {
-
-        Scenarios.chartData.series[0] = Scenarios.updateSeries();
-        Scenarios.incomeRateSlider.noUiSlider.set(values[0]);
-        Scenarios.lineChart.update(Scenarios.chartData);
-      });
-    },
-
     basicRateBinding: function() {
       var slider = document.getElementsByClassName(bindings.config.basicRateSliderClass)[0];
       slider.noUiSlider.on('change', function(values) {

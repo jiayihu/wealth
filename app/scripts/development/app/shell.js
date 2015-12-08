@@ -62,6 +62,22 @@ app.shell = (function(window) {
   };
 
   /**
+   * 6-Scenarios
+   */
+  var scenariosSubscriber = function(topic, data) {
+    if(topic === 'aboutIncomeChanged') {
+      app.views.scenarios.configModule({savings: data});
+      app.views.scenarios.calculateSeries();
+      app.views.scenarios.setSlider('income', data);
+      app.views.scenarios.updateLineChart();
+    }
+  };
+
+  var scenariosController = function() {
+    PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
+  };
+
+  /**
    * 7-Goal
    */
   var goalController = function() {
@@ -125,6 +141,7 @@ app.shell = (function(window) {
       }
     });
     app.views.scenarios.init(scenariosContainer);
+    scenariosController();
 
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];

@@ -69,7 +69,7 @@ app.views.scenarios = (function(window) {
     }
   };
 
-  var updateLineChart = function() {
+  var bindSlidersToChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
       for(var i=0; i < configMap.chartData.series[0].length; i++) {
         configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * configMap.savings * (configMap.chartData.labels[i] - 18);
@@ -117,13 +117,27 @@ app.views.scenarios = (function(window) {
     //Line Chart
     calculateSeries();
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
-    updateLineChart();
+    bindSlidersToChart();
+  };
+
+  var setSlider = function(slider, value) {
+    if(slider === 'income') {
+      incomeRateSlider.noUiSlider.set(value);
+    } else {
+      savingRateSlider.noUiSlider.set(value);
+    }
+  };
+
+  var updateLineChart = function() {
+    lineChart.update(configMap.chartData);
   };
 
   return {
     calculateSeries: calculateSeries,
     configModule: configModule,
-    init: init
+    init: init,
+    setSlider: setSlider,
+    updateLineChart: updateLineChart
   };
 
 })(window);

@@ -737,7 +737,7 @@ app.views.scenarios = (function(window) {
     }
   };
 
-  var updateLineChart = function() {
+  var bindSlidersToChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
       for(var i=0; i < configMap.chartData.series[0].length; i++) {
         configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * configMap.savings * (configMap.chartData.labels[i] - 18);
@@ -785,13 +785,27 @@ app.views.scenarios = (function(window) {
     //Line Chart
     calculateSeries();
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
-    updateLineChart();
+    bindSlidersToChart();
+  };
+
+  var setSlider = function(slider, value) {
+    if(slider === 'income') {
+      incomeRateSlider.noUiSlider.set(value);
+    } else {
+      savingRateSlider.noUiSlider.set(value);
+    }
+  };
+
+  var updateLineChart = function() {
+    lineChart.update(configMap.chartData);
   };
 
   return {
     calculateSeries: calculateSeries,
     configModule: configModule,
-    init: init
+    init: init,
+    setSlider: setSlider,
+    updateLineChart: updateLineChart
   };
 
 })(window);
@@ -1194,6 +1208,22 @@ app.shell = (function(window) {
   };
 
   /**
+   * 6-Scenarios
+   */
+  var scenariosSubscriber = function(topic, data) {
+    if(topic === 'aboutIncomeChanged') {
+      app.views.scenarios.configModule({savings: data});
+      app.views.scenarios.calculateSeries();
+      app.views.scenarios.setSlider('income', data);
+      app.views.scenarios.updateLineChart();
+    }
+  };
+
+  var scenariosController = function() {
+    PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
+  };
+
+  /**
    * 7-Goal
    */
   var goalController = function() {
@@ -1257,6 +1287,7 @@ app.shell = (function(window) {
       }
     });
     app.views.scenarios.init(scenariosContainer);
+    scenariosController();
 
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
