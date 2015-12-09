@@ -1,6 +1,6 @@
 var app = window.app || {};
 
-app.shell = (function(window) {
+app.shell = (function(window, PubSub) {
   /**
    * VIEWS CONTROLLERS
    */
@@ -13,10 +13,12 @@ app.shell = (function(window) {
       wealthApp.model.update('aboutAge', value);
     });
     app.views.about.bind('incomeChanged', function(value) {
-      wealthApp.model.update('aboutIncome', value);
-      PubSub.publish('aboutIncomeChanged', value);
-      var moneyValues = wealthApp.model.updateMoneyValues();
-      PubSub.publish('moneyValuesChanged', moneyValues);
+      wealthApp.model.update('aboutIncome', value, function(value) {
+        PubSub.publish('aboutIncomeChanged', value);
+      });
+      wealthApp.model.updateMoneyValues(function(moneyValues) {
+        PubSub.publish('moneyValuesChanged', moneyValues);
+      });
     });
     app.views.about.bind('situationChanged', function(value) {
       wealthApp.model.update('aboutSituation', value);
@@ -29,17 +31,35 @@ app.shell = (function(window) {
   /**
    * 3-You
    */
+  var youSubscriber = function(topic, data) {
+    if(topic === 'aboutIncomeChanged') {
+      app.views.you.configModule({
+        aboutIncome: data
+      });
+    }
+  };
+
   var youController = function() {
-    app.views.you.bind('basicNeedsChanged', function(basicRate, savingRate) {
+    app.views.you.bind('basicNeedsChanged', function(basicRate, savingsRate) {
       wealthApp.model.update('aboutBasicRate', basicRate);
-      wealthApp.model.update('aboutSavingsRate', savingRate);
-      wealthApp.model.updateMoneyValues();
+      wealthApp.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
+        PubSub.publish('savingsRateChanged', savingsRate);
+      });
+      wealthApp.model.updateMoneyValues(function(moneyValues) {
+        PubSub.publish('moneyValuesChanged', moneyValues);
+      });
     });
-    app.views.you.bind('expensesChanged', function(expensesRate, savingRate) {
+    app.views.you.bind('expensesChanged', function(expensesRate, savingsRate) {
       wealthApp.model.update('aboutDiscretionaryRate', expensesRate);
-      wealthApp.model.update('aboutSavingsRate', savingRate);
-      wealthApp.model.updateMoneyValues();
+      wealthApp.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
+        PubSub.publish('savingsRateChanged', savingsRate);
+      });
+      wealthApp.model.updateMoneyValues(function(moneyValues) {
+        PubSub.publish('moneyValuesChanged', moneyValues);
+      });
     });
+
+    PubSub.subscribe('aboutIncomeChanged', youSubscriber);
   };
 
   /**
@@ -66,15 +86,21 @@ app.shell = (function(window) {
    */
   var scenariosSubscriber = function(topic, data) {
     if(topic === 'aboutIncomeChanged') {
-      app.views.scenarios.configModule({savings: data});
+      app.views.scenarios.configModule({income: data});
       app.views.scenarios.calculateSeries();
       app.views.scenarios.setSlider('income', data);
+      app.views.scenarios.updateLineChart();
+    } else if(topic === 'savingsRateChanged') {
+      app.views.scenarios.configModule({savingsRate: data});
+      app.views.scenarios.calculateSeries();
+      app.views.scenarios.setSlider('savingsRate', data);
       app.views.scenarios.updateLineChart();
     }
   };
 
   var scenariosController = function() {
     PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
+    PubSub.subscribe('savingsRateChanged', scenariosSubscriber);
   };
 
   /**
@@ -113,7 +139,7 @@ app.shell = (function(window) {
     //Screen #3
     var youContainer = document.getElementsByClassName('you-wrapper')[0];
     app.views.you.configModule({
-      income: data.aboutIncome
+      aboutIncome: data.aboutIncome
     });
     app.views.you.init(youContainer);
     youController();
@@ -132,6 +158,8 @@ app.shell = (function(window) {
     //Screen #6
     var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
     app.views.scenarios.configModule({
+      savingsRate: data.aboutSavingsRate,
+      income: data.aboutIncome,
       savings: data.savings,
       savingRateOptions: {
         start: data.aboutSavingsRate
@@ -162,4 +190,4 @@ app.shell = (function(window) {
     init: init
   };
 
-})(window);
+})(window, PubSub);

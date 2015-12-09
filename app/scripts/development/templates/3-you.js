@@ -1,6 +1,6 @@
 app.views.you = (function(window) {
   var configMap = {
-    income: 60000,
+    aboutIncome: 60000,
     needsSlider: 'about__savings__slider--needs',
     expensesSlider: 'about__savings__slider--expenses',
     //Slider options
@@ -37,8 +37,7 @@ app.views.you = (function(window) {
       ]
   };
 
-  var $pieChart, needsSlider, expensesSlider,
-      income;
+  var $pieChart, needsSlider, expensesSlider;
 
   /**
    * DOM FUNCTIONS
@@ -92,7 +91,7 @@ app.views.you = (function(window) {
         value = $slice.attr('ct:value'),
         seriesName = $slice.parent().attr('ct:series-name');
       $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-      moneyFormat.to(parseInt(value)/100 * configMap.income ) ).show();
+      moneyFormat.to(parseInt(value)/100 * configMap.aboutIncome ) ).show();
     });
 
     //For mobiles
@@ -102,7 +101,7 @@ app.views.you = (function(window) {
           value = $slice.attr('ct:value'),
           seriesName = $slice.parent().attr('ct:series-name');
         $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-        moneyFormat.to(parseInt(value)/100 * configMap.income ) ).show();
+        moneyFormat.to(parseInt(value)/100 * configMap.aboutIncome ) ).show();
         isTooltipShown = true;
       } else {
         $toolTip.hide();

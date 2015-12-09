@@ -1,11 +1,13 @@
-app.views.scenarios = (function(window) {
+app.views.scenarios = (function(window, Chartist, wNumb) {
   var configMap = {
+    savingsRate: 30,
+    income: 60000,
     savings: 18000,
     //Sliders options
     savingRateSlider: 'option__slider--saving',
     incomeRateSlider: 'option__slider--income',
     savingRateOptions: {
-      start: 40,
+      start: 30,
       step: 1,
       range: {'min': 1, 'max': 100},
       format: wNumb({ decimals: 0})
@@ -90,6 +92,7 @@ app.views.scenarios = (function(window) {
    */
 
   var calculateSeries = function() {
+    configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
     configMap.chartData.series[0] = [configMap.savings * 1, configMap.savings * 7, configMap.savings * 17, configMap.savings * 27, configMap.savings * 37, configMap.savings * 47];
     return configMap.chartData.series[0];
   };
@@ -123,7 +126,7 @@ app.views.scenarios = (function(window) {
   var setSlider = function(slider, value) {
     if(slider === 'income') {
       incomeRateSlider.noUiSlider.set(value);
-    } else {
+    } else if(slider === 'savingsRate') {
       savingRateSlider.noUiSlider.set(value);
     }
   };
@@ -140,4 +143,4 @@ app.views.scenarios = (function(window) {
     updateLineChart: updateLineChart
   };
 
-})(window);
+})(window, Chartist, wNumb);
