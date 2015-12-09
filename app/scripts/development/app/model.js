@@ -58,19 +58,22 @@
 	 * @param  {string} property   The name of the property to update
 	 * @param  {object} updateData The new value of the property
 	 */
-	Model.prototype.update = function (property, updateData) {
+	Model.prototype.update = function (property, updateData, callback) {
 	   var data = JSON.parse(localStorage[this._dbName]);
      var user = data.user;
 
      user[property] = updateData;
 
      localStorage[this._dbName] = JSON.stringify(data);
+
+		 callback = callback || function() {};
+		 callback(updateData);
 	};
 
 	/**
 	 * Update basic needs, discretionary and savings actual values based on rates
 	 */
-	Model.prototype.updateMoneyValues = function() {
+	Model.prototype.updateMoneyValues = function(callback) {
 		var data = JSON.parse(localStorage[this._dbName]);
     var user = data.user;
 
@@ -80,11 +83,13 @@
 
 		localStorage[this._dbName] = JSON.stringify(data);
 
-		return {
+		callback = callback || function() {};
+
+		callback({
 			basicNeeds: user.basicNeeds,
 			discretionaryExpenses: user.discretionaryExpenses,
 			savings: user.savings
-		};
+		});
 	};
 
 	/**
