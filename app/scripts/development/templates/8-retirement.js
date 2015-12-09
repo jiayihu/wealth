@@ -39,7 +39,7 @@ app.views.retirement = (function() {
         var target = event.target;
         if(target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
           target.classList.toggle('saved');
-          handler(data.actions[parseInt(target.dataset.action)]);
+          handler(data.actions[Number(target.dataset.action)]);
         }
       });
     }

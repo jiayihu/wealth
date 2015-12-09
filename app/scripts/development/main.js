@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Including JS Partials
  */

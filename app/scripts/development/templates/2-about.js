@@ -59,11 +59,11 @@ app.views.about = (function(window, noUiSlider) {
   var bind = function(event, handler) {
     if(event === 'ageChanged') {
       ageSlider.noUiSlider.on('change', function(values) {
-        handler( parseInt(values[0]) );
+        handler( Number(values[0]) );
       });
     } else if(event === 'incomeChanged') {
       incomeSlider.noUiSlider.on('change', function(values) {
-        handler( parseInt(values[0].replace('.', '')) );
+        handler( Number(values[0].replace('.', '')) );
       });
     } else if(event === 'situationChanged') {
       situation.addEventListener('change', function(event){

@@ -91,7 +91,7 @@ app.views.you = (function(window) {
         value = $slice.attr('ct:value'),
         seriesName = $slice.parent().attr('ct:series-name');
       $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-      moneyFormat.to(parseInt(value)/100 * configMap.aboutIncome ) ).show();
+      moneyFormat.to(Number(value)/100 * configMap.aboutIncome ) ).show();
     });
 
     //For mobiles
@@ -101,7 +101,7 @@ app.views.you = (function(window) {
           value = $slice.attr('ct:value'),
           seriesName = $slice.parent().attr('ct:series-name');
         $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-        moneyFormat.to(parseInt(value)/100 * configMap.aboutIncome ) ).show();
+        moneyFormat.to(Number(value)/100 * configMap.aboutIncome ) ).show();
         isTooltipShown = true;
       } else {
         $toolTip.hide();
@@ -153,9 +153,9 @@ app.views.you = (function(window) {
    */
   var updateDOMDoughnut = function(slider, values) {
     if(slider === 'needsSlider') {
-      configMap.doughnutData.series[0].value = parseInt(values[0]);
+      configMap.doughnutData.series[0].value = Number(values[0]);
     } else {
-      configMap.doughnutData.series[1].value = parseInt(values[0]);
+      configMap.doughnutData.series[1].value = Number(values[0]);
     }
     configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
     $pieChart.update();

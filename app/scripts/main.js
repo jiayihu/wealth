@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Including JS Partials
  */
@@ -135,7 +133,7 @@
   var defaultModel = {
     aboutAge: 20,
     aboutSituation: 'married',
-    aboutLiving: 'rent',
+    aboutLiving: 'own',
     aboutIncome: 60000,
     aboutBasicRate: 45,
     aboutDiscretionaryRate: 25,
@@ -362,11 +360,11 @@ app.views.about = (function(window, noUiSlider) {
   var bind = function(event, handler) {
     if(event === 'ageChanged') {
       ageSlider.noUiSlider.on('change', function(values) {
-        handler( parseInt(values[0]) );
+        handler( Number(values[0]) );
       });
     } else if(event === 'incomeChanged') {
       incomeSlider.noUiSlider.on('change', function(values) {
-        handler( parseInt(values[0].replace('.', '')) );
+        handler( Number(values[0].replace('.', '')) );
       });
     } else if(event === 'situationChanged') {
       situation.addEventListener('change', function(event){
@@ -495,7 +493,7 @@ app.views.you = (function(window) {
         value = $slice.attr('ct:value'),
         seriesName = $slice.parent().attr('ct:series-name');
       $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-      moneyFormat.to(parseInt(value)/100 * configMap.aboutIncome ) ).show();
+      moneyFormat.to(Number(value)/100 * configMap.aboutIncome ) ).show();
     });
 
     //For mobiles
@@ -505,7 +503,7 @@ app.views.you = (function(window) {
           value = $slice.attr('ct:value'),
           seriesName = $slice.parent().attr('ct:series-name');
         $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-        moneyFormat.to(parseInt(value)/100 * configMap.aboutIncome ) ).show();
+        moneyFormat.to(Number(value)/100 * configMap.aboutIncome ) ).show();
         isTooltipShown = true;
       } else {
         $toolTip.hide();
@@ -557,9 +555,9 @@ app.views.you = (function(window) {
    */
   var updateDOMDoughnut = function(slider, values) {
     if(slider === 'needsSlider') {
-      configMap.doughnutData.series[0].value = parseInt(values[0]);
+      configMap.doughnutData.series[0].value = Number(values[0]);
     } else {
-      configMap.doughnutData.series[1].value = parseInt(values[0]);
+      configMap.doughnutData.series[1].value = Number(values[0]);
     }
     configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
     $pieChart.update();
@@ -694,7 +692,9 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     chartClass: '.scenario__chart',
     chartData: {
       labels: [18, 25, 35, 45, 55, 65],
-      series: []
+      series: [
+        [35000, 245000, 595000, 945000, 1295000, 1645000]
+      ]
     },
     chartOptions: {
       showArea: true,
@@ -745,17 +745,12 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
   var bindSlidersToChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
-      for(var i=0; i < configMap.chartData.series[0].length; i++) {
-        configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * configMap.savings * (configMap.chartData.labels[i] - 18);
-      }
-      lineChart.update(configMap.chartData);
+      configMap.savingsRate = Number(values[0]);
+      calculateSeries();
     });
     incomeRateSlider.noUiSlider.on('change', function( values ){
-      var savingRate =savingRateSlider.noUiSlider.get();
-      for(var i=0; i < configMap.chartData.series[0].length; i++) {
-        configMap.chartData.series[0][i] = savingRate * 0.01 * parseInt(values[0].replace('.', '')) * (configMap.chartData.labels[i] - 18);
-      }
-      lineChart.update(configMap.chartData);
+      configMap.income = Number(values[0].replace('.', ''));
+      calculateSeries();
     });
   };
 
@@ -765,8 +760,15 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
   var calculateSeries = function() {
     configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
-    configMap.chartData.series[0] = [configMap.savings * 1, configMap.savings * 7, configMap.savings * 17, configMap.savings * 27, configMap.savings * 37, configMap.savings * 47];
-    return configMap.chartData.series[0];
+    configMap.chartData.series[0] = [
+      configMap.savings * 1,
+      configMap.savings * 7,
+      configMap.savings * 17,
+      configMap.savings * 27,
+      configMap.savings * 37,
+      configMap.savings * 47
+    ];
+    lineChart.update(configMap.chartData);
   };
 
   var configModule = function(inputMap) {
@@ -790,8 +792,8 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     });
 
     //Line Chart
-    calculateSeries();
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
+    calculateSeries();
     bindSlidersToChart();
   };
 
@@ -803,16 +805,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     }
   };
 
-  var updateLineChart = function() {
-    lineChart.update(configMap.chartData);
-  };
-
   return {
     calculateSeries: calculateSeries,
     configModule: configModule,
     init: init,
-    setSlider: setSlider,
-    updateLineChart: updateLineChart
+    setSlider: setSlider
   };
 
 })(window, Chartist, wNumb);
@@ -916,7 +913,7 @@ app.views.retirement = (function() {
         var target = event.target;
         if(target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
           target.classList.toggle('saved');
-          handler(data.actions[parseInt(target.dataset.action)]);
+          handler(data.actions[Number(target.dataset.action)]);
         }
       });
     }
@@ -1080,11 +1077,11 @@ app.views.plan = (function() {
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    // if(!clickedLink.classList.contains('disabled')) {
+    if(!clickedLink.classList.contains('disabled')) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    // }
+    }
   };
 
   var nav = document.querySelector('.nav');
@@ -1242,12 +1239,10 @@ app.shell = (function(window, PubSub) {
       app.views.scenarios.configModule({income: data});
       app.views.scenarios.calculateSeries();
       app.views.scenarios.setSlider('income', data);
-      app.views.scenarios.updateLineChart();
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
       app.views.scenarios.calculateSeries();
       app.views.scenarios.setSlider('savingsRate', data);
-      app.views.scenarios.updateLineChart();
     }
   };
 
@@ -1292,7 +1287,16 @@ app.shell = (function(window, PubSub) {
     //Screen #3
     var youContainer = document.getElementsByClassName('you-wrapper')[0];
     app.views.you.configModule({
-      aboutIncome: data.aboutIncome
+      aboutIncome: data.aboutIncome,
+      needsOptions: {
+        start: data.aboutBasicRate
+      },
+      expensesOptions: {
+        start: data.aboutDiscretionaryRate
+      },
+      doughnutData: {
+          series: [{value: data.aboutBasicRate, name: 'Basic Needs'}, {value: data.aboutDiscretionaryRate,name: 'Discretionary'}]
+      }
     });
     app.views.you.init(youContainer);
     youController();

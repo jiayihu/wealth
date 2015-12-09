@@ -22,7 +22,9 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     chartClass: '.scenario__chart',
     chartData: {
       labels: [18, 25, 35, 45, 55, 65],
-      series: []
+      series: [
+        [35000, 245000, 595000, 945000, 1295000, 1645000]
+      ]
     },
     chartOptions: {
       showArea: true,
@@ -73,17 +75,12 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
   var bindSlidersToChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
-      for(var i=0; i < configMap.chartData.series[0].length; i++) {
-        configMap.chartData.series[0][i] = parseInt(values[0]) * 0.01 * configMap.savings * (configMap.chartData.labels[i] - 18);
-      }
-      lineChart.update(configMap.chartData);
+      configMap.savingsRate = Number(values[0]);
+      calculateSeries();
     });
     incomeRateSlider.noUiSlider.on('change', function( values ){
-      var savingRate =savingRateSlider.noUiSlider.get();
-      for(var i=0; i < configMap.chartData.series[0].length; i++) {
-        configMap.chartData.series[0][i] = savingRate * 0.01 * parseInt(values[0].replace('.', '')) * (configMap.chartData.labels[i] - 18);
-      }
-      lineChart.update(configMap.chartData);
+      configMap.income = Number(values[0].replace('.', ''));
+      calculateSeries();
     });
   };
 
@@ -93,8 +90,15 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
   var calculateSeries = function() {
     configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
-    configMap.chartData.series[0] = [configMap.savings * 1, configMap.savings * 7, configMap.savings * 17, configMap.savings * 27, configMap.savings * 37, configMap.savings * 47];
-    return configMap.chartData.series[0];
+    configMap.chartData.series[0] = [
+      configMap.savings * 1,
+      configMap.savings * 7,
+      configMap.savings * 17,
+      configMap.savings * 27,
+      configMap.savings * 37,
+      configMap.savings * 47
+    ];
+    lineChart.update(configMap.chartData);
   };
 
   var configModule = function(inputMap) {
@@ -118,8 +122,8 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     });
 
     //Line Chart
-    calculateSeries();
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
+    calculateSeries();
     bindSlidersToChart();
   };
 
@@ -131,16 +135,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     }
   };
 
-  var updateLineChart = function() {
-    lineChart.update(configMap.chartData);
-  };
-
   return {
     calculateSeries: calculateSeries,
     configModule: configModule,
     init: init,
-    setSlider: setSlider,
-    updateLineChart: updateLineChart
+    setSlider: setSlider
   };
 
 })(window, Chartist, wNumb);

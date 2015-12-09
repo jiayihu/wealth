@@ -89,12 +89,10 @@ app.shell = (function(window, PubSub) {
       app.views.scenarios.configModule({income: data});
       app.views.scenarios.calculateSeries();
       app.views.scenarios.setSlider('income', data);
-      app.views.scenarios.updateLineChart();
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
       app.views.scenarios.calculateSeries();
       app.views.scenarios.setSlider('savingsRate', data);
-      app.views.scenarios.updateLineChart();
     }
   };
 
@@ -139,7 +137,16 @@ app.shell = (function(window, PubSub) {
     //Screen #3
     var youContainer = document.getElementsByClassName('you-wrapper')[0];
     app.views.you.configModule({
-      aboutIncome: data.aboutIncome
+      aboutIncome: data.aboutIncome,
+      needsOptions: {
+        start: data.aboutBasicRate
+      },
+      expensesOptions: {
+        start: data.aboutDiscretionaryRate
+      },
+      doughnutData: {
+          series: [{value: data.aboutBasicRate, name: 'Basic Needs'}, {value: data.aboutDiscretionaryRate,name: 'Discretionary'}]
+      }
     });
     app.views.you.init(youContainer);
     youController();

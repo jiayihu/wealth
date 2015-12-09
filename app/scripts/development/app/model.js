@@ -4,7 +4,7 @@
   var defaultModel = {
     aboutAge: 20,
     aboutSituation: 'married',
-    aboutLiving: 'rent',
+    aboutLiving: 'own',
     aboutIncome: 60000,
     aboutBasicRate: 45,
     aboutDiscretionaryRate: 25,
