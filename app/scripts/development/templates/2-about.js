@@ -15,7 +15,9 @@ app.views.about = (function(window, noUiSlider) {
       range: {'min': 18000, 'max': 200000},
       format: wNumb({decimals: 1, thousand: '.'})
     },
-    optionLists: 'about__select'
+    optionLists: 'about__select',
+    aboutSituation: 'married-kids',
+    aboutLiving: 'rent'
   };
 
   var ageSlider, incomeSlider,
@@ -30,18 +32,23 @@ app.views.about = (function(window, noUiSlider) {
     window.createSlider(incomeSlider, configMap.incomeOptions);
   };
 
-  var onSliderUpdate = function(slider, values) {
-    var tooltip = slider.getElementsByTagName('span')[0];
-    if(slider.classList.contains(configMap.incomeSlider)) {
-      tooltip.innerHTML = '$' + values[0];
-    } else {
-      tooltip.innerHTML = values[0];
-    }
+  var setOptionLists = function() {
+    situation.value = configMap.aboutSituation;
+    living.value = configMap.aboutLiving;
   };
 
   /**
    * EVENT HANDLERS
    */
+
+   var onSliderUpdate = function(slider, values) {
+     var tooltip = slider.getElementsByTagName('span')[0];
+     if(slider.classList.contains(configMap.incomeSlider)) {
+       tooltip.innerHTML = '$' + values[0];
+     } else {
+       tooltip.innerHTML = values[0];
+     }
+   };
 
   var sliderDOMEvents = function() {
     ageSlider.noUiSlider.on('update', function(values) {
@@ -89,6 +96,8 @@ app.views.about = (function(window, noUiSlider) {
 
     createSliders();
     sliderDOMEvents();
+
+    setOptionLists();
   };
 
   return {

@@ -129,7 +129,9 @@ app.shell = (function(window, PubSub) {
       },
       incomeOptions: {
         start: data.aboutIncome
-      }
+      },
+      aboutSituation: data.aboutSituation,
+      aboutLiving: data.aboutLiving
     });
     app.views.about.init(aboutContainer);
     aboutController();
