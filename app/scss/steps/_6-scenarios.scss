@@ -8,17 +8,58 @@
   }
 
   .scenario {
-    width: 90%;
-    margin-left: 10%;
 
     @media (max-width: $screen-tablet) {
       width: 100%;
     }
   }
 
+  .option {
+    padding: 0 1em;
+  }
+
   .option--income {
     .slider-tooltip {
       left: -16px;
+    }
+  }
+
+  .investment {
+    margin: 1em 0;
+
+    input {
+      display: none;
+
+      &:checked + label {
+        background-color: rgba(78,161,215,.2);
+        border-color: $primary;
+      }
+    }
+
+    label {
+      margin: 0 15px 1em 15px;
+      font-size: .9em;
+      display: block;
+      background-color: rgba(78,161,215,.1);
+      border: 1px solid #C5CFDB;
+      width: 300px;
+      padding: 5px 20px;
+      transition: all ease-in-out 0.5s;
+      cursor: pointer;
+
+      @media(min-width: $screen-phone) {
+        display: inline-block;
+        width: auto;
+      }
+
+      & > * {
+        display: block;
+      }
+    }
+
+    &__gain {
+      font-size: 1.4em;
+      font-weight: normal;
     }
   }
 
@@ -44,5 +85,21 @@
   .ct-axis-savings {
     fill: $text;
     font-weight: normal;
+  }
+
+  .savings {
+    margin: 2em auto 0 auto;
+    color: #fff;
+    max-width: 300px;
+    padding: 1em 2em;
+    background-color: $primary;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    &__amount {
+      font-size: 2.5em;
+    }
   }
 }
