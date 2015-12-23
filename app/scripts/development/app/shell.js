@@ -175,6 +175,9 @@ app.shell = (function(window, PubSub) {
       },
       incomeOptions: {
         start: data.aboutIncome
+      },
+      chartData: {
+        labels: [data.aboutAge, data.aboutAge + 10, data.aboutAge + 20, data.aboutAge + 30, data.aboutAge + 40, data.aboutAge + 50]
       }
     });
     app.views.scenarios.init(scenariosContainer);

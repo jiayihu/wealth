@@ -771,11 +771,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
     configMap.chartData.series[0] = [
       configMap.savings * 1,
-      configMap.savings * 7,
-      configMap.savings * 17,
-      configMap.savings * 27,
-      configMap.savings * 37,
-      configMap.savings * 47
+      configMap.savings * 10,
+      configMap.savings * 20,
+      configMap.savings * 30,
+      configMap.savings * 40,
+      configMap.savings * 50
     ];
     lineChart.update(configMap.chartData);
   };
@@ -1334,6 +1334,9 @@ app.shell = (function(window, PubSub) {
       },
       incomeOptions: {
         start: data.aboutIncome
+      },
+      chartData: {
+        labels: [data.aboutAge, data.aboutAge + 10, data.aboutAge + 20, data.aboutAge + 30, data.aboutAge + 40, data.aboutAge + 50]
       }
     });
     app.views.scenarios.init(scenariosContainer);
