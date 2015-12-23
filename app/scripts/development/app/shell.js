@@ -87,11 +87,11 @@ app.shell = (function(window, PubSub) {
   var scenariosSubscriber = function(topic, data) {
     if(topic === 'aboutIncomeChanged') {
       app.views.scenarios.configModule({income: data});
-      app.views.scenarios.calculateSeries();
+      app.views.scenarios.updateLineChart();
       app.views.scenarios.setSlider('income', data);
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
-      app.views.scenarios.calculateSeries();
+      app.views.scenarios.updateLineChart();
       app.views.scenarios.setSlider('savingsRate', data);
     }
   };

@@ -78,11 +78,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   var bindSlidersToChart = function() {
     savingRateSlider.noUiSlider.on('change', function( values ){
       configMap.savingsRate = Number(values[0]);
-      calculateSeries();
+      updateLineChart();
     });
     incomeRateSlider.noUiSlider.on('change', function( values ){
       configMap.income = Number(values[0].replace('.', ''));
-      calculateSeries();
+      updateLineChart();
     });
   };
 
@@ -90,7 +90,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
    * PUBLIC FUNCTIONS
    */
 
-  var calculateSeries = function() {
+  var updateLineChart = function() {
     var multiplier = configMap.chartData.labels[3] - configMap.chartData.labels[2],
         moneyFormat = wNumb({
           thousand: ','
@@ -131,7 +131,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     //Line Chart
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
-    calculateSeries();
+    updateLineChart();
     bindSlidersToChart();
   };
 
@@ -144,7 +144,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   };
 
   return {
-    calculateSeries: calculateSeries,
+    updateLineChart: updateLineChart,
     configModule: configModule,
     init: init,
     setSlider: setSlider
