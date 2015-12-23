@@ -46,11 +46,13 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
           }
         })
       ]
-    }
+    },
+    retirementSavingsHTML: 'savings__amount'
   };
 
   var savingRateSlider, incomeRateSlider,
-      lineChart;
+      lineChart,
+      retirementSavings;
 
   /**
    * DOM FUNCTIONS
@@ -89,16 +91,21 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
    */
 
   var calculateSeries = function() {
+    var multiplier = configMap.chartData.labels[3] - configMap.chartData.labels[2],
+        moneyFormat = wNumb({
+          thousand: ','
+        });
     configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
     configMap.chartData.series[0] = [
       configMap.savings * 1,
-      configMap.savings * 10,
-      configMap.savings * 20,
-      configMap.savings * 30,
-      configMap.savings * 40,
-      configMap.savings * 50
+      configMap.savings * multiplier * 1,
+      configMap.savings * multiplier * 2,
+      configMap.savings * multiplier * 3,
+      configMap.savings * multiplier * 4,
+      configMap.savings * multiplier * 6
     ];
     lineChart.update(configMap.chartData);
+    retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.savings * multiplier * 6);
   };
 
   var configModule = function(inputMap) {
@@ -109,6 +116,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
+    retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
 
     //Sliders
     window.createSlider(savingRateSlider, configMap.savingRateOptions);

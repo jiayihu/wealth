@@ -18,7 +18,7 @@ app.views.pyramid = (function() {
 
   var updateLabels = function() {
     var moneyFormat = wNumb({
-      thousand: '.',
+      thousand: ',',
       prefix: '$ '
     });
 

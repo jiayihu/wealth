@@ -642,7 +642,7 @@ app.views.pyramid = (function() {
 
   var updateLabels = function() {
     var moneyFormat = wNumb({
-      thousand: '.',
+      thousand: ',',
       prefix: '$ '
     });
 
@@ -725,11 +725,13 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
           }
         })
       ]
-    }
+    },
+    retirementSavingsHTML: 'savings__amount'
   };
 
   var savingRateSlider, incomeRateSlider,
-      lineChart;
+      lineChart,
+      retirementSavings;
 
   /**
    * DOM FUNCTIONS
@@ -768,16 +770,21 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
    */
 
   var calculateSeries = function() {
+    var multiplier = configMap.chartData.labels[3] - configMap.chartData.labels[2],
+        moneyFormat = wNumb({
+          thousand: ','
+        });
     configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
     configMap.chartData.series[0] = [
       configMap.savings * 1,
-      configMap.savings * 10,
-      configMap.savings * 20,
-      configMap.savings * 30,
-      configMap.savings * 40,
-      configMap.savings * 50
+      configMap.savings * multiplier * 1,
+      configMap.savings * multiplier * 2,
+      configMap.savings * multiplier * 3,
+      configMap.savings * multiplier * 4,
+      configMap.savings * multiplier * 6
     ];
     lineChart.update(configMap.chartData);
+    retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.savings * multiplier * 6);
   };
 
   var configModule = function(inputMap) {
@@ -788,6 +795,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
+    retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
 
     //Sliders
     window.createSlider(savingRateSlider, configMap.savingRateOptions);
@@ -1324,7 +1332,8 @@ app.shell = (function(window, PubSub) {
     pyramidController();
 
     //Screen #6
-    var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
+    var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0],
+        xAxisDifference = (65 - data.aboutAge) / 6;
     app.views.scenarios.configModule({
       savingsRate: data.aboutSavingsRate,
       income: data.aboutIncome,
@@ -1336,7 +1345,7 @@ app.shell = (function(window, PubSub) {
         start: data.aboutIncome
       },
       chartData: {
-        labels: [data.aboutAge, data.aboutAge + 10, data.aboutAge + 20, data.aboutAge + 30, data.aboutAge + 40, data.aboutAge + 50]
+        labels: [data.aboutAge, Math.round(data.aboutAge + xAxisDifference * 1), Math.round(data.aboutAge + xAxisDifference * 2), Math.round(data.aboutAge + xAxisDifference * 3), Math.round(data.aboutAge + xAxisDifference * 4), Math.round(data.aboutAge + xAxisDifference * 6)]
       }
     });
     app.views.scenarios.init(scenariosContainer);
