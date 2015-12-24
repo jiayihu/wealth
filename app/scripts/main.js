@@ -682,10 +682,12 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     savingsRate: 30,
     income: 60000,
     savings: 18000,
+    investment: 100,
+    retirementAge: 65,
     //Sliders options
     savingRateSlider: 'option__slider--saving',
     incomeRateSlider: 'option__slider--income',
-    investmentSlider: 'option__slider--investment',
+    investmentRateSlider: 'option__slider--investment',
     retirementSlider: 'option__slider--retirement',
     savingRateOptions: {
       start: 30,
@@ -743,7 +745,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     retirementSavingsHTML: 'savings__amount'
   };
 
-  var savingRateSlider, incomeRateSlider, investmentSlider, retirementSlider,
+  var savingRateSlider, incomeRateSlider, investmentRateSlider, retirementSlider,
       lineChart,
       retirementSavings;
 
@@ -762,9 +764,9 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
        sliderEventHandler(incomeRateSlider, values, '$');
      });
 
-     window.createSlider(investmentSlider, configMap.investmentOptions);
-     investmentSlider.noUiSlider.on('update', function(values) {
-       sliderEventHandler(investmentSlider, values, '%');
+     window.createSlider(investmentRateSlider, configMap.investmentOptions);
+     investmentRateSlider.noUiSlider.on('update', function(values) {
+       sliderEventHandler(investmentRateSlider, values, '%');
      });
 
      window.createSlider(retirementSlider, configMap.retirementOptions);
@@ -804,6 +806,39 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   };
 
   /**
+   * MATH FUNCTIONS
+   */
+
+  var getAppreciation = function(interestRate, term, amtInvested) {
+    var app = [];
+    app[0] = amtInvested;
+    var totalApp = 0;
+    for (var i = 1; i <= term; i++) {
+      var appreciation = interestRate * app[i - 1];
+      app[i] = appreciation + app[i - 1];
+      totalApp += appreciation;
+    }
+    return Math.round(totalApp);
+  };
+
+  var getAppreciationContrib = function(interestRate, term, amtInvested, contribAmt) {
+      var app = [];
+      app[0] = amtInvested;
+      var totalApp = 0;
+      var total = 0;
+      for (var i = 1; i <= term; i++) {
+          var appreciation = interestRate * (app[i - 1]);
+          app[i] = appreciation + app[i - 1] + amtInvested + (contribAmt/12);
+
+          console.log(app[i]);
+          totalApp += appreciation;
+          total += app[i] + totalApp;
+      }
+      app = null;
+      return Number(total);
+  };
+
+  /**
    * PUBLIC FUNCTIONS
    */
 
@@ -833,7 +868,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
-    investmentSlider = container.getElementsByClassName(configMap.investmentSlider)[0];
+    investmentRateSlider = container.getElementsByClassName(configMap.investmentRateSlider)[0];
     retirementSlider = container.getElementsByClassName(configMap.retirementSlider)[0];
     retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
 
