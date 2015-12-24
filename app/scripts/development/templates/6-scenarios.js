@@ -6,6 +6,8 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     //Sliders options
     savingRateSlider: 'option__slider--saving',
     incomeRateSlider: 'option__slider--income',
+    investmentSlider: 'option__slider--investment',
+    retirementSlider: 'option__slider--retirement',
     savingRateOptions: {
       start: 30,
       step: 1,
@@ -17,6 +19,18 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       step: 1000,
       range: {'min': 18000, 'max': 200000},
       format: wNumb({decimals: 1, thousand: '.'})
+    },
+    investmentOptions: {
+      start: 100,
+      step: 1,
+      range: {'min': 1, 'max': 100},
+      format: wNumb({ decimals: 0})
+    },
+    retirementOptions: {
+      start: 65,
+      step: 1,
+      range: {'min': 65, 'max': 70},
+      format: wNumb({ decimals: 0})
     },
     //Line chart options
     chartClass: '.scenario__chart',
@@ -50,13 +64,35 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     retirementSavingsHTML: 'savings__amount'
   };
 
-  var savingRateSlider, incomeRateSlider,
+  var savingRateSlider, incomeRateSlider, investmentSlider, retirementSlider,
       lineChart,
       retirementSavings;
 
   /**
    * DOM FUNCTIONS
    */
+
+   var createSliders = function() {
+     window.createSlider(savingRateSlider, configMap.savingRateOptions);
+     savingRateSlider.noUiSlider.on('update', function(values) {
+       sliderEventHandler(savingRateSlider, values, '%');
+     });
+
+     window.createSlider(incomeRateSlider, configMap.incomeOptions);
+     incomeRateSlider.noUiSlider.on('update', function(values) {
+       sliderEventHandler(incomeRateSlider, values, '$');
+     });
+
+     window.createSlider(investmentSlider, configMap.investmentOptions);
+     investmentSlider.noUiSlider.on('update', function(values) {
+       sliderEventHandler(investmentSlider, values, '%');
+     });
+
+     window.createSlider(retirementSlider, configMap.retirementOptions);
+     retirementSlider.noUiSlider.on('update', function(values) {
+       sliderEventHandler(retirementSlider, values);
+     });
+   };
 
    var createLineChart = function(htmlNode, data, options) {
      lineChart = new Chartist.Line(htmlNode, data, options);
@@ -66,12 +102,14 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     * EVENT HANDLERS
     */
 
-  var sliderEventHandler = function(slider, values) {
+  var sliderEventHandler = function(slider, values, format) {
     var tooltip = slider.getElementsByTagName('span')[0];
-    if(slider.classList.contains(configMap.savingRateSlider)) {
+    if(format === '%') {
       tooltip.innerHTML = values[0] + '%';
-    } else {
+    } else if(format === '$') {
       tooltip.innerHTML = '$' + values[0];
+    } else {
+      tooltip.innerHTML = values[0];
     }
   };
 
@@ -116,18 +154,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
+    investmentSlider = container.getElementsByClassName(configMap.investmentSlider)[0];
+    retirementSlider = container.getElementsByClassName(configMap.retirementSlider)[0];
     retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
 
-    //Sliders
-    window.createSlider(savingRateSlider, configMap.savingRateOptions);
-    savingRateSlider.noUiSlider.on('update', function(values) {
-      sliderEventHandler(savingRateSlider, values);
-    });
-
-    window.createSlider(incomeRateSlider, configMap.incomeOptions);
-    incomeRateSlider.noUiSlider.on('update', function(values) {
-      sliderEventHandler(incomeRateSlider, values);
-    });
+    createSliders();
 
     //Line Chart
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
