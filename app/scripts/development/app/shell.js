@@ -196,6 +196,11 @@ app.shell = (function(window, PubSub) {
     //Screen #9
     var planContainer = document.getElementsByClassName('plan-wrapper')[0];
     app.views.plan.init(planContainer);
+
+    //Navigation
+    app.views.nav.init();
+    //Continue buttons
+    app.views.continue.init();
   };
 
   return {

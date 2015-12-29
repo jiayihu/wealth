@@ -1172,7 +1172,12 @@ app.views.plan = (function() {
 
 
 /* Components */
-(function() {
+app.views.nav = (function() {
+  var configMap = {
+    blocking: true, //Whether steps should be disabled if not seen yet
+    navClass: 'nav'
+  };
+
   var setActive = function(newActive, className) {
     var oldActive = document.getElementsByClassName(className)[0];
     oldActive.classList.remove(className);
@@ -1189,15 +1194,21 @@ app.views.plan = (function() {
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    // if(!clickedLink.classList.contains('disabled')) {
+    if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    // }
+    }
   };
 
-  var nav = document.querySelector('.nav');
-  nav.addEventListener('click', onNavClick);
+  var init = function() {
+    var nav = document.getElementsByClassName(configMap.navClass)[0];
+    nav.addEventListener('click', onNavClick);
+  };
+
+  return {
+    init: init
+  };
 })();
 
 (function() {
@@ -1220,43 +1231,58 @@ app.views.plan = (function() {
 
 })();
 
-(function() {
-  var app = {
-    config: {
-      navClass: '.nav ul'
-    },
+app.views.continue = (function() {
+  var configMap = {
+    navClass: 'nav'
+  };
 
-    init: function() {
-      var continueButtons = document.getElementsByClassName('continue');
-      Array.prototype.forEach.call(continueButtons, function(element) {
-        element.addEventListener('click', app.onContinueClick);
-      });
-    },
+  /**
+   * DOM FUNCTIONS
+   */
 
-    onContinueClick: function() {
-      var nextStep = this.dataset.template,
-        nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+  var setActive = function(newActive, className) {
+    var oldActive = document.getElementsByClassName(className)[0];
+    oldActive.classList.remove(className);
+    newActive.classList.add(className);
+  };
 
-      app.setActive(nextStepElement, 'show');
-      var newActiveNavLink = document.getElementsByClassName('active')[0].nextElementSibling;
-      //Check if it is the last nav link
-      if(newActiveNavLink) {
-        //Active the navigation item
-        if(newActiveNavLink.classList.contains('disabled')) {
-          newActiveNavLink.classList.remove('disabled');
-        }
-        app.setActive(newActiveNavLink, 'active');
+  /**
+   * EVENT HANDLER
+   */
+
+  var onContinueClick = function() {
+    var nextStep = this.dataset.template;
+    var nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+
+    setActive(nextStepElement, 'show');
+    var nav = document.getElementsByClassName(configMap.navClass)[0];
+    var newActiveNavLink = nav.getElementsByClassName('active')[0].nextElementSibling;
+
+    //Check if it is the last nav link, which doesn't have siblings
+    if(newActiveNavLink) {
+      //Activate the navigation item
+      if(newActiveNavLink.classList.contains('disabled')) {
+        newActiveNavLink.classList.remove('disabled');
       }
-    },
-
-    setActive: function(newActive, className) {
-      var oldActive = document.getElementsByClassName(className)[0];
-      oldActive.classList.remove(className);
-      newActive.classList.add(className);
+      setActive(newActiveNavLink, 'active');
     }
   };
 
-  app.init();
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
+   var init = function() {
+     var continueButtons = document.getElementsByClassName('continue');
+     Array.prototype.forEach.call(continueButtons, function(element) {
+       element.addEventListener('click', onContinueClick);
+     });
+   };
+
+   return {
+     init: init
+   };
+
 })();
 
 
@@ -1458,6 +1484,11 @@ app.shell = (function(window, PubSub) {
     //Screen #9
     var planContainer = document.getElementsByClassName('plan-wrapper')[0];
     app.views.plan.init(planContainer);
+
+    //Navigation
+    app.views.nav.init();
+    //Continue buttons
+    app.views.continue.init();
   };
 
   return {
