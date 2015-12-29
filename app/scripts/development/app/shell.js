@@ -165,8 +165,7 @@ app.shell = (function(window, PubSub) {
     pyramidController();
 
     //Screen #6
-    var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0],
-        xAxisDifference = (65 - data.aboutAge) / 6;
+    var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
     app.views.scenarios.configModule({
       savingsRate: data.aboutSavingsRate,
       income: data.aboutIncome,
@@ -178,7 +177,7 @@ app.shell = (function(window, PubSub) {
         start: data.aboutIncome
       },
       chartData: {
-        labels: [data.aboutAge, Math.round(data.aboutAge + xAxisDifference * 1), Math.round(data.aboutAge + xAxisDifference * 2), Math.round(data.aboutAge + xAxisDifference * 3), Math.round(data.aboutAge + xAxisDifference * 4), Math.round(data.aboutAge + xAxisDifference * 6)]
+        labels: app.views.scenarios.getAbscissas(data.aboutAge, 65)
       }
     });
     app.views.scenarios.init(scenariosContainer);

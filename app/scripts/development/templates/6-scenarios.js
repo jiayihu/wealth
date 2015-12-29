@@ -125,46 +125,61 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       configMap.income = Number(values[0].replace('.', ''));
       updateLineChart();
     });
+
+    //Advanced options
+    investmentRateSlider.noUiSlider.on('change', function( values ){
+      configMap.investment = Number(values[0]);
+      updateLineChart();
+    });
+    retirementSlider.noUiSlider.on('change', function( values ){
+      configMap.retirementAge = Number(values[0]);
+      updateLineChart();
+    });
   };
 
   /**
    * MATH FUNCTIONS
    */
 
-  var getAppreciation = function(interestRate, term, amtInvested) {
-    var app = [];
-    app[0] = amtInvested;
-    var totalApp = 0;
-    for (var i = 1; i <= term; i++) {
-      var appreciation = interestRate * app[i - 1];
-      app[i] = appreciation + app[i - 1];
-      totalApp += appreciation;
-    }
-    return Math.round(totalApp);
-  };
-
-  var getAppreciationContrib = function(interestRate, term, amtInvested, contribAmt) {
-      var app = [];
-      app[0] = amtInvested;
-      var totalApp = 0;
-      var total = 0;
-      for (var i = 1; i <= term; i++) {
-          var appreciation = interestRate * (app[i - 1]);
-          app[i] = appreciation + app[i - 1] + amtInvested + (contribAmt/12);
-
-          console.log(app[i]);
-          totalApp += appreciation;
-          total += app[i] + totalApp;
-      }
-      app = null;
-      return Number(total);
-  };
+  /**
+   * Returns the accumulated money
+   * @param  {number} interestRate % of interest (from 0 to 1)
+   * @param  {number} term Years
+   * @param  {number} amtInvested Initial investment
+   * @param  {number} contribAmt Monthly contribution
+   * @return {number}
+   */
+  // var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) {
+  //     var app = [];
+  //     app[0] = amtInvested;
+  //     var total = 0;
+  //     var monthlyTerm = term * 12;
+  //     var monthlyContribAmt = contribAmt / 12;
+  //
+  //     for (var i = 1; i <= monthlyTerm; i++) {
+  //         var appreciation = (interestRate/12) * (app[i - 1]);
+  //         app[i] = appreciation + app[i - 1] + monthlyContribAmt;
+  //
+  //         //console.log(i + ") " + (interestRate / 12) + "; " + app[i - 1]);
+  //         //console.log(app[i] + " = " + appreciation + " + " + app[i - 1] + " + " + monthlyContribAmt);
+  //
+  //         total = app[i - 1];
+  //     }
+  //     app = null;
+  //     return Math.round(total);
+  // };
 
   /**
    * PUBLIC FUNCTIONS
    */
 
-  var setAbscissaValues = function(firstValue, lastValue) {
+  /**
+   * Returns an array containing the values for x axis
+   * @param  {Number} firstValue First value of the axis
+   * @param  {Number} lastValue Last value of the axis
+   * @return {Array}
+   */
+  var getAbscissas = function(firstValue, lastValue) {
     var values = [];
     values[0] = firstValue;
     values[5] = lastValue;
@@ -178,21 +193,21 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   };
 
   var updateLineChart = function() {
-    var multiplier = configMap.chartData.labels[3] - configMap.chartData.labels[2],
-        moneyFormat = wNumb({
-          thousand: ','
-        });
-    configMap.savings = configMap.savingsRate * 0.01 * configMap.income;
+    var xValues = getAbscissas(configMap.aboutAge, configMap.retirementAge);
+    var moneyFormat = wNumb({
+      thousand: ','
+    });
+    configMap.savings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
     configMap.chartData.series[0] = [
-      configMap.savings * 1,
-      configMap.savings * multiplier * 1,
-      configMap.savings * multiplier * 2,
-      configMap.savings * multiplier * 3,
-      configMap.savings * multiplier * 4,
-      configMap.savings * multiplier * 6
+      configMap.savings,
+      configMap.savings * (xValues[1] - xValues[0]),
+      configMap.savings * (xValues[2] - xValues[0]),
+      configMap.savings * (xValues[3] - xValues[0]),
+      configMap.savings * (xValues[4] - xValues[0]),
+      configMap.savings * (xValues[5] - xValues[0])
     ];
     lineChart.update(configMap.chartData);
-    retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.savings * multiplier * 6);
+    retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.chartData.series[0][5]);
   };
 
   var configModule = function(inputMap) {
@@ -200,7 +215,6 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   };
 
   var init = function(container) {
-
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
     investmentRateSlider = container.getElementsByClassName(configMap.investmentRateSlider)[0];
@@ -227,6 +241,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     updateLineChart: updateLineChart,
     configModule: configModule,
     init: init,
+    getAbscissas: getAbscissas,
     setSlider: setSlider
   };
 
