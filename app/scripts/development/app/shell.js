@@ -1,6 +1,8 @@
 var app = window.app || {};
 
 app.shell = (function(window, PubSub) {
+  var data;
+
   /**
    * VIEWS CONTROLLERS
    */
@@ -119,8 +121,44 @@ app.shell = (function(window, PubSub) {
     });
   };
 
+  /**
+   * COMPONENTS CONTROLLERS
+   */
+
+  /**
+   * Navigation
+   */
+  var navController = function() {
+    app.views.nav.setDisabledLinks(data.lastUserStep);
+  };
+
+  /**
+   * Continue button
+   */
+  var continueController = function() {
+    app.views.continue.bind('continueClicked', function(nextActiveNavLink) {
+      //When user is on the last step the value of 'nextActiveNavLink' is 'false'
+      if(nextActiveNavLink) {
+        var lastUserStep = Number(
+          nextActiveNavLink
+            .getElementsByClassName('step-number')[0]
+            .textContent
+        );
+        var savedLastStep = data.lastUserStep;
+        if(lastUserStep > savedLastStep) {
+          wealthApp.model.update('lastUserStep', lastUserStep);
+        }
+      }
+    });
+  };
+
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
   var init = function() {
-    var data = wealthApp.model.read();
+    data = wealthApp.model.read();
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
     app.views.about.configModule({
@@ -197,10 +235,16 @@ app.shell = (function(window, PubSub) {
     var planContainer = document.getElementsByClassName('plan-wrapper')[0];
     app.views.plan.init(planContainer);
 
+
+    /* COMPONENTS */
+
     //Navigation
     app.views.nav.init();
+    navController();
+
     //Continue buttons
     app.views.continue.init();
+    continueController();
   };
 
   return {

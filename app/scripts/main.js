@@ -140,9 +140,10 @@
     aboutSavingsRate: 30,
     //aboutStage: 'home',
     basicNeeds: 27000,
+		lastUserStep: 1,
     discretionaryExpenses: 15000,
+		pickedGoals: [],
     savings: 18000,
-    pickedGoals: [],
     savedActions: []
   };
 
@@ -1177,6 +1178,7 @@ app.views.nav = (function() {
     blocking: true, //Whether steps should be disabled if not seen yet
     navClass: 'nav'
   };
+  var nav;
 
   var setActive = function(newActive, className) {
     var oldActive = document.getElementsByClassName(className)[0];
@@ -1201,13 +1203,30 @@ app.views.nav = (function() {
     }
   };
 
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
   var init = function() {
-    var nav = document.getElementsByClassName(configMap.navClass)[0];
+    nav = document.getElementsByClassName(configMap.navClass)[0];
     nav.addEventListener('click', onNavClick);
   };
 
+  /**
+   * Adds 'disabled' class to navigation links from the item number 'start'
+   * @param  {number} start Number of the first link to start with
+   */
+  var setDisabledLinks = function(start) {
+    var i;
+    var navItems = nav.getElementsByTagName('li');
+    for(i = start; i < navItems.length; i++) {
+      navItems[i].classList.add('disabled');
+    }
+  };
+
   return {
-    init: init
+    init: init,
+    setDisabledLinks: setDisabledLinks
   };
 })();
 
@@ -1233,8 +1252,10 @@ app.views.nav = (function() {
 
 app.views.continue = (function() {
   var configMap = {
+    continueClass: 'continue',
     navClass: 'nav'
   };
+  var continueButtons;
 
   /**
    * DOM FUNCTIONS
@@ -1246,15 +1267,7 @@ app.views.continue = (function() {
     newActive.classList.add(className);
   };
 
-  /**
-   * EVENT HANDLER
-   */
-
-  var onContinueClick = function() {
-    var nextStep = this.dataset.template;
-    var nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
-
-    setActive(nextStepElement, 'show');
+  var activateNav = function() {
     var nav = document.getElementsByClassName(configMap.navClass)[0];
     var newActiveNavLink = nav.getElementsByClassName('active')[0].nextElementSibling;
 
@@ -1265,23 +1278,38 @@ app.views.continue = (function() {
         newActiveNavLink.classList.remove('disabled');
       }
       setActive(newActiveNavLink, 'active');
+      return newActiveNavLink;
     }
+
+    return false;
   };
 
   /**
    * PUBLIC FUNCTIONS
    */
 
-   var init = function() {
-     var continueButtons = document.getElementsByClassName('continue');
-     Array.prototype.forEach.call(continueButtons, function(element) {
-       element.addEventListener('click', onContinueClick);
-     });
-   };
+  var bind = function(event, handler) {
+    if(event === 'continueClicked') {
+      continueButtons.forEach(function(element) {
+        element.addEventListener('click', function(event) {
+          var nextStep = this.dataset.template;
+          var nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+          setActive(nextStepElement, 'show');
+          var nextActiveNavLink = activateNav();
+          handler(nextActiveNavLink);
+        });
+      });
+    }
+  };
 
-   return {
-     init: init
-   };
+  var init = function() {
+   continueButtons = document.getElementsByClassName(configMap.continueClass);
+  };
+
+  return {
+    bind: bind,
+    init: init
+  };
 
 })();
 
@@ -1289,6 +1317,8 @@ app.views.continue = (function() {
 var app = window.app || {};
 
 app.shell = (function(window, PubSub) {
+  var data;
+
   /**
    * VIEWS CONTROLLERS
    */
@@ -1407,8 +1437,44 @@ app.shell = (function(window, PubSub) {
     });
   };
 
+  /**
+   * COMPONENTS CONTROLLERS
+   */
+
+  /**
+   * Navigation
+   */
+  var navController = function() {
+    app.views.nav.setDisabledLinks(data.lastUserStep);
+  };
+
+  /**
+   * Continue button
+   */
+  var continueController = function() {
+    app.views.continue.bind('continueClicked', function(nextActiveNavLink) {
+      //When user is on the last step the value of 'nextActiveNavLink' is 'false'
+      if(nextActiveNavLink) {
+        var lastUserStep = Number(
+          nextActiveNavLink
+            .getElementsByClassName('step-number')[0]
+            .textContent
+        );
+        var savedLastStep = data.lastUserStep;
+        if(lastUserStep > savedLastStep) {
+          wealthApp.model.update('lastUserStep', lastUserStep);
+        }
+      }
+    });
+  };
+
+
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
   var init = function() {
-    var data = wealthApp.model.read();
+    data = wealthApp.model.read();
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
     app.views.about.configModule({
@@ -1485,10 +1551,16 @@ app.shell = (function(window, PubSub) {
     var planContainer = document.getElementsByClassName('plan-wrapper')[0];
     app.views.plan.init(planContainer);
 
+
+    /* COMPONENTS */
+
     //Navigation
     app.views.nav.init();
+    navController();
+
     //Continue buttons
     app.views.continue.init();
+    continueController();
   };
 
   return {

@@ -11,9 +11,10 @@
     aboutSavingsRate: 30,
     //aboutStage: 'home',
     basicNeeds: 27000,
+		lastUserStep: 1,
     discretionaryExpenses: 15000,
+		pickedGoals: [],
     savings: 18000,
-    pickedGoals: [],
     savedActions: []
   };
 

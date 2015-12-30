@@ -3,6 +3,7 @@ app.views.nav = (function() {
     blocking: true, //Whether steps should be disabled if not seen yet
     navClass: 'nav'
   };
+  var nav;
 
   var setActive = function(newActive, className) {
     var oldActive = document.getElementsByClassName(className)[0];
@@ -27,12 +28,29 @@ app.views.nav = (function() {
     }
   };
 
+  /**
+   * PUBLIC FUNCTIONS
+   */
+
   var init = function() {
-    var nav = document.getElementsByClassName(configMap.navClass)[0];
+    nav = document.getElementsByClassName(configMap.navClass)[0];
     nav.addEventListener('click', onNavClick);
   };
 
+  /**
+   * Adds 'disabled' class to navigation links from the item number 'start'
+   * @param  {number} start Number of the first link to start with
+   */
+  var setDisabledLinks = function(start) {
+    var i;
+    var navItems = nav.getElementsByTagName('li');
+    for(i = start; i < navItems.length; i++) {
+      navItems[i].classList.add('disabled');
+    }
+  };
+
   return {
-    init: init
+    init: init,
+    setDisabledLinks: setDisabledLinks
   };
 })();
