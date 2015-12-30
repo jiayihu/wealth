@@ -245,6 +245,13 @@ app.shell = (function(window, PubSub) {
     //Continue buttons
     app.views.continue.init();
     continueController();
+
+    /* PRODUCTION */
+    var resetButton = document.getElementsByClassName('reset-model')[0];
+    resetButton.addEventListener('click', function() {
+      wealthApp.model.reset();
+      document.location.reload();
+    });
   };
 
   return {
