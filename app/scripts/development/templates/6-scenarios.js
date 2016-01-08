@@ -44,6 +44,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       ]
     },
     chartOptions: {
+      axisY: {
+        type: Chartist.FixedScaleAxis,
+        high: 2000000,
+        ticks: [0, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
+      },
       showArea: true,
       width: '410px',
       height: '250px',
@@ -197,6 +202,8 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     var moneyFormat = wNumb({
       thousand: ','
     });
+
+    configMap.chartData.labels = xValues;
     configMap.savings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
     configMap.chartData.series[0] = [
       configMap.savings,
@@ -206,6 +213,11 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       configMap.savings * (xValues[4] - xValues[0]),
       configMap.savings * (xValues[5] - xValues[0])
     ];
+
+    if(configMap.chartData.series[0][5] > 2e+6) {
+      configMap.chartData.series[0][5] = 2000000;
+    }
+
     lineChart.update(configMap.chartData);
     retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.chartData.series[0][5]);
   };
