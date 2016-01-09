@@ -62,6 +62,11 @@ app.shell = (function(window, PubSub) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
+    app.views.you.bind('savingsChanged', function(currentSavings) {
+      wealthApp.model.update('currentSavings', currentSavings, function(currentSavings) {
+        PubSub.publish('currentSavingsChanged', currentSavings);
+      });
+    });
 
     PubSub.subscribe('aboutIncomeChanged', youSubscriber);
   };
@@ -97,6 +102,8 @@ app.shell = (function(window, PubSub) {
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
       app.views.scenarios.setSlider('savingsRate', data);
+    } else if(topic === 'currentSavingsChanged') {
+      app.views.scenarios.configModule({currentSavings: data});
     }
 
     app.views.scenarios.updateLineChart();
@@ -106,6 +113,7 @@ app.shell = (function(window, PubSub) {
     PubSub.subscribe('ageChanged', scenariosSubscriber);
     PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
     PubSub.subscribe('savingsRateChanged', scenariosSubscriber);
+    PubSub.subscribe('currentSavingsChanged', scenariosSubscriber);
   };
 
   /**
@@ -189,6 +197,9 @@ app.shell = (function(window, PubSub) {
       expensesOptions: {
         start: data.aboutDiscretionaryRate
       },
+      savingsOptions: {
+        start: data.currentSavings
+      },
       doughnutData: {
           series: [{value: data.aboutBasicRate, name: 'Basic Needs'}, {value: data.aboutDiscretionaryRate,name: 'Discretionary'}]
       }
@@ -214,6 +225,7 @@ app.shell = (function(window, PubSub) {
       income: data.aboutIncome,
       annualSavings: data.annualSavings,
       aboutAge: data.aboutAge,
+      currentSavings: data.currentSavings,
       savingRateOptions: {
         start: data.aboutSavingsRate
       },

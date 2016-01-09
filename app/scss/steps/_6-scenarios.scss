@@ -68,10 +68,32 @@
   }
 
   .ct-chart {
-    overflow: hidden;
+    position: relative;
+
+    &::before {
+      content: 'Savings ($)';
+      font-weight: normal;
+      left: -35px;
+      position: absolute;
+      top: 100px;
+      transform: rotate(-90deg);
+    }
+
+    &::after {
+      bottom: 0;
+      content: 'Age';
+      font-weight: normal;
+      left: 205px;
+      position: absolute;
+    }
+  }
+
+  .ct-chart-line {
+    padding-left: 15px;
   }
 
   .ct-label {
+    color: inherit;
     font-size: .875em;
   }
 
@@ -82,17 +104,6 @@
 
   .ct-area {
     fill: $accent-green;
-  }
-
-  svg {
-    overflow: visible;
-    padding-left: 15px;
-  }
-
-  .ct-axis-age,
-  .ct-axis-savings {
-    fill: $text;
-    font-weight: normal;
   }
 
   .savings {

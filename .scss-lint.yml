@@ -1,5 +1,0 @@
-exclude: 'app/scss/**/*.scss'
-
-linters:
-  Comment:
-    enabled: false

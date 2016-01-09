@@ -24,39 +24,38 @@ app.views.about = (function(window, noUiSlider) {
       situation, living;
 
   /**
-   * DOM FUNCTIONS
+   * EVENT HANDLERS
    */
+
+  var showSliderTooltip = function(slider, values) {
+    var tooltip = slider.getElementsByTagName('span')[0];
+    if(slider.classList.contains(configMap.incomeSlider)) {
+      tooltip.innerHTML = '$' + values[0];
+    } else {
+      tooltip.innerHTML = values[0];
+    }
+  };
+
+  /**
+  * DOM FUNCTIONS
+  */
 
   var createSliders = function() {
     window.createSlider(ageSlider, configMap.ageOptions);
     window.createSlider(incomeSlider, configMap.incomeOptions);
+
+    ageSlider.noUiSlider.on('update', function(values) {
+      showSliderTooltip(ageSlider, values);
+    });
+
+    incomeSlider.noUiSlider.on('update', function(values) {
+      showSliderTooltip(incomeSlider, values);
+    });
   };
 
   var setOptionLists = function() {
     situation.value = configMap.aboutSituation;
     living.value = configMap.aboutLiving;
-  };
-
-  /**
-   * EVENT HANDLERS
-   */
-
-   var onSliderUpdate = function(slider, values) {
-     var tooltip = slider.getElementsByTagName('span')[0];
-     if(slider.classList.contains(configMap.incomeSlider)) {
-       tooltip.innerHTML = '$' + values[0];
-     } else {
-       tooltip.innerHTML = values[0];
-     }
-   };
-
-  var sliderDOMEvents = function() {
-    ageSlider.noUiSlider.on('update', function(values) {
-      onSliderUpdate(ageSlider, values);
-    });
-    incomeSlider.noUiSlider.on('update', function(values) {
-      onSliderUpdate(incomeSlider, values);
-    });
   };
 
   /**
@@ -95,7 +94,6 @@ app.views.about = (function(window, noUiSlider) {
     living = container.getElementsByClassName('about__select')[1];
 
     createSliders();
-    sliderDOMEvents();
 
     setOptionLists();
   };

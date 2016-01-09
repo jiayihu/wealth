@@ -3,6 +3,7 @@ app.views.you = (function(window) {
     aboutIncome: 60000,
     needsSlider: 'about__savings__slider--needs',
     expensesSlider: 'about__savings__slider--expenses',
+    savingsSlider: 'current-savings__slider',
     //Slider options
     needsOptions: {
       start: 45,
@@ -15,6 +16,12 @@ app.views.you = (function(window) {
       step: 1,
       range: {'min': 1, 'max': 40},
       format: wNumb({decimals: 0})
+    },
+    savingsOptions: {
+      start: 10000,
+      step: 1000,
+      range: {'min': 1000, 'max': 100000},
+      format: wNumb({decimals: 1, thousand: '.'})
     },
     //Doughnut options
     doughnutClass: 'about__savings__circle',
@@ -37,7 +44,7 @@ app.views.you = (function(window) {
       ]
   };
 
-  var $pieChart, needsSlider, expensesSlider;
+  var $pieChart, needsSlider, expensesSlider, savingsSlider;
 
   /**
    * DOM FUNCTIONS
@@ -143,7 +150,11 @@ app.views.you = (function(window) {
 
   var showSliderTooltip = function(slider, values) {
     var tooltip = slider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = values[0] + '%';
+    if(slider.classList.contains(configMap.savingsSlider)) {
+      tooltip.innerHTML = '$' + values[0];
+    } else {
+      tooltip.innerHTML = values[0] + '%';
+    }
   };
 
 
@@ -176,6 +187,10 @@ app.views.you = (function(window) {
         updateDOMDoughnut('expensesSlider', values);
         handler(configMap.doughnutData.series[1].value, configMap.doughnutData.series[2].value);
       });
+    } else if(event === 'savingsChanged') {
+      savingsSlider.noUiSlider.on('change', function(values){
+        handler( Number(values[0].replace('.', '')) );
+      });
     }
   };
 
@@ -186,6 +201,7 @@ app.views.you = (function(window) {
   var init = function(container) {
     needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
     expensesSlider = container.getElementsByClassName(configMap.expensesSlider)[0];
+    savingsSlider = container.getElementsByClassName(configMap.savingsSlider)[0];
 
     //Create sliders
     window.createSlider(needsSlider, configMap.needsOptions);
@@ -196,6 +212,11 @@ app.views.you = (function(window) {
     window.createSlider(expensesSlider, configMap.expensesOptions);
     expensesSlider.noUiSlider.on('update', function(values) {
       showSliderTooltip(expensesSlider, values);
+    });
+
+    window.createSlider(savingsSlider, configMap.savingsOptions);
+    savingsSlider.noUiSlider.on('update', function(values) {
+      showSliderTooltip(savingsSlider, values);
     });
 
     //Init Doughnut Chart

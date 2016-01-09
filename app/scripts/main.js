@@ -327,39 +327,38 @@ app.views.about = (function(window, noUiSlider) {
       situation, living;
 
   /**
-   * DOM FUNCTIONS
+   * EVENT HANDLERS
    */
+
+  var showSliderTooltip = function(slider, values) {
+    var tooltip = slider.getElementsByTagName('span')[0];
+    if(slider.classList.contains(configMap.incomeSlider)) {
+      tooltip.innerHTML = '$' + values[0];
+    } else {
+      tooltip.innerHTML = values[0];
+    }
+  };
+
+  /**
+  * DOM FUNCTIONS
+  */
 
   var createSliders = function() {
     window.createSlider(ageSlider, configMap.ageOptions);
     window.createSlider(incomeSlider, configMap.incomeOptions);
+
+    ageSlider.noUiSlider.on('update', function(values) {
+      showSliderTooltip(ageSlider, values);
+    });
+
+    incomeSlider.noUiSlider.on('update', function(values) {
+      showSliderTooltip(incomeSlider, values);
+    });
   };
 
   var setOptionLists = function() {
     situation.value = configMap.aboutSituation;
     living.value = configMap.aboutLiving;
-  };
-
-  /**
-   * EVENT HANDLERS
-   */
-
-   var onSliderUpdate = function(slider, values) {
-     var tooltip = slider.getElementsByTagName('span')[0];
-     if(slider.classList.contains(configMap.incomeSlider)) {
-       tooltip.innerHTML = '$' + values[0];
-     } else {
-       tooltip.innerHTML = values[0];
-     }
-   };
-
-  var sliderDOMEvents = function() {
-    ageSlider.noUiSlider.on('update', function(values) {
-      onSliderUpdate(ageSlider, values);
-    });
-    incomeSlider.noUiSlider.on('update', function(values) {
-      onSliderUpdate(incomeSlider, values);
-    });
   };
 
   /**
@@ -398,7 +397,6 @@ app.views.about = (function(window, noUiSlider) {
     living = container.getElementsByClassName('about__select')[1];
 
     createSliders();
-    sliderDOMEvents();
 
     setOptionLists();
   };
@@ -416,6 +414,7 @@ app.views.you = (function(window) {
     aboutIncome: 60000,
     needsSlider: 'about__savings__slider--needs',
     expensesSlider: 'about__savings__slider--expenses',
+    savingsSlider: 'current-savings__slider',
     //Slider options
     needsOptions: {
       start: 45,
@@ -428,6 +427,12 @@ app.views.you = (function(window) {
       step: 1,
       range: {'min': 1, 'max': 40},
       format: wNumb({decimals: 0})
+    },
+    savingsOptions: {
+      start: 10000,
+      step: 1000,
+      range: {'min': 1000, 'max': 100000},
+      format: wNumb({decimals: 1, thousand: '.'})
     },
     //Doughnut options
     doughnutClass: 'about__savings__circle',
@@ -450,7 +455,7 @@ app.views.you = (function(window) {
       ]
   };
 
-  var $pieChart, needsSlider, expensesSlider;
+  var $pieChart, needsSlider, expensesSlider, savingsSlider;
 
   /**
    * DOM FUNCTIONS
@@ -556,7 +561,11 @@ app.views.you = (function(window) {
 
   var showSliderTooltip = function(slider, values) {
     var tooltip = slider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = values[0] + '%';
+    if(slider.classList.contains(configMap.savingsSlider)) {
+      tooltip.innerHTML = '$' + values[0];
+    } else {
+      tooltip.innerHTML = values[0] + '%';
+    }
   };
 
 
@@ -589,6 +598,10 @@ app.views.you = (function(window) {
         updateDOMDoughnut('expensesSlider', values);
         handler(configMap.doughnutData.series[1].value, configMap.doughnutData.series[2].value);
       });
+    } else if(event === 'savingsChanged') {
+      savingsSlider.noUiSlider.on('change', function(values){
+        handler( Number(values[0].replace('.', '')) );
+      });
     }
   };
 
@@ -599,6 +612,7 @@ app.views.you = (function(window) {
   var init = function(container) {
     needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
     expensesSlider = container.getElementsByClassName(configMap.expensesSlider)[0];
+    savingsSlider = container.getElementsByClassName(configMap.savingsSlider)[0];
 
     //Create sliders
     window.createSlider(needsSlider, configMap.needsOptions);
@@ -609,6 +623,11 @@ app.views.you = (function(window) {
     window.createSlider(expensesSlider, configMap.expensesOptions);
     expensesSlider.noUiSlider.on('update', function(values) {
       showSliderTooltip(expensesSlider, values);
+    });
+
+    window.createSlider(savingsSlider, configMap.savingsOptions);
+    savingsSlider.noUiSlider.on('update', function(values) {
+      showSliderTooltip(savingsSlider, values);
     });
 
     //Init Doughnut Chart
@@ -686,7 +705,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     annualSavings: 18000,
     aboutAge: 35,
     //compound interest
-    amtInvested: 1000,
+    currentSavings: 1000,
     annualInterestRate: 0.06,
     investmentTermYrs: 30,
     //Advanced settings
@@ -736,23 +755,10 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
         ticks: [0, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
       },
       showArea: true,
-      width: '410px',
+      width: '400px',
       height: '250px',
       plugins: [
-        Chartist.plugins.ctAxisTitle({
-          axisX: {
-            axisTitle: 'Age',
-            axisClass: 'ct-axis-age',
-            offset: {x: 0, y: 35},
-            textAnchor: 'middle'
-          },
-          axisY: {
-            axisTitle: 'Savings ($)',
-            axisClass: 'ct-axis-savings',
-            offset: {x: 0, y: 20},
-            textAnchor: 'middle'
-          }
-        })
+
       ]
     },
     //savings at retirement age
@@ -763,6 +769,9 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       investmentStyleButtons,
       lineChart,
       retirementSavings;
+  var moneyFormat = wNumb({
+    thousand: ','
+  });
 
   /**
    * DOM FUNCTIONS
@@ -901,21 +910,20 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
   var updateLineChart = function() {
     var xValues = getAbscissas(configMap.aboutAge, configMap.retirementAge);
-    var moneyFormat = wNumb({
-      thousand: ','
-    });
     var i = 0;
 
     configMap.chartData.labels = xValues;
     configMap.annualSavings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
 
-    configMap.chartData.series[0][0] = configMap.amtInvested;
+    configMap.chartData.series[0][0] = configMap.currentSavings;
     for(i = 1; i < 6; i+=1) {
       configMap.chartData.series[0][i] =
-        getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.amtInvested, configMap.annualSavings);
+        getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.currentSavings, configMap.annualSavings);
     }
 
-    lineChart.update(configMap.chartData);
+    configMap.chartOptions.axisY.ticks[0] = configMap.currentSavings;
+
+    lineChart.update(configMap.chartData, configMap.chartOptions);
     retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.chartData.series[0][5]);
   };
 
@@ -1412,6 +1420,11 @@ app.shell = (function(window, PubSub) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
+    app.views.you.bind('savingsChanged', function(currentSavings) {
+      wealthApp.model.update('currentSavings', currentSavings, function(currentSavings) {
+        PubSub.publish('currentSavingsChanged', currentSavings);
+      });
+    });
 
     PubSub.subscribe('aboutIncomeChanged', youSubscriber);
   };
@@ -1447,6 +1460,8 @@ app.shell = (function(window, PubSub) {
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
       app.views.scenarios.setSlider('savingsRate', data);
+    } else if(topic === 'currentSavingsChanged') {
+      app.views.scenarios.configModule({currentSavings: data});
     }
 
     app.views.scenarios.updateLineChart();
@@ -1456,6 +1471,7 @@ app.shell = (function(window, PubSub) {
     PubSub.subscribe('ageChanged', scenariosSubscriber);
     PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
     PubSub.subscribe('savingsRateChanged', scenariosSubscriber);
+    PubSub.subscribe('currentSavingsChanged', scenariosSubscriber);
   };
 
   /**
@@ -1539,6 +1555,9 @@ app.shell = (function(window, PubSub) {
       expensesOptions: {
         start: data.aboutDiscretionaryRate
       },
+      savingsOptions: {
+        start: data.currentSavings
+      },
       doughnutData: {
           series: [{value: data.aboutBasicRate, name: 'Basic Needs'}, {value: data.aboutDiscretionaryRate,name: 'Discretionary'}]
       }
@@ -1564,6 +1583,7 @@ app.shell = (function(window, PubSub) {
       income: data.aboutIncome,
       annualSavings: data.annualSavings,
       aboutAge: data.aboutAge,
+      currentSavings: data.currentSavings,
       savingRateOptions: {
         start: data.aboutSavingsRate
       },

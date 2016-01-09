@@ -5,7 +5,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     annualSavings: 18000,
     aboutAge: 35,
     //compound interest
-    amtInvested: 1000,
+    currentSavings: 1000,
     annualInterestRate: 0.06,
     investmentTermYrs: 30,
     //Advanced settings
@@ -55,23 +55,10 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
         ticks: [0, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
       },
       showArea: true,
-      width: '410px',
+      width: '400px',
       height: '250px',
       plugins: [
-        Chartist.plugins.ctAxisTitle({
-          axisX: {
-            axisTitle: 'Age',
-            axisClass: 'ct-axis-age',
-            offset: {x: 0, y: 35},
-            textAnchor: 'middle'
-          },
-          axisY: {
-            axisTitle: 'Savings ($)',
-            axisClass: 'ct-axis-savings',
-            offset: {x: 0, y: 20},
-            textAnchor: 'middle'
-          }
-        })
+
       ]
     },
     //savings at retirement age
@@ -82,6 +69,9 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       investmentStyleButtons,
       lineChart,
       retirementSavings;
+  var moneyFormat = wNumb({
+    thousand: ','
+  });
 
   /**
    * DOM FUNCTIONS
@@ -220,21 +210,20 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
   var updateLineChart = function() {
     var xValues = getAbscissas(configMap.aboutAge, configMap.retirementAge);
-    var moneyFormat = wNumb({
-      thousand: ','
-    });
     var i = 0;
 
     configMap.chartData.labels = xValues;
     configMap.annualSavings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
 
-    configMap.chartData.series[0][0] = configMap.amtInvested;
+    configMap.chartData.series[0][0] = configMap.currentSavings;
     for(i = 1; i < 6; i+=1) {
       configMap.chartData.series[0][i] =
-        getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.amtInvested, configMap.annualSavings);
+        getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.currentSavings, configMap.annualSavings);
     }
 
-    lineChart.update(configMap.chartData);
+    configMap.chartOptions.axisY.ticks[0] = configMap.currentSavings;
+
+    lineChart.update(configMap.chartData, configMap.chartOptions);
     retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.chartData.series[0][5]);
   };
 
