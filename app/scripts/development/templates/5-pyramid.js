@@ -5,7 +5,7 @@ app.views.pyramid = (function() {
     discretiotionaryId: '#pyramid-discretionary',
     incomeId: '#pyramid-income',
     basicNeeds: 0,
-    savings: 0,
+    annualSavings: 0,
     discretionaryExpenses: 0,
     aboutIncome: 0
   };
@@ -22,7 +22,7 @@ app.views.pyramid = (function() {
       prefix: '$ '
     });
 
-    savingsText.textContent = ' ' + moneyFormat.to(configMap.savings) + '/yr';
+    savingsText.textContent = ' ' + moneyFormat.to(configMap.annualSavings) + '/yr';
     basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
     discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
     incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';

@@ -2,9 +2,14 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   var configMap = {
     savingsRate: 30,
     income: 60000,
-    savings: 18000,
+    annualSavings: 18000,
+    aboutAge: 35,
+    //compound interest
+    amtInvested: 1000,
+    annualInterestRate: 0.06,
+    investmentTermYrs: 30,
+    //Advanced settings
     investment: 100,
-    aboutAge: 20,
     retirementAge: 65,
     //Sliders options
     savingRateSlider: 'option__slider--saving',
@@ -47,7 +52,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       axisY: {
         type: Chartist.FixedScaleAxis,
         high: 2000000,
-        ticks: [0, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
+        ticks: [0, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
       },
       showArea: true,
       width: '410px',
@@ -69,10 +74,12 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
         })
       ]
     },
+    //savings at retirement age
     retirementSavingsHTML: 'savings__amount'
   };
 
   var savingRateSlider, incomeRateSlider, investmentRateSlider, retirementSlider,
+      investmentStyleButtons,
       lineChart,
       retirementSavings;
 
@@ -110,6 +117,24 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     * EVENT HANDLERS
     */
 
+  var investmentStyleButtonsHandler = function(event) {
+    var investmentStyle = event.target.value;
+
+    switch (investmentStyle) {
+      case 'safe':
+        configMap.annualInterestRate = 0.02;
+        break;
+      case 'moderate':
+        configMap.annualInterestRate = 0.06;
+        break;
+      case 'risky':
+        configMap.annualInterestRate = 0.15;
+        break;
+    }
+
+    updateLineChart();
+  };
+
   var sliderEventHandler = function(slider, values, format) {
     var tooltip = slider.getElementsByTagName('span')[0];
     if(format === '%') {
@@ -143,7 +168,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   };
 
   /**
-   * MATH FUNCTIONS
+   * COMPOUND INTEREST FUNCTIONS
    */
 
   /**
@@ -154,25 +179,21 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
    * @param  {number} contribAmt Monthly contribution
    * @return {number}
    */
-  // var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) {
-  //     var app = [];
-  //     app[0] = amtInvested;
-  //     var total = 0;
-  //     var monthlyTerm = term * 12;
-  //     var monthlyContribAmt = contribAmt / 12;
-  //
-  //     for (var i = 1; i <= monthlyTerm; i++) {
-  //         var appreciation = (interestRate/12) * (app[i - 1]);
-  //         app[i] = appreciation + app[i - 1] + monthlyContribAmt;
-  //
-  //         //console.log(i + ") " + (interestRate / 12) + "; " + app[i - 1]);
-  //         //console.log(app[i] + " = " + appreciation + " + " + app[i - 1] + " + " + monthlyContribAmt);
-  //
-  //         total = app[i - 1];
-  //     }
-  //     app = null;
-  //     return Math.round(total);
-  // };
+  var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) {
+      var app = [];
+      app[0] = amtInvested;
+      var total = 0;
+      var monthlyTerm = term * 12;
+      var monthlyContribAmt = contribAmt / 12;
+
+      for (var i = 1; i <= monthlyTerm; i++) {
+          var appreciation = (interestRate/12) * (app[i - 1]);
+          app[i] = appreciation + app[i - 1] + monthlyContribAmt;
+          total = app[i - 1];
+      }
+      app = null;
+      return Math.round(total);
+  };
 
   /**
    * PUBLIC FUNCTIONS
@@ -191,7 +212,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     var difference = (lastValue - firstValue) / 5;
     for(var i = 1; i < 5; i++) {
-      values[i] = firstValue + (difference * i);
+      values[i] = Math.round( firstValue + (difference * i) );
     }
 
     return values;
@@ -202,20 +223,15 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     var moneyFormat = wNumb({
       thousand: ','
     });
+    var i = 0;
 
     configMap.chartData.labels = xValues;
-    configMap.savings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
-    configMap.chartData.series[0] = [
-      configMap.savings,
-      configMap.savings * (xValues[1] - xValues[0]),
-      configMap.savings * (xValues[2] - xValues[0]),
-      configMap.savings * (xValues[3] - xValues[0]),
-      configMap.savings * (xValues[4] - xValues[0]),
-      configMap.savings * (xValues[5] - xValues[0])
-    ];
+    configMap.annualSavings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
 
-    if(configMap.chartData.series[0][5] > 2e+6) {
-      configMap.chartData.series[0][5] = 2000000;
+    configMap.chartData.series[0][0] = configMap.amtInvested;
+    for(i = 1; i < 6; i+=1) {
+      configMap.chartData.series[0][i] =
+        getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.amtInvested, configMap.annualSavings);
     }
 
     lineChart.update(configMap.chartData);
@@ -226,6 +242,14 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     window.setConfigMap(inputMap, configMap);
   };
 
+  var setSlider = function(slider, value) {
+    if(slider === 'income') {
+      incomeRateSlider.noUiSlider.set(value);
+    } else if(slider === 'savingsRate') {
+      savingRateSlider.noUiSlider.set(value);
+    }
+  };
+
   var init = function(container) {
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
@@ -233,20 +257,17 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     retirementSlider = container.getElementsByClassName(configMap.retirementSlider)[0];
     retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
 
+    investmentStyleButtons = container.querySelectorAll('input[name="investment-style"]');
+    investmentStyleButtons.forEach(function(element) {
+      element.addEventListener('change', investmentStyleButtonsHandler);
+    });
+
     createSliders();
 
     //Line Chart
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
     updateLineChart();
     bindSlidersToChart();
-  };
-
-  var setSlider = function(slider, value) {
-    if(slider === 'income') {
-      incomeRateSlider.noUiSlider.set(value);
-    } else if(slider === 'savingsRate') {
-      savingRateSlider.noUiSlider.set(value);
-    }
   };
 
   return {

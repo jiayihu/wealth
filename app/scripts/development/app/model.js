@@ -2,19 +2,20 @@
 	'use strict';
 
   var defaultModel = {
-    aboutAge: 20,
+    aboutAge: 35,
     aboutSituation: 'married',
     aboutLiving: 'own',
     aboutIncome: 60000,
     aboutBasicRate: 45,
     aboutDiscretionaryRate: 25,
     aboutSavingsRate: 30,
+		annualSavings: 18000,
+		currentSavings: 1000,
     //aboutStage: 'home',
     basicNeeds: 27000,
 		lastUserStep: 1,
     discretionaryExpenses: 15000,
 		pickedGoals: [],
-    savings: 18000,
     savedActions: []
   };
 
@@ -72,7 +73,7 @@
 	};
 
 	/**
-	 * Update basic needs, discretionary and savings actual values based on rates
+	 * Update basic needs, discretionary and annual savings actual values based on rates
 	 */
 	Model.prototype.updateMoneyValues = function(callback) {
 		var data = JSON.parse(localStorage[this._dbName]);
@@ -80,7 +81,7 @@
 
 		user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
 		user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
-		user.savings = user.aboutIncome * user.aboutSavingsRate * 0.01;
+		user.annualSavings = user.aboutIncome * user.aboutSavingsRate * 0.01;
 
 		localStorage[this._dbName] = JSON.stringify(data);
 
@@ -89,7 +90,7 @@
 		callback({
 			basicNeeds: user.basicNeeds,
 			discretionaryExpenses: user.discretionaryExpenses,
-			savings: user.savings
+			annualSavings: user.annualSaving
 		});
 	};
 

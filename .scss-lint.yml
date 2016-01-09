@@ -1,4 +1,5 @@
-exclude: 'app/scss/**'
+exclude: 'app/scss/**/*.scss'
+
 linters:
   Comment:
     enabled: false

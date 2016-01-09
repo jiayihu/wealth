@@ -12,7 +12,9 @@ app.shell = (function(window, PubSub) {
    */
   var aboutController = function() {
     app.views.about.bind('ageChanged', function(value) {
-      wealthApp.model.update('aboutAge', value);
+      wealthApp.model.update('aboutAge', value, function(value) {
+        PubSub.publish('ageChanged', value);
+      });
     });
     app.views.about.bind('incomeChanged', function(value) {
       wealthApp.model.update('aboutIncome', value, function(value) {
@@ -87,18 +89,21 @@ app.shell = (function(window, PubSub) {
    * 6-Scenarios
    */
   var scenariosSubscriber = function(topic, data) {
-    if(topic === 'aboutIncomeChanged') {
+    if(topic === 'ageChanged') {
+      app.views.scenarios.configModule({aboutAge: data});
+    } else if(topic === 'aboutIncomeChanged') {
       app.views.scenarios.configModule({income: data});
-      app.views.scenarios.updateLineChart();
       app.views.scenarios.setSlider('income', data);
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
-      app.views.scenarios.updateLineChart();
       app.views.scenarios.setSlider('savingsRate', data);
     }
+
+    app.views.scenarios.updateLineChart();
   };
 
   var scenariosController = function() {
+    PubSub.subscribe('ageChanged', scenariosSubscriber);
     PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
     PubSub.subscribe('savingsRateChanged', scenariosSubscriber);
   };
@@ -195,7 +200,7 @@ app.shell = (function(window, PubSub) {
     var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
     app.views.pyramid.configModule({
       basicNeeds: data.basicNeeds,
-      savings: data.savings,
+      annualSavings: data.annualSavings,
       discretionaryExpenses: data.discretionaryExpenses,
       aboutIncome: data.aboutIncome
     });
@@ -207,7 +212,8 @@ app.shell = (function(window, PubSub) {
     app.views.scenarios.configModule({
       savingsRate: data.aboutSavingsRate,
       income: data.aboutIncome,
-      savings: data.savings,
+      annualSavings: data.annualSavings,
+      aboutAge: data.aboutAge,
       savingRateOptions: {
         start: data.aboutSavingsRate
       },
@@ -246,7 +252,7 @@ app.shell = (function(window, PubSub) {
     app.views.continue.init();
     continueController();
 
-    /* PRODUCTION */
+    /* DEVELOPMENT ONLY */
     var resetButton = document.getElementsByClassName('reset-model')[0];
     resetButton.addEventListener('click', function() {
       wealthApp.model.reset();

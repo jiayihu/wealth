@@ -131,19 +131,20 @@
 	'use strict';
 
   var defaultModel = {
-    aboutAge: 20,
+    aboutAge: 35,
     aboutSituation: 'married',
     aboutLiving: 'own',
     aboutIncome: 60000,
     aboutBasicRate: 45,
     aboutDiscretionaryRate: 25,
     aboutSavingsRate: 30,
+		annualSavings: 18000,
+		currentSavings: 1000,
     //aboutStage: 'home',
     basicNeeds: 27000,
 		lastUserStep: 1,
     discretionaryExpenses: 15000,
 		pickedGoals: [],
-    savings: 18000,
     savedActions: []
   };
 
@@ -201,7 +202,7 @@
 	};
 
 	/**
-	 * Update basic needs, discretionary and savings actual values based on rates
+	 * Update basic needs, discretionary and annual savings actual values based on rates
 	 */
 	Model.prototype.updateMoneyValues = function(callback) {
 		var data = JSON.parse(localStorage[this._dbName]);
@@ -209,7 +210,7 @@
 
 		user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
 		user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
-		user.savings = user.aboutIncome * user.aboutSavingsRate * 0.01;
+		user.annualSavings = user.aboutIncome * user.aboutSavingsRate * 0.01;
 
 		localStorage[this._dbName] = JSON.stringify(data);
 
@@ -218,7 +219,7 @@
 		callback({
 			basicNeeds: user.basicNeeds,
 			discretionaryExpenses: user.discretionaryExpenses,
-			savings: user.savings
+			annualSavings: user.annualSaving
 		});
 	};
 
@@ -630,7 +631,7 @@ app.views.pyramid = (function() {
     discretiotionaryId: '#pyramid-discretionary',
     incomeId: '#pyramid-income',
     basicNeeds: 0,
-    savings: 0,
+    annualSavings: 0,
     discretionaryExpenses: 0,
     aboutIncome: 0
   };
@@ -647,7 +648,7 @@ app.views.pyramid = (function() {
       prefix: '$ '
     });
 
-    savingsText.textContent = ' ' + moneyFormat.to(configMap.savings) + '/yr';
+    savingsText.textContent = ' ' + moneyFormat.to(configMap.annualSavings) + '/yr';
     basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
     discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
     incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';
@@ -682,9 +683,14 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   var configMap = {
     savingsRate: 30,
     income: 60000,
-    savings: 18000,
+    annualSavings: 18000,
+    aboutAge: 35,
+    //compound interest
+    amtInvested: 1000,
+    annualInterestRate: 0.06,
+    investmentTermYrs: 30,
+    //Advanced settings
     investment: 100,
-    aboutAge: 20,
     retirementAge: 65,
     //Sliders options
     savingRateSlider: 'option__slider--saving',
@@ -727,7 +733,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
       axisY: {
         type: Chartist.FixedScaleAxis,
         high: 2000000,
-        ticks: [0, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
+        ticks: [0, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
       },
       showArea: true,
       width: '410px',
@@ -749,10 +755,12 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
         })
       ]
     },
+    //savings at retirement age
     retirementSavingsHTML: 'savings__amount'
   };
 
   var savingRateSlider, incomeRateSlider, investmentRateSlider, retirementSlider,
+      investmentStyleButtons,
       lineChart,
       retirementSavings;
 
@@ -790,6 +798,24 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     * EVENT HANDLERS
     */
 
+  var investmentStyleButtonsHandler = function(event) {
+    var investmentStyle = event.target.value;
+
+    switch (investmentStyle) {
+      case 'safe':
+        configMap.annualInterestRate = 0.02;
+        break;
+      case 'moderate':
+        configMap.annualInterestRate = 0.06;
+        break;
+      case 'risky':
+        configMap.annualInterestRate = 0.15;
+        break;
+    }
+
+    updateLineChart();
+  };
+
   var sliderEventHandler = function(slider, values, format) {
     var tooltip = slider.getElementsByTagName('span')[0];
     if(format === '%') {
@@ -823,7 +849,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
   };
 
   /**
-   * MATH FUNCTIONS
+   * COMPOUND INTEREST FUNCTIONS
    */
 
   /**
@@ -834,25 +860,21 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
    * @param  {number} contribAmt Monthly contribution
    * @return {number}
    */
-  // var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) {
-  //     var app = [];
-  //     app[0] = amtInvested;
-  //     var total = 0;
-  //     var monthlyTerm = term * 12;
-  //     var monthlyContribAmt = contribAmt / 12;
-  //
-  //     for (var i = 1; i <= monthlyTerm; i++) {
-  //         var appreciation = (interestRate/12) * (app[i - 1]);
-  //         app[i] = appreciation + app[i - 1] + monthlyContribAmt;
-  //
-  //         //console.log(i + ") " + (interestRate / 12) + "; " + app[i - 1]);
-  //         //console.log(app[i] + " = " + appreciation + " + " + app[i - 1] + " + " + monthlyContribAmt);
-  //
-  //         total = app[i - 1];
-  //     }
-  //     app = null;
-  //     return Math.round(total);
-  // };
+  var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) {
+      var app = [];
+      app[0] = amtInvested;
+      var total = 0;
+      var monthlyTerm = term * 12;
+      var monthlyContribAmt = contribAmt / 12;
+
+      for (var i = 1; i <= monthlyTerm; i++) {
+          var appreciation = (interestRate/12) * (app[i - 1]);
+          app[i] = appreciation + app[i - 1] + monthlyContribAmt;
+          total = app[i - 1];
+      }
+      app = null;
+      return Math.round(total);
+  };
 
   /**
    * PUBLIC FUNCTIONS
@@ -871,7 +893,7 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
     var difference = (lastValue - firstValue) / 5;
     for(var i = 1; i < 5; i++) {
-      values[i] = firstValue + (difference * i);
+      values[i] = Math.round( firstValue + (difference * i) );
     }
 
     return values;
@@ -882,20 +904,15 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     var moneyFormat = wNumb({
       thousand: ','
     });
+    var i = 0;
 
     configMap.chartData.labels = xValues;
-    configMap.savings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
-    configMap.chartData.series[0] = [
-      configMap.savings,
-      configMap.savings * (xValues[1] - xValues[0]),
-      configMap.savings * (xValues[2] - xValues[0]),
-      configMap.savings * (xValues[3] - xValues[0]),
-      configMap.savings * (xValues[4] - xValues[0]),
-      configMap.savings * (xValues[5] - xValues[0])
-    ];
+    configMap.annualSavings = (configMap.savingsRate/100) * configMap.income * (configMap.investment/100);
 
-    if(configMap.chartData.series[0][5] > 2e+6) {
-      configMap.chartData.series[0][5] = 2000000;
+    configMap.chartData.series[0][0] = configMap.amtInvested;
+    for(i = 1; i < 6; i+=1) {
+      configMap.chartData.series[0][i] =
+        getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.amtInvested, configMap.annualSavings);
     }
 
     lineChart.update(configMap.chartData);
@@ -906,6 +923,14 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     window.setConfigMap(inputMap, configMap);
   };
 
+  var setSlider = function(slider, value) {
+    if(slider === 'income') {
+      incomeRateSlider.noUiSlider.set(value);
+    } else if(slider === 'savingsRate') {
+      savingRateSlider.noUiSlider.set(value);
+    }
+  };
+
   var init = function(container) {
     savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
     incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
@@ -913,20 +938,17 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
     retirementSlider = container.getElementsByClassName(configMap.retirementSlider)[0];
     retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
 
+    investmentStyleButtons = container.querySelectorAll('input[name="investment-style"]');
+    investmentStyleButtons.forEach(function(element) {
+      element.addEventListener('change', investmentStyleButtonsHandler);
+    });
+
     createSliders();
 
     //Line Chart
     createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
     updateLineChart();
     bindSlidersToChart();
-  };
-
-  var setSlider = function(slider, value) {
-    if(slider === 'income') {
-      incomeRateSlider.noUiSlider.set(value);
-    } else if(slider === 'savingsRate') {
-      savingRateSlider.noUiSlider.set(value);
-    }
   };
 
   return {
@@ -1340,7 +1362,9 @@ app.shell = (function(window, PubSub) {
    */
   var aboutController = function() {
     app.views.about.bind('ageChanged', function(value) {
-      wealthApp.model.update('aboutAge', value);
+      wealthApp.model.update('aboutAge', value, function(value) {
+        PubSub.publish('ageChanged', value);
+      });
     });
     app.views.about.bind('incomeChanged', function(value) {
       wealthApp.model.update('aboutIncome', value, function(value) {
@@ -1415,18 +1439,21 @@ app.shell = (function(window, PubSub) {
    * 6-Scenarios
    */
   var scenariosSubscriber = function(topic, data) {
-    if(topic === 'aboutIncomeChanged') {
+    if(topic === 'ageChanged') {
+      app.views.scenarios.configModule({aboutAge: data});
+    } else if(topic === 'aboutIncomeChanged') {
       app.views.scenarios.configModule({income: data});
-      app.views.scenarios.updateLineChart();
       app.views.scenarios.setSlider('income', data);
     } else if(topic === 'savingsRateChanged') {
       app.views.scenarios.configModule({savingsRate: data});
-      app.views.scenarios.updateLineChart();
       app.views.scenarios.setSlider('savingsRate', data);
     }
+
+    app.views.scenarios.updateLineChart();
   };
 
   var scenariosController = function() {
+    PubSub.subscribe('ageChanged', scenariosSubscriber);
     PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
     PubSub.subscribe('savingsRateChanged', scenariosSubscriber);
   };
@@ -1523,7 +1550,7 @@ app.shell = (function(window, PubSub) {
     var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
     app.views.pyramid.configModule({
       basicNeeds: data.basicNeeds,
-      savings: data.savings,
+      annualSavings: data.annualSavings,
       discretionaryExpenses: data.discretionaryExpenses,
       aboutIncome: data.aboutIncome
     });
@@ -1535,7 +1562,8 @@ app.shell = (function(window, PubSub) {
     app.views.scenarios.configModule({
       savingsRate: data.aboutSavingsRate,
       income: data.aboutIncome,
-      savings: data.savings,
+      annualSavings: data.annualSavings,
+      aboutAge: data.aboutAge,
       savingRateOptions: {
         start: data.aboutSavingsRate
       },
@@ -1574,7 +1602,7 @@ app.shell = (function(window, PubSub) {
     app.views.continue.init();
     continueController();
 
-    /* PRODUCTION */
+    /* DEVELOPMENT ONLY */
     var resetButton = document.getElementsByClassName('reset-model')[0];
     resetButton.addEventListener('click', function() {
       wealthApp.model.reset();
