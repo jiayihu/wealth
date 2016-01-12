@@ -21,11 +21,11 @@ app.views.nav = (function() {
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    // if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
+    if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    // }
+    }
   };
 
   /**

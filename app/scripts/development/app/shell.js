@@ -12,23 +12,23 @@ app.shell = (function(window, PubSub) {
    */
   var aboutController = function() {
     app.views.about.bind('ageChanged', function(value) {
-      wealthApp.model.update('aboutAge', value, function(value) {
+      app.model.update('aboutAge', value, function(value) {
         PubSub.publish('ageChanged', value);
       });
     });
     app.views.about.bind('incomeChanged', function(value) {
-      wealthApp.model.update('aboutIncome', value, function(value) {
+      app.model.update('aboutIncome', value, function(value) {
         PubSub.publish('aboutIncomeChanged', value);
       });
-      wealthApp.model.updateMoneyValues(function(moneyValues) {
+      app.model.updateMoneyValues(function(moneyValues) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
     app.views.about.bind('situationChanged', function(value) {
-      wealthApp.model.update('aboutSituation', value);
+      app.model.update('aboutSituation', value);
     });
     app.views.about.bind('livingChanged', function(value) {
-      wealthApp.model.update('aboutLiving', value);
+      app.model.update('aboutLiving', value);
     });
   };
 
@@ -45,25 +45,25 @@ app.shell = (function(window, PubSub) {
 
   var youController = function() {
     app.views.you.bind('basicNeedsChanged', function(basicRate, savingsRate) {
-      wealthApp.model.update('aboutBasicRate', basicRate);
-      wealthApp.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
+      app.model.update('aboutBasicRate', basicRate);
+      app.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
         PubSub.publish('savingsRateChanged', savingsRate);
       });
-      wealthApp.model.updateMoneyValues(function(moneyValues) {
+      app.model.updateMoneyValues(function(moneyValues) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
     app.views.you.bind('expensesChanged', function(expensesRate, savingsRate) {
-      wealthApp.model.update('aboutDiscretionaryRate', expensesRate);
-      wealthApp.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
+      app.model.update('aboutDiscretionaryRate', expensesRate);
+      app.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
         PubSub.publish('savingsRateChanged', savingsRate);
       });
-      wealthApp.model.updateMoneyValues(function(moneyValues) {
+      app.model.updateMoneyValues(function(moneyValues) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
     app.views.you.bind('savingsChanged', function(currentSavings) {
-      wealthApp.model.update('currentSavings', currentSavings, function(currentSavings) {
+      app.model.update('currentSavings', currentSavings, function(currentSavings) {
         PubSub.publish('currentSavingsChanged', currentSavings);
       });
     });
@@ -121,7 +121,7 @@ app.shell = (function(window, PubSub) {
    */
   var goalController = function() {
     app.views.goal.bind('goalToggled', function(goal) {
-      wealthApp.model.toggleGoal(goal);
+      app.model.toggleGoal(goal);
     });
   };
 
@@ -130,7 +130,7 @@ app.shell = (function(window, PubSub) {
    */
   var retirementController = function() {
     app.views.retirement.bind('actionToggled', function(action) {
-      wealthApp.model.toggleActions(action);
+      app.model.toggleActions(action);
     });
   };
 
@@ -159,7 +159,7 @@ app.shell = (function(window, PubSub) {
         );
         var savedLastStep = data.lastUserStep;
         if(lastUserStep > savedLastStep) {
-          wealthApp.model.update('lastUserStep', lastUserStep);
+          app.model.update('lastUserStep', lastUserStep);
         }
       }
     });
@@ -171,7 +171,7 @@ app.shell = (function(window, PubSub) {
    */
 
   var init = function() {
-    data = wealthApp.model.read();
+    data = app.model.read();
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
     app.views.about.configModule({
@@ -267,7 +267,7 @@ app.shell = (function(window, PubSub) {
     /* DEVELOPMENT ONLY */
     var resetButton = document.getElementsByClassName('reset-model')[0];
     resetButton.addEventListener('click', function() {
-      wealthApp.model.reset();
+      app.model.reset();
       document.location.reload();
     });
   };

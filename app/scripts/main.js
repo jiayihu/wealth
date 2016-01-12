@@ -127,8 +127,14 @@
 })(window);
 
 
-(function (window) {
+var app = window.app || {};
+
+app.model = (function (window) {
 	'use strict';
+
+	var stateMap = {
+		dbName: ''
+	};
 
   var defaultModel = {
     aboutAge: 35,
@@ -139,7 +145,7 @@
     aboutDiscretionaryRate: 25,
     aboutSavingsRate: 30,
 		annualSavings: 18000,
-		currentSavings: 1000,
+		currentSavings: 10000,
     //aboutStage: 'home',
     basicNeeds: 27000,
 		lastUserStep: 1,
@@ -148,33 +154,12 @@
     savedActions: []
   };
 
-	/**
-	 * Creates a new Model instance which saves data on local storage.
-	 * @param {string} name The name of the localstorage
-	 */
-	var Model = function(name) {
-    this._dbName = name;
-
-    if(typeof Storage === undefined) {
-      window.makeError('localStorage support', 'Error: localStorage is not supported.');
-      return;
-    }
-
-		if(!localStorage[name]) {
-			var data = {
-				user: defaultModel
-			};
-
-			localStorage[name] = JSON.stringify(data);
-		}
-	};
-
   /**
    * Returns the value of the property in the model.
    * @param  {string} property The name of the property
    */
-  Model.prototype.read = function(property) {
-    var data = JSON.parse(localStorage[this._dbName]);
+  var read = function(property) {
+    var data = JSON.parse(localStorage[stateMap.dbName]);
     var user = data.user;
 
     if(typeof property === 'undefined') {
@@ -189,13 +174,13 @@
 	 * @param  {string} property   The name of the property to update
 	 * @param  {object} updateData The new value of the property
 	 */
-	Model.prototype.update = function (property, updateData, callback) {
-	   var data = JSON.parse(localStorage[this._dbName]);
+	var update = function (property, updateData, callback) {
+	   var data = JSON.parse(localStorage[stateMap.dbName]);
      var user = data.user;
 
      user[property] = updateData;
 
-     localStorage[this._dbName] = JSON.stringify(data);
+     localStorage[stateMap.dbName] = JSON.stringify(data);
 
 		 callback = callback || function() {};
 		 callback(updateData);
@@ -204,15 +189,15 @@
 	/**
 	 * Update basic needs, discretionary and annual savings actual values based on rates
 	 */
-	Model.prototype.updateMoneyValues = function(callback) {
-		var data = JSON.parse(localStorage[this._dbName]);
+	var updateMoneyValues = function(callback) {
+		var data = JSON.parse(localStorage[stateMap.dbName]);
     var user = data.user;
 
 		user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
 		user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
 		user.annualSavings = user.aboutIncome * user.aboutSavingsRate * 0.01;
 
-		localStorage[this._dbName] = JSON.stringify(data);
+		localStorage[stateMap.dbName] = JSON.stringify(data);
 
 		callback = callback || function() {};
 
@@ -227,8 +212,8 @@
 	 * Update the array of picked goals adding or removing the goal
 	 * @param  {object} goal The goal to remove or add to the list
 	 */
-	Model.prototype.toggleGoal = function(goal) {
-		var data = JSON.parse(localStorage[this._dbName]);
+	var toggleGoal = function(goal) {
+		var data = JSON.parse(localStorage[stateMap.dbName]);
 		var goals = data.user.pickedGoals;
 
 		var i = 0, alreadyPicked = false;
@@ -243,15 +228,15 @@
 			goals.push(goal);
 		}
 
-		localStorage[this._dbName] = JSON.stringify(data);
+		localStorage[stateMap.dbName] = JSON.stringify(data);
 	};
 
 	/**
 	 * Update the array of saved adding or removing the goal
 	 * @param  {object} action The action to remove or add to the list
 	 */
-	Model.prototype.toggleActions = function(action) {
-		var data = JSON.parse(localStorage[this._dbName]);
+	var toggleActions = function(action) {
+		var data = JSON.parse(localStorage[stateMap.dbName]);
 		var actions = data.user.savedActions;
 
 		var i = 0, alreadySaved = false;
@@ -266,32 +251,56 @@
 			actions.push(action);
 		}
 
-		localStorage[this._dbName] = JSON.stringify(data);
+		localStorage[stateMap.dbName] = JSON.stringify(data);
 	};
 
 	/**
 	 * [remove description]
 	 * @param  {string} property The name of the property to be removed from model.
 	 */
-	Model.prototype.remove = function (property) {
-    var data = JSON.parse(localStorage[this._dbName]);
+	var remove = function (property) {
+    var data = JSON.parse(localStorage[stateMap.dbName]);
     var user = data.user;
 
     delete user[property];
 
-    localStorage[this._dbName] = JSON.stringify(data);
+    localStorage[stateMap.dbName] = JSON.stringify(data);
 	};
 
 	/**
 	 * WARNING: Will remove ALL data from storage.
 	 */
-	Model.prototype.reset = function () {
-		localStorage[this._dbName] = JSON.stringify({ user: defaultModel });
+	var reset = function () {
+		localStorage[stateMap.dbName] = JSON.stringify({ user: defaultModel });
 	};
 
-	// Export to window
-	window.app = window.app || {};
-	window.app.Model = Model;
+	var init = function(name) {
+		stateMap.dbName = name;
+
+    if(typeof window.Storage === undefined) {
+      window.makeError('localStorage support', 'Error: localStorage is not supported.');
+      return;
+    }
+
+		if(!localStorage[name]) {
+			var data = {
+				user: defaultModel
+			};
+
+			localStorage[name] = JSON.stringify(data);
+		}
+	};
+
+	return {
+		init: init,
+		read: read,
+		reset: reset,
+		remove: remove,
+		toggleActions: toggleActions,
+		toggleGoal: toggleGoal,
+		update: update,
+		updateMoneyValues: updateMoneyValues
+	};
 })(window);
 
 
@@ -1238,11 +1247,11 @@ app.views.nav = (function() {
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    // if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
+    if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    // }
+    }
   };
 
   /**
@@ -1370,23 +1379,23 @@ app.shell = (function(window, PubSub) {
    */
   var aboutController = function() {
     app.views.about.bind('ageChanged', function(value) {
-      wealthApp.model.update('aboutAge', value, function(value) {
+      app.model.update('aboutAge', value, function(value) {
         PubSub.publish('ageChanged', value);
       });
     });
     app.views.about.bind('incomeChanged', function(value) {
-      wealthApp.model.update('aboutIncome', value, function(value) {
+      app.model.update('aboutIncome', value, function(value) {
         PubSub.publish('aboutIncomeChanged', value);
       });
-      wealthApp.model.updateMoneyValues(function(moneyValues) {
+      app.model.updateMoneyValues(function(moneyValues) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
     app.views.about.bind('situationChanged', function(value) {
-      wealthApp.model.update('aboutSituation', value);
+      app.model.update('aboutSituation', value);
     });
     app.views.about.bind('livingChanged', function(value) {
-      wealthApp.model.update('aboutLiving', value);
+      app.model.update('aboutLiving', value);
     });
   };
 
@@ -1403,25 +1412,25 @@ app.shell = (function(window, PubSub) {
 
   var youController = function() {
     app.views.you.bind('basicNeedsChanged', function(basicRate, savingsRate) {
-      wealthApp.model.update('aboutBasicRate', basicRate);
-      wealthApp.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
+      app.model.update('aboutBasicRate', basicRate);
+      app.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
         PubSub.publish('savingsRateChanged', savingsRate);
       });
-      wealthApp.model.updateMoneyValues(function(moneyValues) {
+      app.model.updateMoneyValues(function(moneyValues) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
     app.views.you.bind('expensesChanged', function(expensesRate, savingsRate) {
-      wealthApp.model.update('aboutDiscretionaryRate', expensesRate);
-      wealthApp.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
+      app.model.update('aboutDiscretionaryRate', expensesRate);
+      app.model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
         PubSub.publish('savingsRateChanged', savingsRate);
       });
-      wealthApp.model.updateMoneyValues(function(moneyValues) {
+      app.model.updateMoneyValues(function(moneyValues) {
         PubSub.publish('moneyValuesChanged', moneyValues);
       });
     });
     app.views.you.bind('savingsChanged', function(currentSavings) {
-      wealthApp.model.update('currentSavings', currentSavings, function(currentSavings) {
+      app.model.update('currentSavings', currentSavings, function(currentSavings) {
         PubSub.publish('currentSavingsChanged', currentSavings);
       });
     });
@@ -1479,7 +1488,7 @@ app.shell = (function(window, PubSub) {
    */
   var goalController = function() {
     app.views.goal.bind('goalToggled', function(goal) {
-      wealthApp.model.toggleGoal(goal);
+      app.model.toggleGoal(goal);
     });
   };
 
@@ -1488,7 +1497,7 @@ app.shell = (function(window, PubSub) {
    */
   var retirementController = function() {
     app.views.retirement.bind('actionToggled', function(action) {
-      wealthApp.model.toggleActions(action);
+      app.model.toggleActions(action);
     });
   };
 
@@ -1517,7 +1526,7 @@ app.shell = (function(window, PubSub) {
         );
         var savedLastStep = data.lastUserStep;
         if(lastUserStep > savedLastStep) {
-          wealthApp.model.update('lastUserStep', lastUserStep);
+          app.model.update('lastUserStep', lastUserStep);
         }
       }
     });
@@ -1529,7 +1538,7 @@ app.shell = (function(window, PubSub) {
    */
 
   var init = function() {
-    data = wealthApp.model.read();
+    data = app.model.read();
     //Screen #2
     var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
     app.views.about.configModule({
@@ -1625,7 +1634,7 @@ app.shell = (function(window, PubSub) {
     /* DEVELOPMENT ONLY */
     var resetButton = document.getElementsByClassName('reset-model')[0];
     resetButton.addEventListener('click', function() {
-      wealthApp.model.reset();
+      app.model.reset();
       document.location.reload();
     });
   };
@@ -1639,12 +1648,7 @@ app.shell = (function(window, PubSub) {
 (function() {
 
   var init = function(window) {
-    var WealthApp = function(name) {
-      this.model = new app.Model(name);
-    };
-
-    window.wealthApp = new WealthApp('wealth');
-
+    app.model.init('wealthApp');
     app.shell.init();
   };
 
