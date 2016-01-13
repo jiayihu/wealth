@@ -241,7 +241,7 @@ app.shell = (function(window, PubSub) {
 
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
-    app.views.goal.init(goalContainer);
+    app.views.goal.init(goalContainer, app.model.getGoals());
     goalController();
 
     //Screen #8

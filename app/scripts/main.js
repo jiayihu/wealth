@@ -154,6 +154,45 @@ app.model = (function (window) {
     savedActions: []
   };
 
+	var goalsList = [
+		{
+			id: 'college',
+			title: 'Save for college',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'home',
+			title: 'Buy a home',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'car',
+			title: 'Save for car',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'funds',
+			title: 'Emergency funds',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'cards',
+			title: 'Pay-down Credit Cards',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'retire',
+			title: 'Retire',
+			date: 'January 2017',
+			probability: '50%'
+		}
+	];
+
   /**
    * Returns the value of the property in the model.
    * @param  {string} property The name of the property
@@ -187,11 +226,43 @@ app.model = (function (window) {
 	};
 
 	/**
+	 * [remove description]
+	 * @param  {string} property The name of the property to be removed from model.
+	 */
+	var remove = function (property) {
+    var data = JSON.parse(localStorage[stateMap.dbName]);
+    var user = data.user;
+
+    delete user[property];
+
+    localStorage[stateMap.dbName] = JSON.stringify(data);
+	};
+
+	/**
+	 * WARNING: Will remove ALL data from storage.
+	 */
+	var reset = function () {
+		localStorage[stateMap.dbName] = JSON.stringify({ user: defaultModel });
+	};
+
+	/**
+	 * SPECIFIC MODEL DATA-FUNCTIONS
+	 */
+
+	/**
+	 * Returns the list of available goals
+	 * @return {array}
+	 */
+	var getGoals = function() {
+		return goalsList;
+	};
+
+	/**
 	 * Update basic needs, discretionary and annual savings actual values based on rates
 	 */
 	var updateMoneyValues = function(callback) {
 		var data = JSON.parse(localStorage[stateMap.dbName]);
-    var user = data.user;
+		var user = data.user;
 
 		user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
 		user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
@@ -254,26 +325,6 @@ app.model = (function (window) {
 		localStorage[stateMap.dbName] = JSON.stringify(data);
 	};
 
-	/**
-	 * [remove description]
-	 * @param  {string} property The name of the property to be removed from model.
-	 */
-	var remove = function (property) {
-    var data = JSON.parse(localStorage[stateMap.dbName]);
-    var user = data.user;
-
-    delete user[property];
-
-    localStorage[stateMap.dbName] = JSON.stringify(data);
-	};
-
-	/**
-	 * WARNING: Will remove ALL data from storage.
-	 */
-	var reset = function () {
-		localStorage[stateMap.dbName] = JSON.stringify({ user: defaultModel });
-	};
-
 	var init = function(name) {
 		stateMap.dbName = name;
 
@@ -292,6 +343,7 @@ app.model = (function (window) {
 	};
 
 	return {
+		getGoals: getGoals,
 		init: init,
 		read: read,
 		reset: reset,
@@ -978,8 +1030,10 @@ app.views.scenarios = (function(window, Chartist, wNumb) {
 
 })(window, Chartist, wNumb);
 
-app.views.goal = (function() {
+app.views.goal = (function($) {
   var configMap = {
+    goalsWrapper: 'goals',
+    pickedGoalsWrapper: 'picked-goals',
     $tooltips: '.goal__details > span',
     toggleButtons: 'toggle-goal',
     pickedGoals: 'picked-goals',
@@ -988,21 +1042,73 @@ app.views.goal = (function() {
 
   var container, toggleButtons;
 
-  var goalTemplate
-    = '<div class="goal goal--college">' +
-        '<div class="goal__details">' +
-          '<p class="goal__title">Save for college</p>' +
-          '<span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date based on your data">' +
-            '<i class="zmdi zmdi-calendar-alt"></i>' +
-            '<span>January 2018</span>' +
-          '</span>' +
-          '<span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability based on your data">' +
-            '<i class="zmdi zmdi-chart"></i>' +
-            '<span>85%</span>' +
-          '</span>' +
-        '</div>' +
-        '<i class="toggle-goal add-goal zmdi zmdi-plus-circle" data-goal="college"></i>' +
-      '</div>';
+  var goalTemplate =
+    '<div class="goal goal--{{id}}">' +
+      '<div class="goal__details">' +
+        '<p class="goal__title">{{title}}</p>' +
+        '<span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date based on your data">' +
+          '<i class="zmdi zmdi-calendar-alt"></i>' +
+          '<span>{{date}}</span>' +
+        '</span>' +
+        '<span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability based on your data">' +
+          '<i class="zmdi zmdi-chart"></i>' +
+          '<span>{{probability}}</span>' +
+        '</span>' +
+      '</div>' +
+      '<i class="toggle-goal add-goal zmdi zmdi-plus-circle" data-goal="{{id}}"></i>' +
+    '</div>';
+  var pickedGoalTemplate =
+    '<div class="picked picked--{{id}}">' +
+      '<div class="picked__details">' +
+        '<div class="dragger"></div>' +
+        '<p class="picked__title">{{title}}</p>' +
+        '<p class="picked__date">' +
+          '<i class="zmdi zmdi-calendar-alt"></i>' +
+          '<input class="goal__date__picker" type="text" value="{{date}}" readonly>' +
+          '<i class="zmdi zmdi-edit"></i>' +
+        '</p>' +
+        '<p class="picked__success"><i class="zmdi zmdi-chart"></i>{{probability}}</p>' +
+      '</div>' +
+      '<i class="toggle-goal delete-goal zmdi zmdi-minus-circle" data-goal="{{id}}"></i>' +
+    '</div>';
+
+  /**
+   * PRIVATE FUNCTIONS
+   */
+
+  var showListGoals = function(data) {
+    var view = '';
+    var template = '';
+    data.forEach(function(goal) {
+      template = goalTemplate;
+
+      template = template.replace(/{{id}}/g, goal.id);
+      template = template.replace('{{title}}', goal.title);
+      template = template.replace('{{date}}', goal.date);
+      template = template.replace('{{probability}}', goal.probability);
+
+      view += template;
+    });
+
+    container.getElementsByClassName(configMap.goalsWrapper)[0].innerHTML = view;
+  };
+
+  var showPickedGoals = function(data) {
+    var view = '';
+    var template = '';
+    data.forEach(function(goal) {
+      template = pickedGoalTemplate;
+
+      template = template.replace(/{{id}}/g, goal.id);
+      template = template.replace('{{title}}', goal.title);
+      template = template.replace('{{date}}', goal.date);
+      template = template.replace('{{probability}}', goal.probability);
+
+      view += template;
+    });
+
+    container.getElementsByClassName(configMap.pickedGoalsWrapper)[0].innerHTML = view;
+  };
 
   /**
    * PUBLIC FUNCTIONS
@@ -1028,8 +1134,13 @@ app.views.goal = (function() {
     }
   };
 
-  var init = function(initContainer) {
+  var init = function(initContainer, goalsList) {
     container = initContainer;
+
+    //Show list of goals to be picked and already picked
+    showListGoals(goalsList);
+    showPickedGoals(goalsList);
+
     //Create tooltips
     $(configMap.$tooltips).tooltip();
 
@@ -1049,10 +1160,11 @@ app.views.goal = (function() {
 
   return {
     bind: bind,
-    init: init
+    init: init,
+    showListGoals: showListGoals
   };
 
-})();
+})($);
 
 app.views.retirement = (function() {
   var configMap = {
@@ -1258,6 +1370,12 @@ app.views.nav = (function() {
   var onNavClick = function(e) {
     var nodeName = e.target.nodeName,
       nextStep, nextStepElement, clickedLink;
+
+    //If it is the 'Reset Model' button
+    if(nodeName === 'A') {
+      return;
+    }
+
     if (nodeName === 'SPAN') {
       nextStep = e.target.dataset.template;
       clickedLink = e.target.parentNode;
@@ -1626,7 +1744,7 @@ app.shell = (function(window, PubSub) {
 
     //Screen #7
     var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
-    app.views.goal.init(goalContainer);
+    app.views.goal.init(goalContainer, app.model.getGoals());
     goalController();
 
     //Screen #8

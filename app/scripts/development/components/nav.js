@@ -14,6 +14,12 @@ app.views.nav = (function() {
   var onNavClick = function(e) {
     var nodeName = e.target.nodeName,
       nextStep, nextStepElement, clickedLink;
+
+    //If it is the 'Reset Model' button
+    if(nodeName === 'A') {
+      return;
+    }
+
     if (nodeName === 'SPAN') {
       nextStep = e.target.dataset.template;
       clickedLink = e.target.parentNode;

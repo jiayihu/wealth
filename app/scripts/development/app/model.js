@@ -25,6 +25,45 @@ app.model = (function (window) {
     savedActions: []
   };
 
+	var goalsList = [
+		{
+			id: 'college',
+			title: 'Save for college',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'home',
+			title: 'Buy a home',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'car',
+			title: 'Save for car',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'funds',
+			title: 'Emergency funds',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'cards',
+			title: 'Pay-down Credit Cards',
+			date: 'January 2017',
+			probability: '50%'
+		},
+		{
+			id: 'retire',
+			title: 'Retire',
+			date: 'January 2017',
+			probability: '50%'
+		}
+	];
+
   /**
    * Returns the value of the property in the model.
    * @param  {string} property The name of the property
@@ -58,11 +97,43 @@ app.model = (function (window) {
 	};
 
 	/**
+	 * [remove description]
+	 * @param  {string} property The name of the property to be removed from model.
+	 */
+	var remove = function (property) {
+    var data = JSON.parse(localStorage[stateMap.dbName]);
+    var user = data.user;
+
+    delete user[property];
+
+    localStorage[stateMap.dbName] = JSON.stringify(data);
+	};
+
+	/**
+	 * WARNING: Will remove ALL data from storage.
+	 */
+	var reset = function () {
+		localStorage[stateMap.dbName] = JSON.stringify({ user: defaultModel });
+	};
+
+	/**
+	 * SPECIFIC MODEL DATA-FUNCTIONS
+	 */
+
+	/**
+	 * Returns the list of available goals
+	 * @return {array}
+	 */
+	var getGoals = function() {
+		return goalsList;
+	};
+
+	/**
 	 * Update basic needs, discretionary and annual savings actual values based on rates
 	 */
 	var updateMoneyValues = function(callback) {
 		var data = JSON.parse(localStorage[stateMap.dbName]);
-    var user = data.user;
+		var user = data.user;
 
 		user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
 		user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
@@ -125,26 +196,6 @@ app.model = (function (window) {
 		localStorage[stateMap.dbName] = JSON.stringify(data);
 	};
 
-	/**
-	 * [remove description]
-	 * @param  {string} property The name of the property to be removed from model.
-	 */
-	var remove = function (property) {
-    var data = JSON.parse(localStorage[stateMap.dbName]);
-    var user = data.user;
-
-    delete user[property];
-
-    localStorage[stateMap.dbName] = JSON.stringify(data);
-	};
-
-	/**
-	 * WARNING: Will remove ALL data from storage.
-	 */
-	var reset = function () {
-		localStorage[stateMap.dbName] = JSON.stringify({ user: defaultModel });
-	};
-
 	var init = function(name) {
 		stateMap.dbName = name;
 
@@ -163,6 +214,7 @@ app.model = (function (window) {
 	};
 
 	return {
+		getGoals: getGoals,
 		init: init,
 		read: read,
 		reset: reset,

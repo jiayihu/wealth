@@ -1,5 +1,7 @@
-app.views.goal = (function() {
+app.views.goal = (function($) {
   var configMap = {
+    goalsWrapper: 'goals',
+    pickedGoalsWrapper: 'picked-goals',
     $tooltips: '.goal__details > span',
     toggleButtons: 'toggle-goal',
     pickedGoals: 'picked-goals',
@@ -8,21 +10,73 @@ app.views.goal = (function() {
 
   var container, toggleButtons;
 
-  var goalTemplate
-    = '<div class="goal goal--college">' +
-        '<div class="goal__details">' +
-          '<p class="goal__title">Save for college</p>' +
-          '<span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date based on your data">' +
-            '<i class="zmdi zmdi-calendar-alt"></i>' +
-            '<span>January 2018</span>' +
-          '</span>' +
-          '<span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability based on your data">' +
-            '<i class="zmdi zmdi-chart"></i>' +
-            '<span>85%</span>' +
-          '</span>' +
-        '</div>' +
-        '<i class="toggle-goal add-goal zmdi zmdi-plus-circle" data-goal="college"></i>' +
-      '</div>';
+  var goalTemplate =
+    '<div class="goal goal--{{id}}">' +
+      '<div class="goal__details">' +
+        '<p class="goal__title">{{title}}</p>' +
+        '<span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date based on your data">' +
+          '<i class="zmdi zmdi-calendar-alt"></i>' +
+          '<span>{{date}}</span>' +
+        '</span>' +
+        '<span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability based on your data">' +
+          '<i class="zmdi zmdi-chart"></i>' +
+          '<span>{{probability}}</span>' +
+        '</span>' +
+      '</div>' +
+      '<i class="toggle-goal add-goal zmdi zmdi-plus-circle" data-goal="{{id}}"></i>' +
+    '</div>';
+  var pickedGoalTemplate =
+    '<div class="picked picked--{{id}}">' +
+      '<div class="picked__details">' +
+        '<div class="dragger"></div>' +
+        '<p class="picked__title">{{title}}</p>' +
+        '<p class="picked__date">' +
+          '<i class="zmdi zmdi-calendar-alt"></i>' +
+          '<input class="goal__date__picker" type="text" value="{{date}}" readonly>' +
+          '<i class="zmdi zmdi-edit"></i>' +
+        '</p>' +
+        '<p class="picked__success"><i class="zmdi zmdi-chart"></i>{{probability}}</p>' +
+      '</div>' +
+      '<i class="toggle-goal delete-goal zmdi zmdi-minus-circle" data-goal="{{id}}"></i>' +
+    '</div>';
+
+  /**
+   * PRIVATE FUNCTIONS
+   */
+
+  var showListGoals = function(data) {
+    var view = '';
+    var template = '';
+    data.forEach(function(goal) {
+      template = goalTemplate;
+
+      template = template.replace(/{{id}}/g, goal.id);
+      template = template.replace('{{title}}', goal.title);
+      template = template.replace('{{date}}', goal.date);
+      template = template.replace('{{probability}}', goal.probability);
+
+      view += template;
+    });
+
+    container.getElementsByClassName(configMap.goalsWrapper)[0].innerHTML = view;
+  };
+
+  var showPickedGoals = function(data) {
+    var view = '';
+    var template = '';
+    data.forEach(function(goal) {
+      template = pickedGoalTemplate;
+
+      template = template.replace(/{{id}}/g, goal.id);
+      template = template.replace('{{title}}', goal.title);
+      template = template.replace('{{date}}', goal.date);
+      template = template.replace('{{probability}}', goal.probability);
+
+      view += template;
+    });
+
+    container.getElementsByClassName(configMap.pickedGoalsWrapper)[0].innerHTML = view;
+  };
 
   /**
    * PUBLIC FUNCTIONS
@@ -48,8 +102,13 @@ app.views.goal = (function() {
     }
   };
 
-  var init = function(initContainer) {
+  var init = function(initContainer, goalsList) {
     container = initContainer;
+
+    //Show list of goals to be picked and already picked
+    showListGoals(goalsList);
+    showPickedGoals(goalsList);
+
     //Create tooltips
     $(configMap.$tooltips).tooltip();
 
@@ -69,7 +128,8 @@ app.views.goal = (function() {
 
   return {
     bind: bind,
-    init: init
+    init: init,
+    showListGoals: showListGoals
   };
 
-})();
+})($);
