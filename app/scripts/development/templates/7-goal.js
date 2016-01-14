@@ -11,7 +11,7 @@ app.views.goal = (function($) {
   var container, toggleButtons;
 
   var goalTemplate =
-    '<div class="goal goal--{{id}}">' +
+    '<div class="goal goal--{{id}} {{picked}}">' +
       '<div class="goal__details">' +
         '<p class="goal__title">{{title}}</p>' +
         '<span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date based on your data">' +
@@ -26,7 +26,7 @@ app.views.goal = (function($) {
       '<i class="toggle-goal add-goal zmdi zmdi-plus-circle" data-goal="{{id}}"></i>' +
     '</div>';
   var pickedGoalTemplate =
-    '<div class="picked picked--{{id}}">' +
+    '<div class="picked picked--{{id}} {{picked}}">' +
       '<div class="picked__details">' +
         '<div class="dragger"></div>' +
         '<p class="picked__title">{{title}}</p>' +
@@ -44,14 +44,25 @@ app.views.goal = (function($) {
    * PRIVATE FUNCTIONS
    */
 
-  var showListGoals = function(data) {
+  var showListGoals = function(goalsList, pickedGoals) {
     var view = '';
     var template = '';
-    data.forEach(function(goal) {
+
+    goalsList.forEach(function(goal) {
+      var goalHide = ''; // 'goal--hide' css class
+      var isPicked = pickedGoals.find(function(value) {
+        return value.id === goal.id;
+      });
+
+      if(isPicked) {
+        goalHide = 'goal--hide';
+      }
+
       template = goalTemplate;
 
       template = template.replace(/{{id}}/g, goal.id);
       template = template.replace('{{title}}', goal.title);
+      template = template.replace('{{picked}}', goalHide);
       template = template.replace('{{date}}', goal.date);
       template = template.replace('{{probability}}', goal.probability);
 
@@ -61,14 +72,25 @@ app.views.goal = (function($) {
     container.getElementsByClassName(configMap.goalsWrapper)[0].innerHTML = view;
   };
 
-  var showPickedGoals = function(data) {
+  var showPickedGoals = function(goalsList, pickedGoals) {
     var view = '';
     var template = '';
-    data.forEach(function(goal) {
+
+    goalsList.forEach(function(goal) {
+      var pickedShow = ''; // 'picked--show' css class
+      var isPicked = pickedGoals.find(function(value) {
+        return value.id === goal.id;
+      });
+
+      if(isPicked) {
+        pickedShow = 'picked--show';
+      }
+
       template = pickedGoalTemplate;
 
       template = template.replace(/{{id}}/g, goal.id);
       template = template.replace('{{title}}', goal.title);
+      template = template.replace('{{picked}}', pickedShow);
       template = template.replace('{{date}}', goal.date);
       template = template.replace('{{probability}}', goal.probability);
 
@@ -94,7 +116,7 @@ app.views.goal = (function($) {
           container.getElementsByClassName('goal--' + goalName)[0].classList.toggle('goal--hide');
 
           handler({
-            name: goalName,
+            id: goalName,
             date: date
           });
         });
@@ -102,12 +124,12 @@ app.views.goal = (function($) {
     }
   };
 
-  var init = function(initContainer, goalsList) {
+  var init = function(initContainer, goalsList, pickedGoals) {
     container = initContainer;
 
     //Show list of goals to be picked and already picked
-    showListGoals(goalsList);
-    showPickedGoals(goalsList);
+    showListGoals(goalsList, pickedGoals);
+    showPickedGoals(goalsList, pickedGoals);
 
     //Create tooltips
     $(configMap.$tooltips).tooltip();

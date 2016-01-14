@@ -160,7 +160,7 @@ app.model = (function (window) {
 
 		var i = 0, alreadyPicked = false;
 		for(i = 0; i < goals.length && !alreadyPicked; i++) {
-			if(goals[i].name === goal.name) {
+			if(goals[i].id === goal.id) {
 				goals.splice(i, 1);
 				alreadyPicked = true;
 			}

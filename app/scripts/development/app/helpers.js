@@ -18,25 +18,6 @@
 		target.addEventListener(type, callback, !!useCapture);
 	};
 
-	// Attach a handler to event for all elements that match the selector,
-	// now or in the future, based on a root element
-	window.$delegate = function (target, selector, type, handler) {
-		function dispatchEvent(event) {
-			var targetElement = event.target;
-			var potentialElements = window.qsa(selector, target);
-			var hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0;
-
-			if (hasMatch) {
-				handler.call(targetElement, event);
-			}
-		}
-
-		// https://developer.mozilla.org/en-US/docs/Web/Events/blur
-		var useCapture = type === 'blur' || type === 'focus';
-
-		window.$on(target, type, dispatchEvent, useCapture);
-	};
-
 	// Find the element's parent with the given tag name:
 	// $parent(qs('a'), 'div');
 	window.$parent = function (element, tagName) {
@@ -116,8 +97,41 @@
  	  }
  	};
 
+	/**
+	 * PROTOTYPE FUNCTIONS
+	 */
+
 	// Allow for looping on nodes by chaining and using forEach on both Nodelists and HTMLCollections
 	// qsa('.foo').forEach(function () {})
 	NodeList.prototype.forEach = Array.prototype.forEach;
 	HTMLCollection.prototype.forEach = Array.prototype.forEach;
+
+	/**
+	 * Implement the ECMAScript 2015 'find' function in Arrays
+	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+	 * @param  {[type]} !Array.prototype.find [description]
+	 * @return {[type]}
+	 */
+	if (!Array.prototype.find) {
+	  Array.prototype.find = function(predicate) {
+	    if (this === null) {
+	      throw new TypeError('Array.prototype.find called on null or undefined');
+	    }
+	    if (typeof predicate !== 'function') {
+	      throw new TypeError('predicate must be a function');
+	    }
+	    var list = Object(this);
+	    var length = list.length;
+	    var thisArg = arguments[1];
+	    var value;
+
+	    for (var i = 0; i < length; i++) {
+	      value = list[i];
+	      if (predicate.call(thisArg, value, i, list)) {
+	        return value;
+	      }
+	    }
+	    return undefined;
+	  };
+	}
 })(window);
