@@ -6,6 +6,12 @@ app.yaml
 app copia
 .tf
 
+#Production files which are generated from gulp
+app/index.html
+app/styles/bootstrap.css
+app/styles/main.css
+app/scripts/main.js
+
 # Compiled source #
 ###################
 *.com
