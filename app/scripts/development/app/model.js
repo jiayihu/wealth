@@ -158,8 +158,8 @@ app.model = (function (window) {
 		var data = JSON.parse(localStorage[stateMap.dbName]);
 		var goals = data.user.pickedGoals;
 
-		var i = 0, alreadyPicked = false;
-		for(i = 0; i < goals.length && !alreadyPicked; i++) {
+		var alreadyPicked = false;
+		for(var i = 0, len = goals.length; i < len && !alreadyPicked; i++) {
 			if(goals[i].id === goal.id) {
 				goals.splice(i, 1);
 				alreadyPicked = true;
@@ -181,8 +181,8 @@ app.model = (function (window) {
 		var data = JSON.parse(localStorage[stateMap.dbName]);
 		var actions = data.user.savedActions;
 
-		var i = 0, alreadySaved = false;
-		for(i = 0; i < actions.length && !alreadySaved; i++) {
+		var alreadySaved = false;
+		for(var i = 0, len = actions.length; i < len && !alreadySaved; i++) {
 			if(actions[i].id === action.id) {
 				actions.splice(i, 1);
 				alreadySaved = true;

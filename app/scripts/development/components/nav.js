@@ -27,11 +27,11 @@ app.views.nav = (function() {
       nextStep = e.target.firstElementChild.dataset.template;
       clickedLink = e.target;
     }
-    // if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
+    if(!clickedLink.classList.contains('disabled') && configMap.blocking) {
       setActive(clickedLink, 'active');
       nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
       setActive(nextStepElement, 'show');
-    // }
+    }
   };
 
   /**
@@ -48,9 +48,8 @@ app.views.nav = (function() {
    * @param  {number} start Number of the first link to start with
    */
   var setDisabledLinks = function(start) {
-    var i;
     var navItems = nav.getElementsByTagName('li');
-    for(i = start; i < navItems.length; i++) {
+    for(var i = start, len = navItems.length; i < len; i++) {
       navItems[i].classList.add('disabled');
     }
   };

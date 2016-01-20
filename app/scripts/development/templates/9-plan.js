@@ -51,7 +51,7 @@ app.views.plan = (function() {
     var tHead = '<table class="table"><thead><tr><th>Title</th><th>type</th><th>Date</th><th>Details</th></tr></thead>',
       tBody = '<tbody>';
 
-      for(var i = 0; i < planActions.length; i++) {
+      for(var i = 0, len = planActions.length; i < len; i++) {
         tBody += '<tr><td>' + planActions[i].title + '</td>' +
           '<td>' + planActions[i].type + '</td>' +
           '<td>' + planActions[i].date + '</td>' +
