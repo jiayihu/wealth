@@ -5,13 +5,8 @@ dist
 app.yaml
 app copia
 .tf
-
-#Production files which are generated from gulp
-app/index.html
-app/styles/bootstrap.css
-app/styles/main.css
-app/styles/maps
-app/scripts/main.js
+public
+www
 
 # Compiled source #
 ###################
