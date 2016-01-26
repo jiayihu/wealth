@@ -1,3 +1,9 @@
+{#
+  Nunjucks Templating!
+  Homepage: https://mozilla.github.io/nunjucks/
+  Docs: https://mozilla.github.io/nunjucks/api.html
+#}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,65 +38,29 @@
               <span>Toggle Menu</span>
             </button>
           </div>
-          <div class="nav">
-            <p class="nav__label">Navigation</p>
-            <ul>
-              <li class="active">
-                <span class="step-name" data-template="intro"><span class="step-number">1</span>Introduction</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="about"><span class="step-number">2</span>Tell us about you</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="you"><span class="step-number">3</span>Your savings & expenses</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="pyramid"><span class="step-number">4</span>This is you now</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="scenarios"><span class="step-number">5</span>What if</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="goal"><span class="step-number">6</span>Pick a goal</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="retirement"><span class="step-number">7</span>Saving for retirement</span>
-              </li>
-              <li>
-                <span class="step-name" data-template="plan"><span class="step-number">8</span>Action Plan</span>
-              </li>
-            </ul>
-            <a class="reset-model">Reset stored Model</a>
-          </div>
+          {% include 'includes/nav.html' %}
         </div>
         <div class="main col-md-9">
-          @@include('./templates/1-intro.html')
-          @@include('./templates/2-about.html')
-          @@include('./templates/3-you.html')
-          @@include('./templates/5-pyramid.html')
-          @@include('./templates/6-scenarios.html')
-          @@include('./templates/7-goal.html')
-          @@include('./templates/8-retirement.html')
-          @@include('./templates/9-plan.html')
+          {% include 'screens/1-intro.html' %}
+          {% include 'screens/2-about.html' %}
+          {% include 'screens/3-you.html' %}
+          {% include 'screens/5-pyramid.html' %}
+          {% include 'screens/6-scenarios.html' %}
+          {% include 'screens/7-goal.html' %}
+          {% include 'screens/8-retirement.html' %}
+          {% include 'screens/9-plan.html' %}
         </div>
       </div>
     </div>
   </div>
 
   <script src="scripts/lib/jquery.min.js" charset="utf-8"></script>
+  <script src="scripts/lib/wNumb.min.js" charset="utf-8"></script>
   <!-- Bootstrap -->
   <script src="scripts/lib/bootstrap.min.js" charset="utf-8"></script>
-  <!-- Slider -->
-  <script src="scripts/lib/wNumb.min.js" charset="utf-8"></script>
-  <script src="scripts/lib/nouislider.min.js" charset="utf-8"></script>
-  <!-- Chartist.js -->
-  <script src="scripts/lib/chartist.min.js" charset="utf-8"></script>
-  <!-- Dragula.js -->
-  <script src="scripts/lib/dragula.min.js" charset="utf-8"></script>
   <!-- Bootstrap Datepicker -->
   <script src="scripts/lib/bootstrap-datepicker.min.js" charset="utf-8"></script>
-  <!-- MVC JS -->
-  <script src="scripts/lib/pubsub.min.js" charset="utf-8"></script>
+  <!-- Custom JS -->
   <script src="scripts/main.js" charset="utf-8"></script>
   <!-- Other Components -->
   <script src="scripts/lib/fastclick.js" charset="utf-8"></script>
@@ -105,7 +75,7 @@
 
     ga('create', 'UA-8229287-16', 'auto');
     ga('send', 'pageview');
-    </script>
+  </script>
 </body>
 
 </html>

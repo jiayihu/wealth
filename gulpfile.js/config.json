@@ -1,0 +1,65 @@
+{
+  "env": "development",
+
+  "root": {
+    "src": "./app",
+    "dest": "./public"
+  },
+
+  "tasks": {
+    "browserSync": {
+      "server": {
+        "baseDir": "public"
+      },
+      "browser": "Google Chrome",
+      "notify": false
+    },
+
+    "static": {
+      "src": "static",
+      "dest": "./"
+    },
+
+    "scripts": {
+      "main": "app.js",
+      "src": "javascripts",
+      "dest": "scripts",
+      "extensions": ["js"]
+    },
+
+    "css": {
+      "src": "stylesheets",
+      "dest": "styles",
+      "autoprefixer": {
+        "browsers": ["last 3 version"]
+      },
+      "sass": {
+        "indentedSyntax": true
+      },
+      "extensions": ["scss", "css", "sass"]
+    },
+
+    "html": {
+      "src": "html",
+      "dest": "./",
+      "htmlmin": {
+        "collapseWhitespace": true
+      },
+      "excludeFolders": ["layouts", "shared", "macros", "data"],
+      "dataFile": "data/global.json",
+      "extensions": ["html", "json"]
+    },
+
+    "images": {
+      "src": "images",
+      "dest": "images",
+      "extensions": ["jpg", "png", "svg", "gif"]
+    },
+
+    "fonts": {
+      "src": "fonts",
+      "dest": "fonts",
+      "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
+    }
+  }
+}
