@@ -1,5 +1,10 @@
 /**
- * Shell module
+ * Shell module. This could be the master controller with tiny controllers for
+ * each view, in MVC pattern.
+ * To be more precise this is more likely the Presenter in MVP pattern.
+ * Our views/screens are 'dumb'. They don't know anything about the Model, so
+ * the Presenter has the job to update the screens when Model changes and viceversa.
+ * @see {@link https://addyosmani.com/resources/essentialjsdesignpatterns/book/#detailmvp}
  * @module shell
  */
 
@@ -23,10 +28,22 @@ var views = {
   continue: require('./components/continue')
 };
 
+//Store model data in this variables, to be used throughtout this module.
 var data;
 
+
+
+///////////////////////
+// VIEWS CONTROLLERS //
+///////////////////////
+
 /**
- * VIEWS CONTROLLERS
+ * Every controller's job is almost the same:
+ * - to bind user interactions to Model
+ *   changes and publish this change to update Model observers/subscribers.
+ * - to subscribe functions to update the DOM (rendering the data) whenever
+ *   the Model is changed
+ * @see {@url https://addyosmani.com/resources/essentialjsdesignpatterns/book/#observerpatternjavascript}
  */
 
 /**
@@ -164,9 +181,10 @@ var retirementController = function() {
   });
 };
 
-/**
- * COMPONENTS CONTROLLERS
- */
+
+////////////////////////////
+// COMPONENTS CONTROLLERS //
+////////////////////////////
 
 /**
  * Navigation
@@ -196,12 +214,20 @@ var continueController = function() {
 };
 
 
-/**
- * PUBLIC FUNCTIONS
- */
 
+//////////////////////
+// PUBLIC FUNCTIONS //
+//////////////////////
+
+/**
+ * Inits the views and components. Configures the views with initial Model data
+ * when it is needed. Calls also the controllers for Model-Views & Views-Model
+ * bindings.
+ */
 var init = function() {
+  //get Model data only once
   data = model.read();
+
   //Screen #2
   var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
   views.about.configModule({
@@ -304,6 +330,7 @@ var init = function() {
   views.hamburger.init();
 
   /* DEVELOPMENT ONLY */
+  //@NOTE This could be useful also for users and not only for development
   var resetButton = document.getElementsByClassName('reset-model')[0];
   resetButton.addEventListener('click', function() {
     model.reset();

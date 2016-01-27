@@ -5,7 +5,7 @@ var browserSync  = require('browser-sync');
 var sass         = require('gulp-sass');
 var sourcemaps   = require('gulp-sourcemaps');
 var autoprefixer = require('gulp-autoprefixer');
-var minifyCss = require('gulp-minify-css');
+var cssnano = require('gulp-cssnano');
 var path         = require('path');
 
 var paths = {
@@ -15,12 +15,12 @@ var paths = {
 
 var cssTask = function () {
   return gulp.src(paths.src)
-    .pipe(sourcemaps.init())
+    .pipe(gulpif(config.env !== 'production', sourcemaps.init()))
     .pipe(sass(config.tasks.css.sass))
     .on('error', sass.logError)
     .pipe(autoprefixer(config.tasks.css.autoprefixer))
-    .pipe(sourcemaps.write('./maps'))
-    .pipe(gulpif(config.env === 'production', minifyCss()))
+    .pipe( gulpif(config.env === 'production', cssnano()) )
+    .pipe(gulpif(config.env !== 'production', sourcemaps.write('./maps')))
     .pipe(gulp.dest(paths.dest))
     .pipe(browserSync.stream({match: '**/*.css'}));
 };

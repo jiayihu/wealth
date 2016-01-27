@@ -36,6 +36,9 @@
       "sass": {
         "indentedSyntax": true
       },
+      "cssnano": {
+
+      },
       "extensions": ["scss", "css", "sass"]
     },
 

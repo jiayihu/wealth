@@ -5,8 +5,7 @@ var productionTask = function() {
   runSequence(
     'clean',
     ['fonts', 'images', 'static'],
-    ['html', 'css', 'scripts'],
-    'deploy'
+    ['html', 'css', 'scripts']
   );
 };
 

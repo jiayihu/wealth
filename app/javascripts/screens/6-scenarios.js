@@ -99,14 +99,18 @@ var savingRateSlider, incomeRateSlider, investmentRateSlider, retirementSlider,
   investmentStyleButtons,
   lineChart,
   retirementSavings;
+
 var moneyFormat = wNumb({
   thousand: ','
 });
 
-/**
- * DOM FUNCTIONS
- */
+///////////////////
+// DOM FUNCTIONS //
+///////////////////
 
+/**
+ * Create the sliders and show the value on a tooltip when the user interacts
+ */
 var createSliders = function() {
   window.createSlider(savingRateSlider, configMap.savingRateOptions);
   savingRateSlider.noUiSlider.on('update', function(values) {
@@ -129,14 +133,24 @@ var createSliders = function() {
   });
 };
 
+/**
+ * Renders the Line chart
+ * @NOTE not very useful currently, since it's just one instruction
+ */
 var createLineChart = function(htmlNode, data, options) {
   lineChart = new Chartist.Line(htmlNode, data, options);
 };
 
-/**
- * EVENT HANDLERS
- */
 
+////////////////////
+// EVENT HANDLERS //
+////////////////////
+
+
+/**
+ * Updates the line chart with the new investment style chosen by user
+ * @param  {object} event Event object
+ */
 var investmentStyleButtonsHandler = function(event) {
   var investmentStyle = event.target.value;
 
@@ -155,6 +169,12 @@ var investmentStyleButtonsHandler = function(event) {
   updateLineChart();
 };
 
+/**
+ * Shows slider value on a tooltip when is changed. Used by 'createSliders'.
+ * @param  {object} slider Slider
+ * @param  {array} values Array of slider values
+ * @param  {string} format Value format (rate, money etc.)
+ */
 var sliderEventHandler = function(slider, values, format) {
   var tooltip = slider.getElementsByTagName('span')[0];
   if (format === '%') {
@@ -166,6 +186,9 @@ var sliderEventHandler = function(slider, values, format) {
   }
 };
 
+/**
+ * Updates the line chart when user interacts with the sliders
+ */
 var bindSlidersToChart = function() {
   savingRateSlider.noUiSlider.on('change', function(values) {
     configMap.savingsRate = Number(values[0]);
@@ -187,9 +210,11 @@ var bindSlidersToChart = function() {
   });
 };
 
-/**
- * COMPOUND INTEREST FUNCTIONS
- */
+
+////////////////////////////////
+// COMPOUND INTEREST FUNCTION //
+////////////////////////////////
+
 
 /**
  * Returns the accumulated money
@@ -197,7 +222,7 @@ var bindSlidersToChart = function() {
  * @param  {number} term Years
  * @param  {number} amtInvested Initial investment
  * @param  {number} contribAmt Monthly contribution
- * @module.exports = {number}
+ * @return {number}
  */
 var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) {
   var app = [];
@@ -215,18 +240,22 @@ var getAccumulatedValue = function(interestRate, term, amtInvested, contribAmt) 
   return Math.round(total);
 };
 
-/**
- * PUBLIC FUNCTIONS
- */
+
+//////////////////////
+// PUBLIC FUNCTIONS //
+//////////////////////
+
 
 /**
- * Returns an array containing the values for x axis
+ * Returns an array containing the values for x axis. In our case it's used to
+ * show the savings progress as the years increase towards the retirement age.
  * @param  {Number} firstValue First value of the axis
  * @param  {Number} lastValue Last value of the axis
- * @module.exports = {Array}
+ * @return {Array}
  */
 var getAbscissas = function(firstValue, lastValue) {
   var values = [];
+  //First and last values must be precise
   values[0] = firstValue;
   values[5] = lastValue;
 
@@ -238,22 +267,37 @@ var getAbscissas = function(firstValue, lastValue) {
   return values;
 };
 
+/**
+ * @NOTE VERY IMPORTANT! This is the function which actually updates the line
+ * chart based on user interactions.
+ */
 var updateLineChart = function() {
   var xValues = getAbscissas(configMap.aboutAge, configMap.retirementAge);
   var i = 0;
 
   configMap.chartData.labels = xValues;
+
+  // We are also considering the investment rate in Advanced options.
+  // So this is (annualSavings * investmentRate) to be precise.
   configMap.annualSavings = (configMap.savingsRate / 100) * configMap.income * (configMap.investment / 100);
 
+  //We are settings the first Y value of the line chart, which corresponds
+  //to the initial investment.
   configMap.chartData.series[0][0] = configMap.currentSavings;
+
+  //We calculate and the other values for the line chart with the Compound interest function
   for (i = 1; i < 6; i += 1) {
     configMap.chartData.series[0][i] =
       getAccumulatedValue(configMap.annualInterestRate, xValues[i] - xValues[0], configMap.currentSavings, configMap.annualSavings);
   }
 
+  //We set the first tick (absolute value) to the initial investment. It would be
+  //otherwise 0.
   configMap.chartOptions.axisY.ticks[0] = configMap.currentSavings;
 
   lineChart.update(configMap.chartData, configMap.chartOptions);
+
+  //Updates the amount of savings at retirement age
   retirementSavings.childNodes[1].textContent = moneyFormat.to(configMap.chartData.series[0][5]);
 };
 
@@ -261,6 +305,12 @@ var configModule = function(inputMap) {
   window.setConfigMap(inputMap, configMap);
 };
 
+/**
+ * Used by shell to set the sliders values when data is changed on some other
+ * screens, for example the income.
+ * @param  {string} slider Slider name
+ * @param  {string} value Value
+ */
 var setSlider = function(slider, value) {
   if (slider === 'income') {
     incomeRateSlider.noUiSlider.set(value);

@@ -208,6 +208,11 @@ var updateDOMDoughnut = function(slider, values) {
  * PUBLIC FUNCTIONS
  */
 
+/**
+ * Used by shell to bind event handlers to this module DOM events. It usually
+ * means that we want the shell to update model when user interacts with this
+ * screen.
+ */
 var bind = function(event, handler) {
   if (event === 'basicNeedsChanged') {
     needsSlider.noUiSlider.on('change', function(values) {
