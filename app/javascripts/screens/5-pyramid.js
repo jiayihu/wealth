@@ -5,6 +5,7 @@
 
 'use strict';
 
+var helpers = require('../helpers');
 var wNumb = require('wNumb');
 
 var configMap = {
@@ -41,7 +42,7 @@ var updateLabels = function() {
  */
 
 var configModule = function(inputMap) {
-  window.setConfigMap(inputMap, configMap);
+  helpers.setConfigMap(inputMap, configMap);
 };
 
 var init = function(container) {

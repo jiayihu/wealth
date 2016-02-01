@@ -5,6 +5,7 @@
 
 'use strict';
 
+var helpers = require('../helpers');
 var wNumb = require('wNumb');
 var $ = require('jQuery');
 var Chartist = require('chartist');
@@ -42,7 +43,7 @@ var configMap = {
     step: 1000,
     range: {
       'min': 1000,
-      'max': 100000
+      'max': 500000
     },
     format: wNumb({
       decimals: 1,
@@ -76,52 +77,57 @@ var configMap = {
   ]
 };
 
-var $pieChart, needsSlider, expensesSlider, savingsSlider;
+var stateMap = {
+  $pieChart: null,
+  needsSlider: null,
+  expensesSlider: null,
+  savingsSlider: null
+};
 
-/**
- * DOM FUNCTIONS
- */
 
-var animateDoughnut = function($pieChart) {
-  $pieChart.on('draw', function(data) {
-    if (data.type === 'slice') {
-      var pathLength = data.element._node.getTotalLength();
-      data.element.attr({
-        'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-      });
-      var animationDefinition = {
-        'stroke-dashoffset': {
-          id: 'anim' + data.index,
-          dur: 1000,
-          from: -pathLength + 'px',
-          to: '0px',
-          easing: Chartist.Svg.Easing.easeOutQuint,
-          fill: 'freeze'
-        }
-      };
+////////////////////
+// DOM FUNCTIONS ///
+////////////////////
 
-      if (data.index !== 0) {
-        animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
+
+var onChartDraw = function(data) {
+  if (data.type === 'slice') {
+    var pathLength = data.element._node.getTotalLength();
+    data.element.attr({
+      'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
+    });
+    var animationDefinition = {
+      'stroke-dashoffset': {
+        id: 'anim' + data.index,
+        dur: 1000,
+        from: -pathLength + 'px',
+        to: '0px',
+        easing: Chartist.Svg.Easing.easeOutQuint,
+        fill: 'freeze'
       }
+    };
 
-      data.element.attr({
-        'stroke-dashoffset': -pathLength + 'px'
-      });
-      data.element.animate(animationDefinition, false);
+    if (data.index !== 0) {
+      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
     }
-  });
+
+    data.element.attr({
+      'stroke-dashoffset': -pathLength + 'px'
+    });
+    data.element.animate(animationDefinition, false);
+  }
 };
 
 var createDoughnutTooltip = function() {
-  var $chart = $('.' + configMap.doughnutClass),
+  var $chart = $('.' + configMap.doughnutClass), //@FIXME isn't it stateMap.$pieChart?
     $toolTip = $chart
     .append('<div class="pie-tooltip"></div>')
     .find('.pie-tooltip')
-    .hide(),
-    moneyFormat = wNumb({
-      thousand: '.',
-      prefix: '$ '
-    });
+    .hide();
+  var moneyFormat = wNumb({
+    thousand: '.',
+    prefix: '$ '
+  });
 
   var isTooltipShown = false;
 
@@ -166,27 +172,14 @@ var createChart = function(htmlNode) {
     name: 'Savings'
   };
 
-  $pieChart = new Chartist.Pie(htmlNode,
+  stateMap.$pieChart = new Chartist.Pie(
+    htmlNode,
     configMap.doughnutData,
     configMap.doughnutOptions,
     configMap.doughnutResponsiveOptions);
 
-  animateDoughnut($pieChart);
+  stateMap.$pieChart.on('draw', onChartDraw);
   createDoughnutTooltip();
-
-};
-
-/**
- * EVENT HANDLERS
- */
-
-var showSliderTooltip = function(slider, values) {
-  var tooltip = slider.getElementsByTagName('span')[0];
-  if (slider.classList.contains(configMap.savingsSlider)) {
-    tooltip.innerHTML = '$' + values[0];
-  } else {
-    tooltip.innerHTML = values[0] + '%';
-  }
 };
 
 
@@ -201,7 +194,7 @@ var updateDOMDoughnut = function(slider, values) {
     configMap.doughnutData.series[1].value = Number(values[0]);
   }
   configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
-  $pieChart.update();
+  stateMap.$pieChart.update();
 };
 
 /**
@@ -215,49 +208,52 @@ var updateDOMDoughnut = function(slider, values) {
  */
 var bind = function(event, handler) {
   if (event === 'basicNeedsChanged') {
-    needsSlider.noUiSlider.on('change', function(values) {
+    stateMap.needsSlider.noUiSlider.on('change', function(values) {
       updateDOMDoughnut('needsSlider', values);
       handler(configMap.doughnutData.series[0].value, configMap.doughnutData.series[2].value);
     });
   } else if (event === 'expensesChanged') {
-    expensesSlider.noUiSlider.on('change', function(values) {
+    stateMap.expensesSlider.noUiSlider.on('change', function(values) {
       updateDOMDoughnut('expensesSlider', values);
       handler(configMap.doughnutData.series[1].value, configMap.doughnutData.series[2].value);
     });
   } else if (event === 'savingsChanged') {
-    savingsSlider.noUiSlider.on('change', function(values) {
+    stateMap.savingsSlider.noUiSlider.on('change', function(values) {
       handler(Number(values[0].replace('.', '')));
     });
   }
 };
 
 var configModule = function(inputMap) {
-  window.setConfigMap(inputMap, configMap);
+  helpers.setConfigMap(inputMap, configMap);
 };
 
 var init = function(container) {
-  needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
-  expensesSlider = container.getElementsByClassName(configMap.expensesSlider)[0];
-  savingsSlider = container.getElementsByClassName(configMap.savingsSlider)[0];
+  stateMap.needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
+  stateMap.expensesSlider = container.getElementsByClassName(configMap.expensesSlider)[0];
+  stateMap.savingsSlider = container.getElementsByClassName(configMap.savingsSlider)[0];
+  var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
 
   //Create sliders
-  window.createSlider(needsSlider, configMap.needsOptions);
-  needsSlider.noUiSlider.on('update', function(values) {
-    showSliderTooltip(needsSlider, values);
+  helpers.createSlider(stateMap.needsSlider, configMap.needsOptions);
+  stateMap.needsSlider.noUiSlider.on('update', function(values) {
+    var tooltip = stateMap.needsSlider.getElementsByTagName('span')[0];
+    tooltip.innerHTML = helpers.format(values[0], '%');
   });
 
-  window.createSlider(expensesSlider, configMap.expensesOptions);
-  expensesSlider.noUiSlider.on('update', function(values) {
-    showSliderTooltip(expensesSlider, values);
+  helpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions);
+  stateMap.expensesSlider.noUiSlider.on('update', function(values) {
+    var tooltip = stateMap.expensesSlider.getElementsByTagName('span')[0];
+    tooltip.innerHTML = helpers.format(values[0], '%');
   });
 
-  window.createSlider(savingsSlider, configMap.savingsOptions);
-  savingsSlider.noUiSlider.on('update', function(values) {
-    showSliderTooltip(savingsSlider, values);
+  helpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions);
+  stateMap.savingsSlider.noUiSlider.on('update', function(values) {
+    var tooltip = stateMap.savingsSlider.getElementsByTagName('span')[0];
+    tooltip.innerHTML = helpers.format(values[0], '$');
   });
 
   //Init Doughnut Chart
-  var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
   createChart(doughnutHtml);
 };
 

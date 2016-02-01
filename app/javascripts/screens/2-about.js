@@ -5,6 +5,7 @@
 
 'use strict';
 
+var helpers = require('../helpers');
 var wNumb = require('wNumb');
 
 var configMap = {
@@ -44,78 +45,79 @@ var configMap = {
   aboutLiving: 'rent'
 };
 
-var ageSlider, incomeSlider,
-  situation, living;
-
-/**
- * EVENT HANDLERS
- */
-
-var showSliderTooltip = function(slider, values) {
-  var tooltip = slider.getElementsByTagName('span')[0];
-  if (slider.classList.contains(configMap.incomeSlider)) {
-    tooltip.innerHTML = '$' + values[0];
-  } else {
-    tooltip.innerHTML = values[0];
-  }
+var stateMap = {
+  ageSlider: null,
+  incomeSlider: null,
+  situation: null,
+  living: null
 };
 
-/**
- * DOM FUNCTIONS
- */
+
+///////////////////
+// DOM FUNCTIONS //
+///////////////////
+
 
 var createSliders = function() {
-  window.createSlider(ageSlider, configMap.ageOptions);
-  window.createSlider(incomeSlider, configMap.incomeOptions);
+  helpers.createSlider(stateMap.ageSlider, configMap.ageOptions);
+  helpers.createSlider(stateMap.incomeSlider, configMap.incomeOptions);
 
-  ageSlider.noUiSlider.on('update', function(values) {
-    showSliderTooltip(ageSlider, values);
+  stateMap.ageSlider.noUiSlider.on('update', function(values) {
+    var tooltip = stateMap.ageSlider.getElementsByTagName('span')[0];
+    tooltip.innerHTML = values[0];
   });
 
-  incomeSlider.noUiSlider.on('update', function(values) {
-    showSliderTooltip(incomeSlider, values);
+  stateMap.incomeSlider.noUiSlider.on('update', function(values) {
+    var tooltip = stateMap.incomeSlider.getElementsByTagName('span')[0];
+    tooltip.innerHTML = helpers.format(values[0], '$');
   });
 };
 
 var setOptionLists = function() {
-  situation.value = configMap.aboutSituation;
-  living.value = configMap.aboutLiving;
+  stateMap.situation.value = configMap.aboutSituation;
+  stateMap.living.value = configMap.aboutLiving;
 };
 
-/**
- * PUBLIC FUNCTIONS
- */
 
+//////////////////////
+// PUBLIC FUNCTIONS //
+//////////////////////
+
+/**
+ * Used by shell to bind event handlers to this module DOM events. It usually
+ * means that we want the shell to update model when user interacts with this
+ * screen.
+ */
 var bind = function(event, handler) {
   if (event === 'ageChanged') {
-    ageSlider.noUiSlider.on('change', function(values) {
+    stateMap.ageSlider.noUiSlider.on('change', function(values) {
       handler(Number(values[0]));
     });
   } else if (event === 'incomeChanged') {
-    incomeSlider.noUiSlider.on('change', function(values) {
+    stateMap.incomeSlider.noUiSlider.on('change', function(values) {
       handler(Number(values[0].replace('.', '')));
     });
   } else if (event === 'situationChanged') {
-    situation.addEventListener('change', function(event) {
+    stateMap.situation.addEventListener('change', function(event) {
       handler(event.target.value);
     });
   } else if (event === 'livingChanged') {
-    living.addEventListener('change', function(event) {
+    stateMap.living.addEventListener('change', function(event) {
       handler(event.target.value);
     });
   }
 };
 
 var configModule = function(inputMap) {
-  window.setConfigMap(inputMap, configMap);
+  helpers.setConfigMap(inputMap, configMap);
 };
 
 var init = function(container) {
   //DOM elements
-  ageSlider = container.getElementsByClassName(configMap.ageSlider)[0];
-  incomeSlider = container.getElementsByClassName(configMap.incomeSlider)[0];
-  situation = container.getElementsByClassName('about__select')[0];
-  living = container.getElementsByClassName('about__select')[1];
+  stateMap.ageSlider = container.getElementsByClassName(configMap.ageSlider)[0];
+  stateMap.incomeSlider = container.getElementsByClassName(configMap.incomeSlider)[0];
+  stateMap.situation = container.getElementsByClassName('about__select')[0];
+  stateMap.living = container.getElementsByClassName('about__select')[1];
 
   createSliders();
 

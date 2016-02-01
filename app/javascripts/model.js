@@ -137,6 +137,7 @@ var getGoals = function() {
 var updateMoneyValues = function(callback) {
   var data = JSON.parse(localStorage[stateMap.dbName]);
   var user = data.user;
+  var moneyValues;
 
   user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
   user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
@@ -144,13 +145,15 @@ var updateMoneyValues = function(callback) {
 
   localStorage[stateMap.dbName] = JSON.stringify(data);
 
-  callback = callback || function() {};
-
-  callback({
+  moneyValues = {
     basicNeeds: user.basicNeeds,
     discretionaryExpenses: user.discretionaryExpenses,
-    annualSavings: user.annualSaving
-  });
+    annualSavings: user.annualSavings
+  };
+
+  callback = callback || function() {};
+
+  callback(moneyValues);
 };
 
 /**

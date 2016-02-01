@@ -6,23 +6,21 @@
 'use strict';
 
 var $ = require('jQuery');
+var actionsList = require('./data/actions');
 
-var configMap = {
-  jsonUrl: 'scripts/model/actions.json'
-};
+var tbody;
 
-var tbody,
-  data;
 
-/**
- * DOM FUNCTIONS
- */
+///////////////////
+// DOM FUNCTIONS //
+///////////////////
 
-var createActions = function(data) {
+
+var createActions = function(actionsList) {
   var docFragment = document.createDocumentFragment(),
     row;
 
-  data.actions.forEach(function(element, index) {
+  actionsList.forEach(function(element, index) {
     row = document.createElement('tr');
     row.innerHTML = '<td><i class="zmdi zmdi-check-circle" data-action="' + index + '"></i></td>' +
       '<td>' + element.todo + '</td>' +
@@ -47,7 +45,8 @@ var bind = function(event, handler) {
       var target = event.target;
       if (target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
         target.classList.toggle('saved');
-        handler(data.actions[Number(target.dataset.action)]);
+        console.log(actionsList[Number(target.dataset.action)]);
+        handler(actionsList[Number(target.dataset.action)]);
       }
     });
   }
@@ -55,23 +54,10 @@ var bind = function(event, handler) {
 
 var init = function(container) {
   tbody = container.getElementsByTagName('tbody')[0];
+  tbody.appendChild(createActions(actionsList));
 
-  var request = new XMLHttpRequest();
-  request.open('GET', configMap.jsonUrl, true);
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      data = JSON.parse(request.responseText);
-      tbody.appendChild(createActions(data));
-      //Tooltips
-      $('.retirement-wrapper .zmdi-info-outline').tooltip();
-    } else {
-      console.log('Error with the connection.');
-    }
-  };
-  request.onerror = function() {
-    console.log('Error with the connection.');
-  };
-  request.send();
+  //Tooltips
+  $('.retirement-wrapper .zmdi-info-outline').tooltip();
 };
 
 module.exports = {

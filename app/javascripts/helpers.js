@@ -5,104 +5,82 @@
 
 'use strict';
 
+var notie = require('notie');
 var noUiSlider = require('nouislider');
 
-var init = function() {
-  /**
-   *   JQUERY FUNCTIONS
-   */
+/**
+ * Throws a new Error visible to the user
+ */
+var makeError = function(msg) {
+  notie.alert(3, msg, 3);
+};
 
-  // Get element(s) by CSS selector:
-  window.qs = function(selector, scope) {
-    return (scope || document).querySelector(selector);
-  };
-  window.qsa = function(selector, scope) {
-    return (scope || document).querySelectorAll(selector);
-  };
+/**
+ * Create a slider using noUiSlider
+ * @param  {object} element HTML Node of the slider
+ * @param  {object} options Slider options
+ */
+var createSlider = function(element, options) {
+  if (typeof noUiSlider === 'undefined') {
+    makeError('Nouislider', 'nouislider object is not declared.');
+  }
+  noUiSlider.create(element, options);
+  element.handle = element.getElementsByClassName('noUi-handle')[0];
+  element.tooltip = document.createElement('div');
+  element.handle.appendChild(element.tooltip);
 
-  // addEventListener wrapper:
-  window.$on = function(target, type, callback, useCapture) {
-    target.addEventListener(type, callback, !!useCapture);
-  };
+  element.tooltip.classList.add('slider-tooltip');
+  element.tooltip.innerHTML = '<span></span>';
+  element.tooltip = element.tooltip.firstElementChild;
+};
 
-  // Find the element's parent with the given tag name:
-  // $parent(qs('a'), 'div');
-  window.$parent = function(element, tagName) {
-    if (!element.parentNode) {
-      return;
-    }
-    if (element.parentNode.tagName.toLowerCase() === tagName.toLowerCase()) {
-      return element.parentNode;
-    }
-    return window.$parent(element.parentNode, tagName);
-  };
+/**
+ * Formats the value to a specified type
+ * @param  {string || number} value Value to be formatted
+ * @param  {string} type Format type
+ * @return {string} Formatted value
+ */
+var format = function(value, type) {
+  if( (typeof value !== 'number') && (typeof value !== 'string') ) {
+    throw new Error('format() requires a string or number as value');
+  }
 
-  /**
-   * [function description]
-   * @param  {Function} callback Callback
-   */
-  window.$ready = function(callback) {
-    if (document.readyState !== 'loading') {
-      callback();
-    } else {
-      document.addEventListener('DOMContentLoaded', callback);
-    }
-  };
+  var newValue = '';
 
-  /**
-   *   NO JQUERY FUNCTIONS
-   */
+  switch (type) {
+  case '$':
+    newValue = '$' + value;
+    break;
+  case '%':
+    newValue = value + '%';
+    break;
+  default:
+    newValue = value;
+  }
 
-  /**
-   * Throws a new Error
-   */
-  window.makeError = function(name, msg, data) {
-    var error = {};
-    error.name = name;
-    error.msg = msg;
-    if (data) {
-      error.data = data;
-    }
-    console.error(error.msg);
-  };
+  return newValue;
+};
 
-  /**
-   * Create a slider using noUiSlider
-   * @param  {object} element HTML Node of the slider
-   * @param  {object} options Slider options
-   */
-  window.createSlider = function(element, options) {
-    if (typeof noUiSlider === 'undefined') {
-      window.makeError('Nouislider', 'nouislider object is not declared.');
-    }
-    noUiSlider.create(element, options);
-    element.handle = element.getElementsByClassName('noUi-handle')[0];
-    element.tooltip = document.createElement('div');
-    element.handle.appendChild(element.tooltip);
+/**
+ * Set the configMap of the module - It goes deep in the object
+ */
+var setConfigMap = function(inputMap, configMap) {
+  var key;
 
-    element.tooltip.classList.add('slider-tooltip');
-    element.tooltip.innerHTML = '<span></span>';
-    element.tooltip = element.tooltip.firstElementChild;
-  };
-
-  /**
-   * Set the configMap of the module - It goes deep in the object
-   */
-  window.setConfigMap = function(inputMap, configMap) {
-    var key;
-
-    for (key in inputMap) {
-      if (configMap.hasOwnProperty(key)) {
-        if (inputMap[key] instanceof Object) {
-          window.setConfigMap(inputMap[key], configMap[key]);
-        } else {
-          configMap[key] = inputMap[key];
-        }
+  for (key in inputMap) {
+    if (configMap.hasOwnProperty(key)) {
+      if (inputMap[key] instanceof Object) {
+        setConfigMap(inputMap[key], configMap[key]);
       } else {
-        window.makeError('Wrong inputMap', 'Property "' + key + '" is not available in configMap');
+        configMap[key] = inputMap[key];
       }
+    } else {
+      makeError('Wrong inputMap', 'Property "' + key + '" is not available in configMap');
     }
-  };
+  }
+};
+
+var init = function() {
 
   /**
    * PROTOTYPE FUNCTIONS
@@ -144,5 +122,9 @@ var init = function() {
 };
 
 module.exports = {
-  init: init
+  createSlider: createSlider,
+  format: format,
+  init: init,
+  makeError: makeError,
+  setConfigMap: setConfigMap
 };

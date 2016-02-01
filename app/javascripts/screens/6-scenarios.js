@@ -5,6 +5,7 @@
 
 'use strict';
 
+var helpers = require('../helpers');
 var wNumb = require('wNumb');
 var Chartist = require('chartist');
 
@@ -112,22 +113,22 @@ var moneyFormat = wNumb({
  * Create the sliders and show the value on a tooltip when the user interacts
  */
 var createSliders = function() {
-  window.createSlider(savingRateSlider, configMap.savingRateOptions);
+  helpers.createSlider(savingRateSlider, configMap.savingRateOptions);
   savingRateSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(savingRateSlider, values, '%');
   });
 
-  window.createSlider(incomeRateSlider, configMap.incomeOptions);
+  helpers.createSlider(incomeRateSlider, configMap.incomeOptions);
   incomeRateSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(incomeRateSlider, values, '$');
   });
 
-  window.createSlider(investmentRateSlider, configMap.investmentOptions);
+  helpers.createSlider(investmentRateSlider, configMap.investmentOptions);
   investmentRateSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(investmentRateSlider, values, '%');
   });
 
-  window.createSlider(retirementSlider, configMap.retirementOptions);
+  helpers.createSlider(retirementSlider, configMap.retirementOptions);
   retirementSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(retirementSlider, values);
   });
@@ -302,7 +303,7 @@ var updateLineChart = function() {
 };
 
 var configModule = function(inputMap) {
-  window.setConfigMap(inputMap, configMap);
+  helpers.setConfigMap(inputMap, configMap);
 };
 
 /**
