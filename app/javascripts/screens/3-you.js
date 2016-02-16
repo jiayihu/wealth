@@ -12,7 +12,7 @@ var Chartist = require('chartist');
 
 var configMap = {
   aboutIncome: 60000,
-  needsSlider: 'about__savings__slider--needs',
+  basicSlider: 'about__savings__slider--needs',
   expensesSlider: 'about__savings__slider--expenses',
   savingsSlider: 'current-savings__slider',
   //Slider options
@@ -21,7 +21,7 @@ var configMap = {
     step: 1,
     range: {
       'min': 1,
-      'max': 60
+      'max': 70
     },
     format: wNumb({
       decimals: 0
@@ -32,7 +32,7 @@ var configMap = {
     step: 1,
     range: {
       'min': 1,
-      'max': 40
+      'max': 70
     },
     format: wNumb({
       decimals: 0
@@ -53,13 +53,20 @@ var configMap = {
   //Doughnut options
   doughnutClass: 'about__savings__circle',
   doughnutData: {
-    series: [{
-      value: 45,
-      name: 'Basic Needs'
-    }, {
-      value: 25,
-      name: 'Discretionary'
-    }]
+    series: [
+      {
+        value: 45,
+        name: 'Basic Needs'
+      },
+      {
+        value: 25,
+        name: 'Discretionary'
+      },
+      {
+        value: 30,
+        name: 'Savings'
+      }
+    ]
   },
   doughnutOptions: {
     donut: true,
@@ -79,11 +86,42 @@ var configMap = {
 
 var stateMap = {
   $pieChart: null,
-  needsSlider: null,
+  basicSlider: null,
   expensesSlider: null,
   savingsSlider: null
 };
 
+// Variables by reference
+var basicRate = configMap.doughnutData.series[0];
+var discRate = configMap.doughnutData.series[1];
+var savingsRate = configMap.doughnutData.series[2];
+
+
+////////////////////
+// PURE FUNCTIONS //
+////////////////////
+
+/**
+ * Returns if the rate value is valid, that is not superior to 100 if summed with
+ * the other rate
+ * @param  {[type]} type [description]
+ * @param  {[type]} value [description]
+ * @return {[type]}
+ */
+var isRateValid = function(type, value) {
+  if(typeof value !== 'number') {
+    throw new Error('isRateValid(): wrong param: ' + JSON.stringify(value));
+  }
+
+  if( (type === 'basic') && (value + discRate.value > 100) ) {
+    return false;
+  }
+  if( (type === 'discretionary') && (value + basicRate.value > 100) ) {
+    return false;
+  }
+
+  return true;
+};
 
 ////////////////////
 // DOM FUNCTIONS ///
@@ -167,11 +205,6 @@ var createDoughnutTooltip = function() {
 };
 
 var createChart = function(htmlNode) {
-  configMap.doughnutData.series[2] = {
-    value: 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value,
-    name: 'Savings'
-  };
-
   stateMap.$pieChart = new Chartist.Pie(
     htmlNode,
     configMap.doughnutData,
@@ -187,19 +220,21 @@ var createChart = function(htmlNode) {
  * Update the view of the Doughnut when sliders value change
  * @param {string} slider The name of the slider which changed
  */
-var updateDOMDoughnut = function(slider, values) {
-  if (slider === 'needsSlider') {
-    configMap.doughnutData.series[0].value = Number(values[0]);
+var updateDOMDoughnut = function(slider, value) {
+  if (slider === 'basicSlider') {
+    basicRate.value = value;
   } else {
-    configMap.doughnutData.series[1].value = Number(values[0]);
+    discRate.value = value;
   }
-  configMap.doughnutData.series[2].value = 100 - configMap.doughnutData.series[0].value - configMap.doughnutData.series[1].value;
+  savingsRate.value = 100 - basicRate.value - discRate.value;
   stateMap.$pieChart.update();
 };
 
-/**
- * PUBLIC FUNCTIONS
- */
+
+//////////////////////
+// PUBLIC FUNCTIONS //
+//////////////////////
+
 
 /**
  * Used by shell to bind event handlers to this module DOM events. It usually
@@ -208,17 +243,29 @@ var updateDOMDoughnut = function(slider, values) {
  */
 var bind = function(event, handler) {
   if (event === 'basicNeedsChanged') {
-    stateMap.needsSlider.noUiSlider.on('change', function(values) {
-      updateDOMDoughnut('needsSlider', values);
-      handler(configMap.doughnutData.series[0].value, configMap.doughnutData.series[2].value);
+    stateMap.basicSlider.noUiSlider.on('set', function(values) {
+      var value = Number(values[0]);
+      if(isRateValid('basic', value)) {
+        updateDOMDoughnut('basicSlider', value);
+        handler(basicRate.value, savingsRate.value);
+      } else {
+        helpers.makeError('Error: the sum of basic & discretionary rates are superior than 100');
+        this.set(basicRate.value);
+      }
     });
   } else if (event === 'expensesChanged') {
-    stateMap.expensesSlider.noUiSlider.on('change', function(values) {
-      updateDOMDoughnut('expensesSlider', values);
-      handler(configMap.doughnutData.series[1].value, configMap.doughnutData.series[2].value);
+    stateMap.expensesSlider.noUiSlider.on('set', function(values) {
+      var value = Number(values[0]);
+      if(isRateValid('discretionary', value)) {
+        updateDOMDoughnut('expensesSlider', value);
+        handler(discRate.value, savingsRate.value);
+      } else {
+        helpers.makeError('Error: the sum of basic & discretionary rates are superior than 100');
+        this.set(discRate.value);
+      }
     });
   } else if (event === 'savingsChanged') {
-    stateMap.savingsSlider.noUiSlider.on('change', function(values) {
+    stateMap.savingsSlider.noUiSlider.on('set', function(values) {
       handler(Number(values[0].replace('.', '')));
     });
   }
@@ -228,16 +275,30 @@ var configModule = function(inputMap) {
   helpers.setConfigMap(inputMap, configMap);
 };
 
+/**
+ * Used by shell to set the sliders values when data is changed on some other
+ * screens, for example the income.
+ * @param  {string} slider Slider name
+ * @param  {string} value Value
+ */
+var setSlider = function(slider, value) {
+  if (slider === 'basic') {
+    stateMap.basicSlider.noUiSlider.set(value);
+  } else if (slider === 'discretionary') {
+    stateMap.expensesSlider.noUiSlider.set(value);
+  }
+};
+
 var init = function(container) {
-  stateMap.needsSlider = container.getElementsByClassName(configMap.needsSlider)[0];
+  stateMap.basicSlider = container.getElementsByClassName(configMap.basicSlider)[0];
   stateMap.expensesSlider = container.getElementsByClassName(configMap.expensesSlider)[0];
   stateMap.savingsSlider = container.getElementsByClassName(configMap.savingsSlider)[0];
   var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
 
   //Create sliders
-  helpers.createSlider(stateMap.needsSlider, configMap.needsOptions);
-  stateMap.needsSlider.noUiSlider.on('update', function(values) {
-    var tooltip = stateMap.needsSlider.getElementsByTagName('span')[0];
+  helpers.createSlider(stateMap.basicSlider, configMap.needsOptions);
+  stateMap.basicSlider.noUiSlider.on('update', function(values) {
+    var tooltip = stateMap.basicSlider.getElementsByTagName('span')[0];
     tooltip.innerHTML = helpers.format(values[0], '%');
   });
 
@@ -255,10 +316,14 @@ var init = function(container) {
 
   //Init Doughnut Chart
   createChart(doughnutHtml);
+
+  window.basicSlider = stateMap.basicSlider.noUiSlider;
+  window.expensesSlider = stateMap.expensesSlider.noUiSlider;
 };
 
 module.exports = {
   bind: bind,
   configModule: configModule,
-  init: init
+  init: init,
+  setSlider: setSlider
 };

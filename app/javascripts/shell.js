@@ -13,6 +13,9 @@
 var PubSub = require('pubsub-js');
 var model = require('./model');
 var views = {
+  //Data
+  budget: require('./screens/data/budget'),
+
   //Screens
   about: require('./screens/2-about'),
   you: require('./screens/3-you'),
@@ -76,9 +79,13 @@ var aboutController = function() {
  */
 var youSubscriber = function(topic, data) {
   if (topic === 'aboutIncomeChanged') {
+    var rates = views.budget.getRates(data);
+
     views.you.configModule({
       aboutIncome: data
     });
+    views.you.setSlider('basic', rates.basic);
+    views.you.setSlider('discretionary', rates.discretionary);
   }
 };
 
@@ -257,13 +264,20 @@ var init = function() {
       start: data.currentSavings
     },
     doughnutData: {
-      series: [{
-        value: data.aboutBasicRate,
-        name: 'Basic Needs'
-      }, {
-        value: data.aboutDiscretionaryRate,
-        name: 'Discretionary'
-      }]
+      series: [
+        {
+          value: data.aboutBasicRate,
+          name: 'Basic Needs'
+        },
+        {
+          value: data.aboutDiscretionaryRate,
+          name: 'Discretionary'
+        },
+        {
+          value: 100 - data.aboutBasicRate - data.aboutDiscretionaryRate,
+          name: 'Savings'
+        }
+      ]
     }
   });
   views.you.init(youContainer);

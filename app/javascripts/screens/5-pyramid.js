@@ -19,7 +19,12 @@ var configMap = {
   aboutIncome: 0
 };
 
-var savingsText, basicText, discretionaryText, incomeText;
+var stateMap = {
+  savingsText: null,
+  basicText: null,
+  discretionaryText: null,
+  incomeText: null
+};
 
 /**
  * DOM FUNCTIONS
@@ -31,10 +36,10 @@ var updateLabels = function() {
     prefix: '$ '
   });
 
-  savingsText.textContent = ' ' + moneyFormat.to(configMap.annualSavings) + '/yr';
-  basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
-  discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
-  incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';
+  stateMap.savingsText.textContent = ' ' + moneyFormat.to(configMap.annualSavings) + '/yr';
+  stateMap.basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
+  stateMap.discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
+  stateMap.incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';
 };
 
 /**
@@ -46,10 +51,10 @@ var configModule = function(inputMap) {
 };
 
 var init = function(container) {
-  savingsText = container.querySelector(configMap.savingsId);
-  basicText = container.querySelector(configMap.basicId);
-  discretionaryText = container.querySelector(configMap.discretiotionaryId);
-  incomeText = container.querySelector(configMap.incomeId);
+  stateMap.savingsText = container.querySelector(configMap.savingsId);
+  stateMap.basicText = container.querySelector(configMap.basicId);
+  stateMap.discretionaryText = container.querySelector(configMap.discretiotionaryId);
+  stateMap.incomeText = container.querySelector(configMap.incomeId);
 
   updateLabels();
 };

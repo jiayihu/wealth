@@ -1,4 +1,6 @@
-/* Removed for now*/
+/////////////////////
+// REMOVED FOR NOW //
+/////////////////////
 
 (function() {
   var peopleModule = {
