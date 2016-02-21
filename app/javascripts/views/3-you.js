@@ -6,6 +6,8 @@
 'use strict';
 
 var helpers = require('../helpers');
+var domHelpers = require('../dom-helpers');
+var notie = require('notie');
 var wNumb = require('wNumb');
 var $ = require('jQuery');
 var Chartist = require('chartist');
@@ -219,6 +221,7 @@ var createChart = function(htmlNode) {
 /**
  * Update the view of the Doughnut when sliders value change
  * @param {string} slider The name of the slider which changed
+ * @param {number} value New value
  */
 var updateDOMDoughnut = function(slider, value) {
   if (slider === 'basicSlider') {
@@ -240,6 +243,8 @@ var updateDOMDoughnut = function(slider, value) {
  * Used by shell to bind event handlers to this module DOM events. It usually
  * means that we want the shell to update model when user interacts with this
  * screen.
+ * @param  {string} event Event name
+ * @param  {function} handler Event handler
  */
 var bind = function(event, handler) {
   if (event === 'basicNeedsChanged') {
@@ -249,8 +254,8 @@ var bind = function(event, handler) {
         updateDOMDoughnut('basicSlider', value);
         handler(basicRate.value, savingsRate.value);
       } else {
-        helpers.makeError('Error: the sum of basic & discretionary rates are superior than 100');
         this.set(basicRate.value);
+        helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
       }
     });
   } else if (event === 'expensesChanged') {
@@ -260,8 +265,8 @@ var bind = function(event, handler) {
         updateDOMDoughnut('expensesSlider', value);
         handler(discRate.value, savingsRate.value);
       } else {
-        helpers.makeError('Error: the sum of basic & discretionary rates are superior than 100');
         this.set(discRate.value);
+        helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
       }
     });
   } else if (event === 'savingsChanged') {
@@ -296,19 +301,19 @@ var init = function(container) {
   var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
 
   //Create sliders
-  helpers.createSlider(stateMap.basicSlider, configMap.needsOptions);
+  domHelpers.createSlider(stateMap.basicSlider, configMap.needsOptions);
   stateMap.basicSlider.noUiSlider.on('update', function(values) {
     var tooltip = stateMap.basicSlider.getElementsByTagName('span')[0];
     tooltip.innerHTML = helpers.format(values[0], '%');
   });
 
-  helpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions);
+  domHelpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions);
   stateMap.expensesSlider.noUiSlider.on('update', function(values) {
     var tooltip = stateMap.expensesSlider.getElementsByTagName('span')[0];
     tooltip.innerHTML = helpers.format(values[0], '%');
   });
 
-  helpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions);
+  domHelpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions);
   stateMap.savingsSlider.noUiSlider.on('update', function(values) {
     var tooltip = stateMap.savingsSlider.getElementsByTagName('span')[0];
     tooltip.innerHTML = helpers.format(values[0], '$');

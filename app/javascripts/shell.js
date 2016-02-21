@@ -13,17 +13,14 @@
 var PubSub = require('pubsub-js');
 var model = require('./model');
 var views = {
-  //Data
-  budget: require('./screens/data/budget'),
-
   //Screens
-  about: require('./screens/2-about'),
-  you: require('./screens/3-you'),
-  pyramid: require('./screens/5-pyramid'),
-  scenarios: require('./screens/6-scenarios'),
-  goal: require('./screens/7-goal'),
-  retirement: require('./screens/8-retirement'),
-  plan: require('./screens/9-plan'),
+  about: require('./views/2-about'),
+  you: require('./views/3-you'),
+  pyramid: require('./views/5-pyramid'),
+  scenarios: require('./views/6-scenarios'),
+  goal: require('./views/7-goal'),
+  retirement: require('./views/8-retirement'),
+  plan: require('./views/9-plan'),
 
   //Components
   nav: require('./components/nav'),
@@ -52,34 +49,35 @@ var data;
 /**
  * 2-About
  */
+
 var aboutController = function() {
   views.about.bind('ageChanged', function(value) {
-    model.update('aboutAge', value, function(value) {
-      PubSub.publish('ageChanged', value);
-    });
+    model.update({'aboutAge': value});
+    PubSub.publish('ageChanged', value);
   });
   views.about.bind('incomeChanged', function(value) {
-    model.update('aboutIncome', value, function(value) {
-      PubSub.publish('aboutIncomeChanged', value);
-    });
+    model.update({'aboutIncome': value});
+    PubSub.publish('aboutIncomeChanged', value);
     model.updateMoneyValues(function(moneyValues) {
       PubSub.publish('moneyValuesChanged', moneyValues);
     });
   });
   views.about.bind('situationChanged', function(value) {
-    model.update('aboutSituation', value);
+    model.update({'aboutSituation': value});
   });
   views.about.bind('livingChanged', function(value) {
-    model.update('aboutLiving', value);
+    model.update({'aboutLiving': value});
   });
 };
 
 /**
  * 3-You
  */
+
 var youSubscriber = function(topic, data) {
   if (topic === 'aboutIncomeChanged') {
-    var rates = views.budget.getRates(data);
+    console.log(data);
+    var rates = model.getDefaultRates(data);
 
     views.you.configModule({
       aboutIncome: data
@@ -91,27 +89,24 @@ var youSubscriber = function(topic, data) {
 
 var youController = function() {
   views.you.bind('basicNeedsChanged', function(basicRate, savingsRate) {
-    model.update('aboutBasicRate', basicRate);
-    model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
-      PubSub.publish('savingsRateChanged', savingsRate);
-    });
+    model.update({'aboutBasicRate': basicRate});
+    model.update({'aboutSavingsRate': savingsRate});
+    PubSub.publish('savingsRateChanged', savingsRate);
     model.updateMoneyValues(function(moneyValues) {
       PubSub.publish('moneyValuesChanged', moneyValues);
     });
   });
   views.you.bind('expensesChanged', function(expensesRate, savingsRate) {
-    model.update('aboutDiscretionaryRate', expensesRate);
-    model.update('aboutSavingsRate', savingsRate, function(savingsRate) {
-      PubSub.publish('savingsRateChanged', savingsRate);
-    });
+    model.update({'aboutDiscretionaryRate': expensesRate});
+    model.update({'aboutSavingsRate': savingsRate});
+    PubSub.publish('savingsRateChanged', savingsRate);
     model.updateMoneyValues(function(moneyValues) {
       PubSub.publish('moneyValuesChanged', moneyValues);
     });
   });
   views.you.bind('savingsChanged', function(currentSavings) {
-    model.update('currentSavings', currentSavings, function(currentSavings) {
-      PubSub.publish('currentSavingsChanged', currentSavings);
-    });
+    model.update({'currentSavings': currentSavings});
+    PubSub.publish('currentSavingsChanged', currentSavings);
   });
 
   PubSub.subscribe('aboutIncomeChanged', youSubscriber);
@@ -120,6 +115,7 @@ var youController = function() {
 /**
  * 5-Pyramid
  */
+
 var pyramidSubscriber = function(topic, data) {
   if (topic === 'aboutIncomeChanged') {
     views.pyramid.configModule({
@@ -139,6 +135,7 @@ var pyramidController = function() {
 /**
  * 6-Scenarios
  */
+
 var scenariosSubscriber = function(topic, data) {
   if (topic === 'ageChanged') {
     views.scenarios.configModule({
@@ -214,7 +211,7 @@ var continueController = function() {
       );
       var savedLastStep = data.lastUserStep;
       if (lastUserStep > savedLastStep) {
-        model.update('lastUserStep', lastUserStep);
+        model.update({'lastUserStep': lastUserStep});
       }
     }
   });
@@ -317,7 +314,7 @@ var init = function() {
 
   //Screen #7
   var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
-  views.goal.init(goalContainer, model.getGoals(), data.pickedGoals);
+  views.goal.init(goalContainer, model.getGoals(), data.goals);
   goalController();
 
   //Screen #8

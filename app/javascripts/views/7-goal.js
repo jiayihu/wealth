@@ -143,11 +143,6 @@ var getPickedGoals = function(goalsList, pickedGoals) {
 // PUBLIC FUNCTIONS //
 //////////////////////
 
-/**
- * Used by shell to bind event handlers to this module DOM events. It usually
- * means that we want the shell to update model when user interacts with this
- * screen.
- */
 var bind = function(event, handler) {
   if (event === 'goalToggled') {
     /**
@@ -178,7 +173,6 @@ var bind = function(event, handler) {
 
 var init = function(initContainer, goalsList, pickedGoals) {
   container = initContainer;
-
   //Show list of goals to be picked and already picked
   var goalsView = getListGoals(goalsList, pickedGoals);
   container.getElementsByClassName(configMap.goalsWrapper)[0].innerHTML = goalsView;

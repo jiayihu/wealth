@@ -3,8 +3,13 @@
  * @module model
  */
 
-
 'use strict';
+
+var helpers = require('./helpers');
+var notie = require('notie').alert;
+
+var budget = require('./model/budget');
+var goalsList = require('./model/goals');
 
 var stateMap = {
   dbName: ''
@@ -24,79 +29,46 @@ var defaultModel = {
   basicNeeds: 27000,
   lastUserStep: 1,
   discretionaryExpenses: 15000,
-  pickedGoals: [],
-  savedActions: []
+  goals: [],
+  actions: []
 };
 
-var goalsList = [
-  {
-    id: 'college',
-    title: 'Save for college',
-    date: 'January 2017',
-    probability: '50%'
-  },
-  {
-    id: 'home',
-    title: 'Buy a home',
-    date: 'January 2017',
-    probability: '50%'
-  },
-  {
-    id: 'car',
-    title: 'Save for car',
-    date: 'January 2017',
-    probability: '50%'
-  },
-  {
-    id: 'funds',
-    title: 'Emergency funds',
-    date: 'January 2017',
-    probability: '50%'
-  },
-  {
-    id: 'cards',
-    title: 'Pay-down Credit Cards',
-    date: 'January 2017',
-    probability: '50%'
-  },
-  {
-    id: 'retire',
-    title: 'Retire',
-    date: 'January 2017',
-    probability: '50%'
-  }
-];
+
+///////////////////////////
+// BASIC STORE FUNCTIONS //
+///////////////////////////
 
 /**
  * Returns the value of the property in the model.
  * @param  {string} property The name of the property
+ * @return {anything}
  */
 var read = function(property) {
   var data = JSON.parse(localStorage[stateMap.dbName]);
-  var user = data.user;
 
   if(typeof property === 'undefined') {
-    return user;
+    return data;
   }
 
-  return user[property];
+  return data[property];
 };
 
 /**
  * Updates model by giving it the property name and its value.
- * @param  {string} property   The name of the property to update
- * @param  {object} updateData The new value of the property
+ * @param  {string} updateMap The name of the property to update
  */
-var update = function (property, updateData, callback) {
-  var data = JSON.parse(localStorage[stateMap.dbName]);
-  var user = data.user;
+var update = function (updateMap) {
+  if(typeof updateMap !== 'object') {
+    helpers.makeError('params', updateMap);
+  }
 
-  user[property] = updateData;
+  var data = read();
+
+  Object.keys(updateMap).forEach(function(property) {
+    data[property] = updateMap[property];
+  });
 
   localStorage[stateMap.dbName] = JSON.stringify(data);
-
-  callback = callback || function() {};
-  callback(updateData);
 };
 
 /**
@@ -104,10 +76,9 @@ var update = function (property, updateData, callback) {
  * @param  {string} property The name of the property to be removed from model.
  */
 var remove = function (property) {
-  var data = JSON.parse(localStorage[stateMap.dbName]);
-  var user = data.user;
+  var data = read();
 
-  delete user[property];
+  delete data[property];
 
   localStorage[stateMap.dbName] = JSON.stringify(data);
 };
@@ -116,12 +87,13 @@ var remove = function (property) {
  * WARNING: Will remove ALL data from storage.
  */
 var reset = function () {
-  localStorage[stateMap.dbName] = JSON.stringify({ user: defaultModel });
+  localStorage[stateMap.dbName] = JSON.stringify(defaultModel);
 };
 
-/**
- * SPECIFIC MODEL DATA-FUNCTIONS
- */
+
+//////////////////////////////
+// SPECIFIC MODEL FUNCTIONS //
+//////////////////////////////
 
 /**
  * Returns the list of available goals
@@ -133,100 +105,60 @@ var getGoals = function() {
 
 /**
  * Update basic needs, discretionary and annual savings actual values based on rates
+ * @param {function} callback Callback
  */
 var updateMoneyValues = function(callback) {
-  var data = JSON.parse(localStorage[stateMap.dbName]);
-  var user = data.user;
-  var moneyValues;
+  var data = read();
+  var moneyValues = {};
+  var valuesOfCategory = helpers.valueOfRate.bind(null, data.aboutIncome);
 
-  user.basicNeeds = user.aboutIncome * user.aboutBasicRate * 0.01;
-  user.discretionaryExpenses = user.aboutIncome * user.aboutDiscretionaryRate * 0.01;
-  user.annualSavings = user.aboutIncome * user.aboutSavingsRate * 0.01;
+  moneyValues.basicNeeds = valuesOfCategory(data.aboutBasicRate);
+  moneyValues.discretionaryExpenses = valuesOfCategory(data.aboutDiscretionaryRate);
+  moneyValues.annualSavings = valuesOfCategory(data.aboutSavingsRate);
 
-  localStorage[stateMap.dbName] = JSON.stringify(data);
-
-  moneyValues = {
-    basicNeeds: user.basicNeeds,
-    discretionaryExpenses: user.discretionaryExpenses,
-    annualSavings: user.annualSavings
-  };
+  update(moneyValues);
 
   callback = callback || function() {};
-
   callback(moneyValues);
 };
 
 /**
- * Update the array of picked goals adding or removing the goal
- * @param  {object} goal The goal to remove or add to the list
+ * Updates the stored list adding or removing the element
+ * @param  {string} listName Name of the list
+ * @param  {object} item item to add or delete
  */
-var toggleGoal = function(goal) {
-  var data = JSON.parse(localStorage[stateMap.dbName]);
-  var goals = data.user.pickedGoals;
-
-  var alreadyPicked = false;
-  for(var i = 0, len = goals.length; i < len && !alreadyPicked; i++) {
-    if(goals[i].id === goal.id) {
-      goals.splice(i, 1);
-      alreadyPicked = true;
-    }
+var toggleListItem = function(listName, item) {
+  if(typeof listName !== 'string') {
+    helpers.makeError('params', listName);
   }
 
-  if(!alreadyPicked) {
-    goals.push(goal);
-  }
+  var list = read()[listName];
+  var updatedList = helpers.toggleArrayItem(list, item);
 
-  localStorage[stateMap.dbName] = JSON.stringify(data);
-};
-
-/**
- * Update the array of saved adding or removing the goal
- * @param  {object} action The action to remove or add to the list
- */
-var toggleActions = function(action) {
-  var data = JSON.parse(localStorage[stateMap.dbName]);
-  var actions = data.user.savedActions;
-
-  var alreadySaved = false;
-  for(var i = 0, len = actions.length; i < len && !alreadySaved; i++) {
-    if(actions[i].id === action.id) {
-      actions.splice(i, 1);
-      alreadySaved = true;
-    }
-  }
-
-  if(!alreadySaved) {
-    actions.push(action);
-  }
-
-  localStorage[stateMap.dbName] = JSON.stringify(data);
+  update( {}[listName] = updatedList );
 };
 
 var init = function(name) {
   stateMap.dbName = name;
 
   if(typeof window.Storage === undefined) {
-    window.makeError('localStorage support', 'Error: localStorage is not supported.');
-    return;
+    helpers.makeError(null, 'localStorage support', 'Error: localStorage is not supported.', notie.bind(null, 3));
   }
 
   if(!localStorage[name]) {
-    var data = {
-      user: defaultModel
-    };
-
-    localStorage[name] = JSON.stringify(data);
+    localStorage[name] = JSON.stringify(defaultModel);
   }
 };
 
 module.exports = {
+  getDefaultRates: budget.getDefaultRates,
   getGoals: getGoals,
   init: init,
   read: read,
   reset: reset,
   remove: remove,
-  toggleActions: toggleActions,
-  toggleGoal: toggleGoal,
+  toggleActions: toggleListItem.bind(null, 'actions'),
+  toggleGoal: toggleListItem.bind(null, 'goals'),
   update: update,
   updateMoneyValues: updateMoneyValues
 };

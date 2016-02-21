@@ -6,7 +6,7 @@
 'use strict';
 
 var $ = require('jQuery');
-var actionsList = require('./data/actions');
+var actionsList = require('../model/actions');
 
 var tbody;
 

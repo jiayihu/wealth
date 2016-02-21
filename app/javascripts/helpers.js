@@ -5,57 +5,71 @@
 
 'use strict';
 
-var notie = require('notie');
-var noUiSlider = require('nouislider');
+var customErrorConstructor = function(name, desc) {
+  var ErrorConstructor = function(msg) {
+    this.message = desc + msg;
+    this.stack = (new Error()).stack;
+  };
+  ErrorConstructor.prototype = Object.create(Error.prototype);
+  ErrorConstructor.prototype.name = name;
 
-/**
- * Throws a new Error visible to the user
- */
-var makeError = function(msg) {
-  notie.alert(3, msg, 3);
+  return ErrorConstructor;
 };
 
-/**
- * Create a slider using noUiSlider
- * @param  {object} element HTML Node of the slider
- * @param  {object} options Slider options
- */
-var createSlider = function(element, options) {
-  if (typeof noUiSlider === 'undefined') {
-    makeError('Nouislider', 'nouislider object is not declared.');
-  }
-  noUiSlider.create(element, options);
-  element.handle = element.getElementsByClassName('noUi-handle')[0];
-  element.tooltip = document.createElement('div');
-  element.handle.appendChild(element.tooltip);
+var ParamsError = customErrorConstructor('ParamsError', 'Invalid parameters: ');
+var UserError = customErrorConstructor('UserError', 'Invalid user input: ');
 
-  element.tooltip.classList.add('slider-tooltip');
-  element.tooltip.innerHTML = '<span></span>';
-  element.tooltip = element.tooltip.firstElementChild;
+/**
+ * Throws an error
+ * @param  {string} type Error type/constructor
+ * @param  {object} data Data to pass in the msg
+ * @param  {Function} callback Optional callback. Useful if you need to display
+ * the error to the user for example.
+ */
+var makeError = function(type, data, callback) {
+  var msg;
+  callback = callback || function() {};
+
+  try {
+    msg = JSON.stringify(data);
+  } catch (e) {
+    msg = JSON.stringify(e);
+  }
+
+  callback(msg);
+
+  switch (type) {
+    case 'params':
+      throw new ParamsError(msg);
+    case 'user':
+      throw new UserError(msg);
+    default:
+      throw new Error(msg);
+  }
 };
 
 /**
  * Formats the value to a specified type
- * @param  {string || number} value Value to be formatted
- * @param  {string} type Format type
+ * @param  {string} value Value to be formatted
+ * @param  {string} type Format
  * @return {string} Formatted value
  */
 var format = function(value, type) {
   if( (typeof value !== 'number') && (typeof value !== 'string') ) {
-    throw new Error('format() requires a string or number as value');
+    makeError('params', value);
   }
 
   var newValue = '';
 
   switch (type) {
-  case '$':
-    newValue = '$' + value;
-    break;
-  case '%':
-    newValue = value + '%';
-    break;
-  default:
-    newValue = value;
+    case '$':
+      newValue = '$' + value;
+      break;
+    case '%':
+      newValue = value + '%';
+      break;
+    default:
+      newValue = value;
   }
 
   return newValue;
@@ -63,6 +77,9 @@ var format = function(value, type) {
 
 /**
  * Set the configMap of the module - It goes deep in the object
+ * @param  {object} inputMap Object map with new properties and values
+ * @param  {object} configMap Initial object map
+ * @return {object} configMap Updated map
  */
 var setConfigMap = function(inputMap, configMap) {
   var key;
@@ -74,57 +91,72 @@ var setConfigMap = function(inputMap, configMap) {
       } else {
         configMap[key] = inputMap[key];
       }
-    } else {
-      makeError('Wrong inputMap', 'Property "' + key + '" is not available in configMap');
     }
   }
+
+  return configMap;
 };
 
-var init = function() {
+/**
+ * Replaces mustache-wrapped words with values
+ * @param  {string} string Initial string
+ * @param  {object} valuesMap Object map of values
+ * @return {string}
+ */
+var template = function(string, valuesMap){
+  var s = string || '';
 
-  /**
-   * PROTOTYPE FUNCTIONS
-   */
+  Object.keys(valuesMap).forEach(function(value) {
+    s = s.replace(new RegExp('{' + value + '}', 'g'), valuesMap[value]);
+  });
 
-  // Allow for looping on nodes by chaining and using forEach on both Nodelists and HTMLCollections
-  // qsa('.foo').forEach(function () {})
-  NodeList.prototype.forEach = Array.prototype.forEach;
-  HTMLCollection.prototype.forEach = Array.prototype.forEach;
+  return s;
+};
 
-  /**
-   * Implement the ECMAScript 2015 'find' function in Arrays
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
-   * @param  {function} !Array.prototype.find Function to execute on each value in the array
-   * @return {undefined}
-   */
-  if (!Array.prototype.find) {
-    Array.prototype.find = function(predicate) {
-      if (this === null) {
-        throw new TypeError('Array.prototype.find called on null or undefined');
-      }
-      if (typeof predicate !== 'function') {
-        throw new TypeError('predicate must be a function');
-      }
-      var list = Object(this);
-      var length = list.length;
-      var thisArg = arguments[1];
-      var value;
+/**
+ * Toggles a item in array, adding or removing it whether it's already contained
+ * @param  {array} array Array
+ * @param  {object} item Item
+ * @return {array} myArray Updated array
+ */
+var toggleArrayItem = function(array, item) {
+  //We clone the array to avoid side effects
+  var myArray = array.slice(0);
 
-      for (var i = 0; i < length; i++) {
-        value = list[i];
-        if (predicate.call(thisArg, value, i, list)) {
-          return value;
-        }
-      }
-      return undefined;
-    };
+  var isThere = myArray.find(function(arrayItem, index) {
+    if(arrayItem.id === item.id) {
+      myArray.splice(index, 1);
+      return true;
+    }
+  });
+
+  if(!isThere) {
+    myArray.push(item);
   }
+
+  return myArray;
 };
+
+/**
+ * Returns the actual value of a rate
+ * @param  {number} total Total
+ * @param  {number} rate Rate
+ * @return {number}
+ */
+var valueOfRate = function(total, rate) {
+  if( (typeof rate !== 'number') || (typeof total !== 'number') ) {
+    makeError('params', {rate: rate, total: total});
+  }
+
+  return rate * total * 0.01;
+};
+
 
 module.exports = {
-  createSlider: createSlider,
   format: format,
-  init: init,
   makeError: makeError,
-  setConfigMap: setConfigMap
+  setConfigMap: setConfigMap,
+  template: template,
+  toggleArrayItem: toggleArrayItem,
+  valueOfRate: valueOfRate
 };

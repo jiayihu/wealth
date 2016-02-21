@@ -11,8 +11,8 @@ var setActive = function(newActive, className) {
 };
 
 var onNavClick = function(e) {
-  var nodeName = e.target.nodeName,
-    nextStep, nextStepElement, clickedLink;
+  var nodeName = e.target.nodeName;
+  var nextStep, nextStepElement, clickedLink;
 
   //If it is the 'Reset Model' button
   if (nodeName === 'A') {
@@ -26,7 +26,7 @@ var onNavClick = function(e) {
     nextStep = e.target.firstElementChild.dataset.template;
     clickedLink = e.target;
   }
-  if (!clickedLink.classList.contains('disabled') && configMap.blocking) {
+  if ( clickedLink && !clickedLink.classList.contains('disabled') && configMap.blocking) {
     setActive(clickedLink, 'active');
     nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
     setActive(nextStepElement, 'show');

@@ -6,6 +6,7 @@
 'use strict';
 
 var helpers = require('../helpers');
+var domHelpers = require('../dom-helpers');
 var wNumb = require('wNumb');
 var Chartist = require('chartist');
 
@@ -113,33 +114,25 @@ var moneyFormat = wNumb({
  * Create the sliders and show the value on a tooltip when the user interacts
  */
 var createSliders = function() {
-  helpers.createSlider(savingRateSlider, configMap.savingRateOptions);
+  domHelpers.createSlider(savingRateSlider, configMap.savingRateOptions);
   savingRateSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(savingRateSlider, values, '%');
   });
 
-  helpers.createSlider(incomeRateSlider, configMap.incomeOptions);
+  domHelpers.createSlider(incomeRateSlider, configMap.incomeOptions);
   incomeRateSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(incomeRateSlider, values, '$');
   });
 
-  helpers.createSlider(investmentRateSlider, configMap.investmentOptions);
+  domHelpers.createSlider(investmentRateSlider, configMap.investmentOptions);
   investmentRateSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(investmentRateSlider, values, '%');
   });
 
-  helpers.createSlider(retirementSlider, configMap.retirementOptions);
+  domHelpers.createSlider(retirementSlider, configMap.retirementOptions);
   retirementSlider.noUiSlider.on('update', function(values) {
     sliderEventHandler(retirementSlider, values);
   });
-};
-
-/**
- * Renders the Line chart
- * @NOTE not very useful currently, since it's just one instruction
- */
-var createLineChart = function(htmlNode, data, options) {
-  lineChart = new Chartist.Line(htmlNode, data, options);
 };
 
 
@@ -156,15 +149,15 @@ var investmentStyleButtonsHandler = function(event) {
   var investmentStyle = event.target.value;
 
   switch (investmentStyle) {
-  case 'safe':
-    configMap.annualInterestRate = 0.02;
-    break;
-  case 'moderate':
-    configMap.annualInterestRate = 0.06;
-    break;
-  case 'risky':
-    configMap.annualInterestRate = 0.15;
-    break;
+    case 'safe':
+      configMap.annualInterestRate = 0.02;
+      break;
+    case 'moderate':
+      configMap.annualInterestRate = 0.06;
+      break;
+    case 'risky':
+      configMap.annualInterestRate = 0.15;
+      break;
   }
 
   updateLineChart();
@@ -333,9 +326,8 @@ var init = function(container) {
   });
 
   createSliders();
-
   //Line Chart
-  createLineChart(configMap.chartClass, configMap.chartData, configMap.chartOptions);
+  lineChart = new Chartist.Line(configMap.chartClass, configMap.chartData, configMap.chartOptions);
   updateLineChart();
   bindSlidersToChart();
 };

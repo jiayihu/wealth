@@ -6,6 +6,7 @@
 'use strict';
 
 var helpers = require('../helpers');
+var domHelpers = require('../dom-helpers');
 var wNumb = require('wNumb');
 
 var configMap = {
@@ -59,8 +60,8 @@ var stateMap = {
 
 
 var createSliders = function() {
-  helpers.createSlider(stateMap.ageSlider, configMap.ageOptions);
-  helpers.createSlider(stateMap.incomeSlider, configMap.incomeOptions);
+  domHelpers.createSlider(stateMap.ageSlider, configMap.ageOptions);
+  domHelpers.createSlider(stateMap.incomeSlider, configMap.incomeOptions);
 
   stateMap.ageSlider.noUiSlider.on('update', function(values) {
     var tooltip = stateMap.ageSlider.getElementsByTagName('span')[0];
@@ -87,6 +88,8 @@ var setOptionLists = function() {
  * Used by shell to bind event handlers to this module DOM events. It usually
  * means that we want the shell to update model when user interacts with this
  * screen.
+ * @param  {string} event Event name
+ * @param  {function} handler Event handler
  */
 var bind = function(event, handler) {
   if (event === 'ageChanged') {

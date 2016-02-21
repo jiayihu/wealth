@@ -2,9 +2,9 @@
  * Budget by Income
  */
 
-var getRates = function(income) {
+var getDefaultRates = function(income) {
   if(typeof income !== 'number') {
-    throw new Error('getRates(): wrong param: ' + JSON.stringify(income));
+    throw new Error('getDefaultRates(): wrong param: ' + JSON.stringify(income));
   }
 
   if(income < 5000) {
@@ -65,5 +65,5 @@ var getRates = function(income) {
 };
 
 module.exports = {
-  getRates: getRates
+  getDefaultRates: getDefaultRates
 };
