@@ -23,12 +23,9 @@ var defaultModel = {
   aboutBasicRate: 45,
   aboutDiscretionaryRate: 25,
   aboutSavingsRate: 30,
-  annualSavings: 18000,
   currentSavings: 10000,
   //aboutStage: 'home',
-  basicNeeds: 27000,
   lastUserStep: 1,
-  discretionaryExpenses: 15000,
   goals: [],
   actions: []
 };
@@ -104,25 +101,6 @@ var getGoals = function() {
 };
 
 /**
- * Update basic needs, discretionary and annual savings actual values based on rates
- * @param {function} callback Callback
- */
-var updateMoneyValues = function(callback) {
-  var data = read();
-  var moneyValues = {};
-  var valuesOfCategory = helpers.valueOfRate.bind(null, data.aboutIncome);
-
-  moneyValues.basicNeeds = valuesOfCategory(data.aboutBasicRate);
-  moneyValues.discretionaryExpenses = valuesOfCategory(data.aboutDiscretionaryRate);
-  moneyValues.annualSavings = valuesOfCategory(data.aboutSavingsRate);
-
-  update(moneyValues);
-
-  callback = callback || function() {};
-  callback(moneyValues);
-};
-
-/**
  * Updates the stored list adding or removing the element
  * @param  {string} listName Name of the list
  * @param  {object} item item to add or delete
@@ -159,6 +137,5 @@ module.exports = {
   remove: remove,
   toggleActions: toggleListItem.bind(null, 'actions'),
   toggleGoal: toggleListItem.bind(null, 'goals'),
-  update: update,
-  updateMoneyValues: updateMoneyValues
+  update: update
 };

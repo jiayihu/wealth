@@ -9,14 +9,14 @@ var helpers = require('../helpers');
 var wNumb = require('wNumb');
 
 var configMap = {
+  aboutIncome: 0,
+  basicRate: 0,
+  discRate: 0,
+  savingsRate: 0,
   savingsId: '#pyramid-savings',
   basicId: '#pyramid-basic',
   discretiotionaryId: '#pyramid-discretionary',
-  incomeId: '#pyramid-income',
-  basicNeeds: 0,
-  annualSavings: 0,
-  discretionaryExpenses: 0,
-  aboutIncome: 0
+  incomeId: '#pyramid-income'
 };
 
 var stateMap = {
@@ -36,10 +36,24 @@ var updateLabels = function() {
     prefix: '$ '
   });
 
-  stateMap.savingsText.textContent = ' ' + moneyFormat.to(configMap.annualSavings) + '/yr';
-  stateMap.basicText.textContent = moneyFormat.to(configMap.basicNeeds) + '/yr';
-  stateMap.discretionaryText.textContent = moneyFormat.to(configMap.discretionaryExpenses) + '/yr';
+  var values = helpers.valuesOfSummary(
+    configMap.aboutIncome,
+    configMap.basicRate,
+    configMap.discRate,
+    configMap.savingsRate
+  );
+
+  stateMap.savingsText.textContent = ' ' + moneyFormat.to(values.annualSavings) + '/yr';
+  stateMap.basicText.textContent = moneyFormat.to(values.basicNeeds) + '/yr';
+  stateMap.discretionaryText.textContent = moneyFormat.to(values.discretionaryExpenses) + '/yr';
   stateMap.incomeText.textContent = moneyFormat.to(configMap.aboutIncome) + '/yr';
+};
+
+var setStateMap = function(container) {
+  stateMap.savingsText = container.querySelector(configMap.savingsId);
+  stateMap.basicText = container.querySelector(configMap.basicId);
+  stateMap.discretionaryText = container.querySelector(configMap.discretiotionaryId);
+  stateMap.incomeText = container.querySelector(configMap.incomeId);
 };
 
 /**
@@ -51,11 +65,7 @@ var configModule = function(inputMap) {
 };
 
 var init = function(container) {
-  stateMap.savingsText = container.querySelector(configMap.savingsId);
-  stateMap.basicText = container.querySelector(configMap.basicId);
-  stateMap.discretionaryText = container.querySelector(configMap.discretiotionaryId);
-  stateMap.incomeText = container.querySelector(configMap.incomeId);
-
+  setStateMap(container);
   updateLabels();
 };
 

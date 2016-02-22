@@ -119,3 +119,15 @@ describe('toggleArrayItem', function() {
     expect(toggleArrayItem(array, item)).to.deep.equal(expectedArray);
   });
 });
+
+describe('valuesOfSummary', function() {
+  var valuesOfSummary = helpers.valuesOfSummary;
+
+  it('should calculate the actual values of the rates', function() {
+    expect(valuesOfSummary(1000, 30, 30, 40)).to.deep.equal({
+      basicNeeds: 300,
+      discretionaryExpenses: 300,
+      annualSavings: 400
+    });
+  });
+});

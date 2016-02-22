@@ -58,9 +58,6 @@ var aboutController = function() {
   views.about.bind('incomeChanged', function(value) {
     model.update({'aboutIncome': value});
     PubSub.publish('aboutIncomeChanged', value);
-    model.updateMoneyValues(function(moneyValues) {
-      PubSub.publish('moneyValuesChanged', moneyValues);
-    });
   });
   views.about.bind('situationChanged', function(value) {
     model.update({'aboutSituation': value});
@@ -76,7 +73,6 @@ var aboutController = function() {
 
 var youSubscriber = function(topic, data) {
   if (topic === 'aboutIncomeChanged') {
-    console.log(data);
     var rates = model.getDefaultRates(data);
 
     views.you.configModule({
@@ -92,17 +88,11 @@ var youController = function() {
     model.update({'aboutBasicRate': basicRate});
     model.update({'aboutSavingsRate': savingsRate});
     PubSub.publish('savingsRateChanged', savingsRate);
-    model.updateMoneyValues(function(moneyValues) {
-      PubSub.publish('moneyValuesChanged', moneyValues);
-    });
   });
   views.you.bind('expensesChanged', function(expensesRate, savingsRate) {
     model.update({'aboutDiscretionaryRate': expensesRate});
     model.update({'aboutSavingsRate': savingsRate});
     PubSub.publish('savingsRateChanged', savingsRate);
-    model.updateMoneyValues(function(moneyValues) {
-      PubSub.publish('moneyValuesChanged', moneyValues);
-    });
   });
   views.you.bind('savingsChanged', function(currentSavings) {
     model.update({'currentSavings': currentSavings});
@@ -121,15 +111,22 @@ var pyramidSubscriber = function(topic, data) {
     views.pyramid.configModule({
       aboutIncome: data
     });
-  } else if (topic === 'moneyValuesChanged') {
-    views.pyramid.configModule(data);
+  } else if (topic === 'savingsRateChanged') {
+    var savingsRate = data;
+    var basicRate = model.read('aboutBasicRate');
+    var discRate = model.read('aboutDiscretionaryRate');
+    views.pyramid.configModule({
+      basicRate: basicRate,
+      discRate: discRate,
+      savingsRate: savingsRate
+    });
   }
   views.pyramid.updateLabels();
 };
 
 var pyramidController = function() {
   PubSub.subscribe('aboutIncomeChanged', pyramidSubscriber);
-  PubSub.subscribe('moneyValuesChanged', pyramidSubscriber);
+  PubSub.subscribe('savingsRateChanged', pyramidSubscriber);
 };
 
 /**
@@ -283,10 +280,10 @@ var init = function() {
   //Screen #5
   var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
   views.pyramid.configModule({
-    basicNeeds: data.basicNeeds,
-    annualSavings: data.annualSavings,
-    discretionaryExpenses: data.discretionaryExpenses,
-    aboutIncome: data.aboutIncome
+    aboutIncome: data.aboutIncome,
+    basicRate: data.aboutBasicRate,
+    discRate: data.aboutDiscretionaryRate,
+    savingsRate: data.aboutSavingsRate
   });
   views.pyramid.init(pyramidContainer);
   pyramidController();

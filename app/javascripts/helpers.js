@@ -151,6 +151,15 @@ var valueOfRate = function(total, rate) {
   return rate * total * 0.01;
 };
 
+var valuesOfSummary = function(income, basicRate, discRate, savingsRate) {
+  var valueOfCategory = valueOfRate.bind(null, income);
+  return {
+    basicNeeds: valueOfCategory(basicRate),
+    discretionaryExpenses: valueOfCategory(discRate),
+    annualSavings: valueOfCategory(savingsRate)
+  };
+};
+
 
 module.exports = {
   format: format,
@@ -158,5 +167,6 @@ module.exports = {
   setConfigMap: setConfigMap,
   template: template,
   toggleArrayItem: toggleArrayItem,
-  valueOfRate: valueOfRate
+  valueOfRate: valueOfRate,
+  valuesOfSummary: valuesOfSummary
 };
