@@ -6,6 +6,7 @@
 'use strict';
 
 var helpers = require('./helpers');
+var PubSub = require('pubsub-js');
 var notie = require('notie').alert;
 
 var budget = require('./model/budget');
@@ -63,6 +64,8 @@ var update = function (updateMap) {
 
   Object.keys(updateMap).forEach(function(property) {
     data[property] = updateMap[property];
+    PubSub.publish(property, updateMap[property]);
+    console.log(property, updateMap[property]);
   });
 
   localStorage[stateMap.dbName] = JSON.stringify(data);
@@ -112,8 +115,9 @@ var toggleListItem = function(listName, item) {
 
   var list = read()[listName];
   var updatedList = helpers.toggleArrayItem(list, item);
-
-  update( {}[listName] = updatedList );
+  var updateMap = {};
+  updateMap[listName] = updatedList;
+  update(updateMap);
 };
 
 var init = function(name) {

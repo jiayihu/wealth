@@ -39,8 +39,7 @@ var data;
 
 /**
  * Every controller's job is almost the same:
- * - to bind user interactions to Model
- *   changes and publish this change to update Model observers/subscribers.
+ * - to bind user interactions to functions which update the model
  * - to subscribe functions to update the DOM (rendering the data) whenever
  *   the Model is changed
  * @see {@url https://addyosmani.com/resources/essentialjsdesignpatterns/book/#observerpatternjavascript}
@@ -53,11 +52,9 @@ var data;
 var aboutController = function() {
   views.about.bind('ageChanged', function(value) {
     model.update({'aboutAge': value});
-    PubSub.publish('ageChanged', value);
   });
   views.about.bind('incomeChanged', function(value) {
     model.update({'aboutIncome': value});
-    PubSub.publish('aboutIncomeChanged', value);
   });
   views.about.bind('situationChanged', function(value) {
     model.update({'aboutSituation': value});
@@ -72,7 +69,7 @@ var aboutController = function() {
  */
 
 var youSubscriber = function(topic, data) {
-  if (topic === 'aboutIncomeChanged') {
+  if (topic === 'aboutIncome') {
     var rates = model.getDefaultRates(data);
 
     views.you.configModule({
@@ -87,19 +84,16 @@ var youController = function() {
   views.you.bind('basicNeedsChanged', function(basicRate, savingsRate) {
     model.update({'aboutBasicRate': basicRate});
     model.update({'aboutSavingsRate': savingsRate});
-    PubSub.publish('savingsRateChanged', savingsRate);
   });
   views.you.bind('expensesChanged', function(expensesRate, savingsRate) {
     model.update({'aboutDiscretionaryRate': expensesRate});
     model.update({'aboutSavingsRate': savingsRate});
-    PubSub.publish('savingsRateChanged', savingsRate);
   });
   views.you.bind('savingsChanged', function(currentSavings) {
     model.update({'currentSavings': currentSavings});
-    PubSub.publish('currentSavingsChanged', currentSavings);
   });
 
-  PubSub.subscribe('aboutIncomeChanged', youSubscriber);
+  PubSub.subscribe('aboutIncome', youSubscriber);
 };
 
 /**
@@ -107,11 +101,11 @@ var youController = function() {
  */
 
 var pyramidSubscriber = function(topic, data) {
-  if (topic === 'aboutIncomeChanged') {
+  if (topic === 'aboutIncome') {
     views.pyramid.configModule({
       aboutIncome: data
     });
-  } else if (topic === 'savingsRateChanged') {
+  } else if (topic === 'savingsRate') {
     var savingsRate = data;
     var basicRate = model.read('aboutBasicRate');
     var discRate = model.read('aboutDiscretionaryRate');
@@ -125,8 +119,8 @@ var pyramidSubscriber = function(topic, data) {
 };
 
 var pyramidController = function() {
-  PubSub.subscribe('aboutIncomeChanged', pyramidSubscriber);
-  PubSub.subscribe('savingsRateChanged', pyramidSubscriber);
+  PubSub.subscribe('aboutIncome', pyramidSubscriber);
+  PubSub.subscribe('aboutSavingsRate', pyramidSubscriber);
 };
 
 /**
@@ -134,21 +128,21 @@ var pyramidController = function() {
  */
 
 var scenariosSubscriber = function(topic, data) {
-  if (topic === 'ageChanged') {
+  if (topic === 'age') {
     views.scenarios.configModule({
       aboutAge: data
     });
-  } else if (topic === 'aboutIncomeChanged') {
+  } else if (topic === 'aboutIncome') {
     views.scenarios.configModule({
       income: data
     });
     views.scenarios.setSlider('income', data);
-  } else if (topic === 'savingsRateChanged') {
+  } else if (topic === 'savingsRate') {
     views.scenarios.configModule({
       savingsRate: data
     });
     views.scenarios.setSlider('savingsRate', data);
-  } else if (topic === 'currentSavingsChanged') {
+  } else if (topic === 'currentSavings') {
     views.scenarios.configModule({
       currentSavings: data
     });
@@ -158,10 +152,10 @@ var scenariosSubscriber = function(topic, data) {
 };
 
 var scenariosController = function() {
-  PubSub.subscribe('ageChanged', scenariosSubscriber);
-  PubSub.subscribe('aboutIncomeChanged', scenariosSubscriber);
-  PubSub.subscribe('savingsRateChanged', scenariosSubscriber);
-  PubSub.subscribe('currentSavingsChanged', scenariosSubscriber);
+  PubSub.subscribe('aboutAge', scenariosSubscriber);
+  PubSub.subscribe('aboutIncome', scenariosSubscriber);
+  PubSub.subscribe('aboutSavingsRate', scenariosSubscriber);
+  PubSub.subscribe('currentSavings', scenariosSubscriber);
 };
 
 /**
@@ -285,8 +279,8 @@ var init = function() {
     discRate: data.aboutDiscretionaryRate,
     savingsRate: data.aboutSavingsRate
   });
-  views.pyramid.init(pyramidContainer);
-  pyramidController();
+  // views.pyramid.init(pyramidContainer);
+  // pyramidController();
 
   //Screen #6
   var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];

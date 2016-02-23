@@ -45,7 +45,6 @@ var bind = function(event, handler) {
       var target = event.target;
       if (target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
         target.classList.toggle('saved');
-        console.log(actionsList[Number(target.dataset.action)]);
         handler(actionsList[Number(target.dataset.action)]);
       }
     });

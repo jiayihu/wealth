@@ -49,13 +49,13 @@ var getDefaultRates = function(income) {
       discretionary: 52,
       savings: 11
     };
-  } else if (income < 60e3) {
+  } else if (income < 70e3) {
     return {
       basic: 35,
       discretionary: 52,
       savings: 13
     };
-  } else if (income > 70e3) {
+  } else if (income >= 70e3) {
     return {
       basic: 31,
       discretionary: 51,
