@@ -213,7 +213,6 @@ var createChart = function(htmlNode) {
     configMap.doughnutOptions,
     configMap.doughnutResponsiveOptions);
 
-  stateMap.$pieChart.on('draw', onChartDraw);
   createDoughnutTooltip();
 };
 

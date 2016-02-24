@@ -1,3 +1,5 @@
+var PubSub = require('pubsub-js');
+
 var configMap = {
   blocking: true, //Whether steps should be disabled if not seen yet
   navClass: 'nav'
@@ -30,6 +32,7 @@ var onNavClick = function(e) {
     setActive(clickedLink, 'active');
     nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
     setActive(nextStepElement, 'show');
+    PubSub.publish('step.' + nextStep);
   }
 };
 

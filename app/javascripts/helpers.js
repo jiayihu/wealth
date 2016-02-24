@@ -151,6 +151,14 @@ var valueOfRate = function(total, rate) {
   return rate * total * 0.01;
 };
 
+/**
+ * Returns the actual values of summary rates based on income
+ * @param  {number} income Income
+ * @param  {number} basicRate Basic needs rate
+ * @param  {number} discRate Discretionary Expenses rate
+ * @param  {number} savingsRate Savings rate
+ * @return {object}
+ */
 var valuesOfSummary = function(income, basicRate, discRate, savingsRate) {
   var valueOfCategory = valueOfRate.bind(null, income);
   return {

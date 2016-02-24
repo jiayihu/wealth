@@ -105,7 +105,7 @@ var pyramidSubscriber = function(topic, data) {
     views.pyramid.configModule({
       aboutIncome: data
     });
-  } else if (topic === 'savingsRate') {
+  } else if (topic === 'aboutSavingsRate') {
     var savingsRate = data;
     var basicRate = model.read('aboutBasicRate');
     var discRate = model.read('aboutDiscretionaryRate');
@@ -115,12 +115,13 @@ var pyramidSubscriber = function(topic, data) {
       savingsRate: savingsRate
     });
   }
-  views.pyramid.updateLabels();
+  views.pyramid.render();
 };
 
 var pyramidController = function() {
   PubSub.subscribe('aboutIncome', pyramidSubscriber);
   PubSub.subscribe('aboutSavingsRate', pyramidSubscriber);
+  PubSub.subscribe('step.pyramid', pyramidSubscriber);
 };
 
 /**
@@ -279,8 +280,8 @@ var init = function() {
     discRate: data.aboutDiscretionaryRate,
     savingsRate: data.aboutSavingsRate
   });
-  // views.pyramid.init(pyramidContainer);
-  // pyramidController();
+  views.pyramid.init(pyramidContainer);
+  pyramidController();
 
   //Screen #6
   var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
