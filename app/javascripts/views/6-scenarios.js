@@ -114,25 +114,13 @@ var moneyFormat = wNumb({
  * Create the sliders and show the value on a tooltip when the user interacts
  */
 var createSliders = function() {
-  domHelpers.createSlider(savingRateSlider, configMap.savingRateOptions);
-  savingRateSlider.noUiSlider.on('update', function(values) {
-    sliderEventHandler(savingRateSlider, values, '%');
-  });
+  domHelpers.createSlider(savingRateSlider, configMap.savingRateOptions, '%');
 
-  domHelpers.createSlider(incomeRateSlider, configMap.incomeOptions);
-  incomeRateSlider.noUiSlider.on('update', function(values) {
-    sliderEventHandler(incomeRateSlider, values, '$');
-  });
+  domHelpers.createSlider(incomeRateSlider, configMap.incomeOptions, '$');
 
-  domHelpers.createSlider(investmentRateSlider, configMap.investmentOptions);
-  investmentRateSlider.noUiSlider.on('update', function(values) {
-    sliderEventHandler(investmentRateSlider, values, '%');
-  });
+  domHelpers.createSlider(investmentRateSlider, configMap.investmentOptions, '%');
 
   domHelpers.createSlider(retirementSlider, configMap.retirementOptions);
-  retirementSlider.noUiSlider.on('update', function(values) {
-    sliderEventHandler(retirementSlider, values);
-  });
 };
 
 
@@ -161,23 +149,6 @@ var investmentStyleButtonsHandler = function(event) {
   }
 
   updateLineChart();
-};
-
-/**
- * Shows slider value on a tooltip when is changed. Used by 'createSliders'.
- * @param  {object} slider Slider
- * @param  {array} values Array of slider values
- * @param  {string} format Value format (rate, money etc.)
- */
-var sliderEventHandler = function(slider, values, format) {
-  var tooltip = slider.getElementsByTagName('span')[0];
-  if (format === '%') {
-    tooltip.innerHTML = values[0] + '%';
-  } else if (format === '$') {
-    tooltip.innerHTML = '$' + values[0];
-  } else {
-    tooltip.innerHTML = values[0];
-  }
 };
 
 /**

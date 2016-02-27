@@ -3,86 +3,112 @@
     <p class="step-title">Compare you expenses with your peers</p>
   </div>
   <div class="step step--compare">
-    <div class="row">
-      <div class="comparison col-sm-6">
-        <div class="budget row">
-          <div class="col-xs-6">
-            <div class="budget__income">
-              <span class="value">
-                <span class="value__actual">$114.000</span>
-                per year
-              </span>
+    <div class="wrapper">
+      <div class="row">
+        <div class="comparison col-sm-6">
+          <div class="budget row">
+            <div class="col-xs-6">
+              <div class="budget__income">
+                <span class="value">
+                  <span class="value__actual">$114.000</span>
+                  per year
+                </span>
+              </div>
+              <span class="budget__title">Your budget</span>
             </div>
-            <span class="budget__title">Your budget</span>
+            <div class="col-xs-6">
+              <div class="budget__categories">
+                <div class="budget__category budget__category--basic">
+                  <span class="dot"></span>
+                  <span class="budget__category__name">Basic Needs</span>
+                  <span class="budget__category__value">
+                    <span class="actual">$43,000</span> -
+                    <span class="rate">40%</span>
+                  </span>
+                </div>
+                <div class="budget__category budget__category--discretionary">
+                  <span class="dot"></span>
+                  <span class="budget__category__name">Discretionary Expenses</span>
+                  <span class="budget__category__value">
+                    <span class="actual">$43,000</span> -
+                    <span class="rate">40%</span>
+                  </span>
+                </div>
+                <div class="budget__category budget__category--savings">
+                  <span class="dot"></span>
+                  <span class="budget__category__name">Savings</span>
+                  <span class="budget__category__value">
+                    <span class="actual">$43,000</span> -
+                    <span class="rate">40%</span>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-xs-6">
-            <div class="budget__categories">
-              <div class="budget__category budget__category--basic">
+          <div class="others">
+            <p>Avarage budget of others of your category</p>
+            <ul class="others__summary">
+              <li class="others__category others__category--basic">
                 <span class="dot"></span>
-                <span class="budget__category__name">Basic Needs</span>
-                <span class="budget__category__value">
+                Basic Needs:
+                <span class="others__category__value">
                   <span class="actual">$43,000</span> -
                   <span class="rate">40%</span>
                 </span>
-              </div>
-              <div class="budget__category budget__category--discretionary">
+              </li>
+              <li class="others__category others__category--discretionary">
                 <span class="dot"></span>
-                <span class="budget__category__name">Discretionary Expenses</span>
-                <span class="budget__category__value">
+                Discretionary Expenses:
+                <span class="others__category__value">
                   <span class="actual">$43,000</span> -
                   <span class="rate">40%</span>
                 </span>
-              </div>
-              <div class="budget__category budget__category--savings">
+              </li>
+              <li class="others__category others__category--savings">
                 <span class="dot"></span>
-                <span class="budget__category__name">Savings</span>
-                <span class="budget__category__value">
+                Savings:
+                <span class="others__category__value">
                   <span class="actual">$43,000</span> -
                   <span class="rate">40%</span>
                 </span>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="others">
-          <p>Avarage budget of others of your category</p>
-          <ul class="others__summary">
-            <li class="others__category others__category--basic">
-              <span class="dot"></span>
-              Basic Needs:
-              <span class="others__category__value">
-                <span class="actual">$43,000</span> -
-                <span class="rate">40%</span>
-              </span>
-            </li>
-            <li class="others__category others__category--discretionary">
-              <span class="dot"></span>
-              Discretionary Expenses:
-              <span class="others__category__value">
-                <span class="actual">$43,000</span> -
-                <span class="rate">40%</span>
-              </span>
-            </li>
-            <li class="others__category others__category--savings">
-              <span class="dot"></span>
-              Savings:
-              <span class="others__category__value">
-                <span class="actual">$43,000</span> -
-                <span class="rate">40%</span>
-              </span>
-            </li>
-          </ul>
+        <div class="col-sm-6">
+          <div class="comparison-chart" style="height: 300px"></div>
+          <p class="small">
+            <span class="dot"></span>
+            Others of your category
+          </p>
         </div>
       </div>
-      <div class="col-sm-6">
-        <div class="comparison-chart" style="height: 300px"></div>
-        <p class="small">
-          <span class="dot"></span>
-          Others of your category
-        </p>
+      <p class="conclusion"></p>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" href=".advanced-comparison" aria-expanded="true" aria-controls="advanced-comparison">
+              Advanced comparison
+            </a>
+          </h4>
+        </div>
+        <div class="advanced-comparison panel-collapse collapse" role="tabpanel">
+          <div class="panel-body">
+            <div class="detailed row">
+              <div class="col-sm-7">
+                <div class="detailed-chart" style="height: 400px"></div>
+                <p><span class="dot"></span> others of your category</p>
+              </div>
+              <div class="col-sm-5">
+                <p>% of expenses compared with others</p>
+                <ul class="details-values">
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <p class="conclusion"></p>
   </div> <!-- </step> -->
   <div class="continue" data-template="scenarios">
     <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>

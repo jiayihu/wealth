@@ -61,17 +61,7 @@ var stateMap = {
 
 var createSliders = function() {
   domHelpers.createSlider(stateMap.ageSlider, configMap.ageOptions);
-  domHelpers.createSlider(stateMap.incomeSlider, configMap.incomeOptions);
-
-  stateMap.ageSlider.noUiSlider.on('update', function(values) {
-    var tooltip = stateMap.ageSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = values[0];
-  });
-
-  stateMap.incomeSlider.noUiSlider.on('update', function(values) {
-    var tooltip = stateMap.incomeSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = helpers.format(values[0], '$');
-  });
+  domHelpers.createSlider(stateMap.incomeSlider, configMap.incomeOptions, '$');
 };
 
 var setOptionLists = function() {

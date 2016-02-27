@@ -4,13 +4,61 @@
 .step--compare {
   color: $primaryDarker;
   font-weight: normal;
-  
+
   .dot {
     background-color: $gray-light;
     border-radius: 50%;
     display: inline-block;
     height: .75em;
     width: .75em;
+  }
+
+  .conclusion {
+    margin-top: 1em;
+  }
+
+  .detailed-chart {
+    opacity: 0;
+    
+    .ct-bar {
+      stroke-width: 9px;
+    }
+
+    .ct-series-a .ct-bar {
+      stroke: $primary;
+    }
+
+    .ct-series-b .ct-bar {
+      stroke: $gray-light;
+    }
+  }
+
+  .details-values {
+
+    .detail {
+      list-style-type: none;
+      margin-top: .5em;
+
+      &__name {
+        display: inline-block;
+        line-height: 1em;
+        text-align: right;
+        vertical-align: middle;
+        width: 100px;
+      }
+
+      &__value {
+        border: 2px solid $primaryLighter;
+        border-radius: 2px;
+        margin-left: 1em;
+        padding: 0 .5em;
+        width: 60px;
+
+        &:after {
+          content: '%'
+        }
+      }
+    }
   }
 }
 
@@ -53,7 +101,7 @@
 }
 
 .budget {
-  padding: 1em;
+  padding: 1em 0;
 
   &__income {
     border: 2px solid $gray-dark;

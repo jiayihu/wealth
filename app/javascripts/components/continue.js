@@ -5,6 +5,7 @@
 
 'use strict';
 
+var PubSub = require('pubsub-js');
 var configMap = {
   continueClass: 'continue',
   navClass: 'nav'
@@ -49,6 +50,7 @@ var bind = function(event, handler) {
         var nextStep = this.dataset.template;
         var nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
         setActive(nextStepElement, 'show');
+        PubSub.publish('step.' + nextStep);
         var nextActiveNavLink = activateNav();
         handler(nextActiveNavLink);
       });

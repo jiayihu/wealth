@@ -76,6 +76,19 @@ var format = function(value, type) {
 };
 
 /**
+ * Returns the reversed array without side effects
+ * @param  {array} array Initial array
+ * @return {array}
+ */
+var reverse = function(array) {
+  if(!Array.isArray(array)) {
+    makeError('params', array);
+  }
+
+  return array.slice().reverse();
+};
+
+/**
  * Set the configMap of the module - It goes deep in the object
  * @param  {object} inputMap Object map with new properties and values
  * @param  {object} configMap Initial object map
@@ -172,6 +185,7 @@ var valuesOfSummary = function(income, basicRate, discRate, savingsRate) {
 module.exports = {
   format: format,
   makeError: makeError,
+  reverse: reverse,
   setConfigMap: setConfigMap,
   template: template,
   toggleArrayItem: toggleArrayItem,

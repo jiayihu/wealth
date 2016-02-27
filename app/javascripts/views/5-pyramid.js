@@ -9,6 +9,7 @@ var helpers = require('../helpers');
 var wNumb = require('wNumb');
 var getDefaultRates = require('../model').getDefaultRates;
 var Chartist = require('chartist');
+var details = require('./5-pyramid-details');
 
 var configMap = {
   aboutIncome: 0,
@@ -40,7 +41,7 @@ var configMap = {
     ]
   },
   chartOptions: {
-    seriesBarDistance: 10
+    seriesBarDistance: 22
   },
   chartResponsiveOptions: [
     ['screen and (max-width: 640px)', {
@@ -218,6 +219,8 @@ var render = function() {
     othersRates.discretionary,
     othersRates.savings
   ));
+  details.setOthersSerie(helpers.reverse(othersRates.detailed));
+  details.render();
 
   updateTextContent(stateMap.income, moneyFormat.to(income));
   updateSummary(stateMap.budget, actualValues, budgetRates);
@@ -230,6 +233,7 @@ var init = function(container) {
   setStateMap(container);
   createChart();
   render();
+  details.init(container);
 };
 
 module.exports = {

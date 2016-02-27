@@ -38,6 +38,17 @@ describe('format', function() {
   });
 });
 
+describe('reverse', function() {
+  var reverse = helpers.reverse;
+
+  it('should returned the reversed array without side effects', function() {
+    var initialArray = [1, 2, 3];
+    var expectedArray = [3, 2, 1];
+
+    expect(reverse(initialArray)).to.deep.equal(expectedArray);
+  });
+});
+
 describe('setConfigMap', function() {
   var setConfigMap = helpers.setConfigMap;
 

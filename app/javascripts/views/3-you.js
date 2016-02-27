@@ -129,35 +129,6 @@ var isRateValid = function(type, value) {
 // DOM FUNCTIONS ///
 ////////////////////
 
-
-var onChartDraw = function(data) {
-  if (data.type === 'slice') {
-    var pathLength = data.element._node.getTotalLength();
-    data.element.attr({
-      'stroke-dasharray': pathLength + 'px ' + pathLength + 'px'
-    });
-    var animationDefinition = {
-      'stroke-dashoffset': {
-        id: 'anim' + data.index,
-        dur: 1000,
-        from: -pathLength + 'px',
-        to: '0px',
-        easing: Chartist.Svg.Easing.easeOutQuint,
-        fill: 'freeze'
-      }
-    };
-
-    if (data.index !== 0) {
-      animationDefinition['stroke-dashoffset'].begin = 'anim' + (data.index - 1) + '.end';
-    }
-
-    data.element.attr({
-      'stroke-dashoffset': -pathLength + 'px'
-    });
-    data.element.animate(animationDefinition, false);
-  }
-};
-
 var createDoughnutTooltip = function() {
   var $chart = $('.' + configMap.doughnutClass), //@FIXME isn't it stateMap.$pieChart?
     $toolTip = $chart
@@ -300,23 +271,11 @@ var init = function(container) {
   var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
 
   //Create sliders
-  domHelpers.createSlider(stateMap.basicSlider, configMap.needsOptions);
-  stateMap.basicSlider.noUiSlider.on('update', function(values) {
-    var tooltip = stateMap.basicSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = helpers.format(values[0], '%');
-  });
+  domHelpers.createSlider(stateMap.basicSlider, configMap.needsOptions, '%');
 
-  domHelpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions);
-  stateMap.expensesSlider.noUiSlider.on('update', function(values) {
-    var tooltip = stateMap.expensesSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = helpers.format(values[0], '%');
-  });
+  domHelpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions, '%');
 
-  domHelpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions);
-  stateMap.savingsSlider.noUiSlider.on('update', function(values) {
-    var tooltip = stateMap.savingsSlider.getElementsByTagName('span')[0];
-    tooltip.innerHTML = helpers.format(values[0], '$');
-  });
+  domHelpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions, '$');
 
   //Init Doughnut Chart
   createChart(doughnutHtml);
