@@ -7,13 +7,6 @@
     margin-bottom: 30px;
   }
 
-  .scenario {
-
-    @media (max-width: $screen-tablet) {
-      width: 100%;
-    }
-  }
-
   .option {
     padding: 0 1em;
   }
@@ -83,7 +76,7 @@
       bottom: 0;
       content: 'Age';
       font-weight: normal;
-      left: 205px;
+      left: 50%;
       position: absolute;
     }
   }

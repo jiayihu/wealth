@@ -16,10 +16,14 @@
   }
 
   .ct {
+    &-square:before {
+      padding-bottom: 16.5em;
+    }
+
     &-label {
       display: none;
     }
-    
+
     &-series-a .ct-slice-donut {
       stroke: #D3D3D3;
     }

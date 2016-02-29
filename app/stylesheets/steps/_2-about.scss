@@ -8,11 +8,10 @@
 .about {
   &__question {
     margin-bottom: 1.125em;
-    font-size: 1.125em;
     font-weight: normal;
     border-bottom: 1px solid rgba(#B8BBC6, .22);
 
-    @media (max-width: $screen-phone) {
+    @media (min-width: $screen-tablet) {
       font-size: .9em;
     }
   }
@@ -30,15 +29,13 @@
   }
 
   &__select {
-    width: 200px;
     height: 40px;
     padding: 4px 15px;
     background: none;
     border: 1px solid $textLight;
 
-    @media (max-width: $screen-phone) {
-      width: 145px;
-      height: 36px;
+    @media(min-width: $screen-tablet) {
+      width: 12.5em;
     }
   }
 

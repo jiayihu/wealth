@@ -9,18 +9,22 @@
   }
 
   & > div:last-child {
-    padding: 2em;
-    border-left: 1px solid rgba($primaryLighter, 0.4);;
+    @media(min-width: $screen-tablet) {
+      border-left: 1px solid rgba($primaryLighter, 0.4);
+    }
   }
 
   .step__list {
-    padding-left: 0;
     list-style-position: inside;
+    margin: 0 auto;
+    max-width: 30em;
+    padding-left: 0;
+    text-align: left;
   }
 }
 
 .offer {
-  margin: 3em 0;
+  margin-top: 3em;
   text-align: center;
 
   img {

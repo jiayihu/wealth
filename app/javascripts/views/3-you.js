@@ -80,8 +80,9 @@ var configMap = {
   },
   doughnutResponsiveOptions: [
     ['screen and (max-width: 480px)', {
-      width: '170px',
-      height: '170px'
+      donutWidth: 30,
+      width: '280px',
+      height: '280px'
     }]
   ]
 };

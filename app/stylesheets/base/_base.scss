@@ -1,7 +1,9 @@
 body {
   font-weight: 300;
+  font-size: 17px;
 
   @media (min-width: $screen-desktop) {
+    font-size: 16px;
     padding-top: 3.125em;
   }
 }

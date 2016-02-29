@@ -132,13 +132,13 @@
 .step-title {
   margin: 0;
   margin-top: 4px;
-  padding-left: 2em;
-  text-align: left;
   font-size: 1.125em;
+  text-align: center;
   text-transform: uppercase;
 
-  @media (max-width: $screen-desktop) {
-    text-align: center;
+  @media (min-width: $screen-desktop) {
+    padding-left: 2em;
+    text-align: left;
   }
 }
 

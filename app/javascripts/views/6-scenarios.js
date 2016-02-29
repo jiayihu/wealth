@@ -82,17 +82,22 @@ var configMap = {
   },
   chartOptions: {
     axisY: {
-      type: Chartist.FixedScaleAxis,
+      labelInterpolationFnc: function(value) {
+        return (value/1000) + 'K';
+      },
       high: 2000000,
-      ticks: [0, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000]
+      ticks: [0, 250000, 500000, 750000, 1000000, 1250000, 1500000, 1750000, 2000000],
+      type: Chartist.FixedScaleAxis
     },
     showArea: true,
     width: '400px',
-    height: '250px',
-    plugins: [
-
-    ]
+    height: '250px'
   },
+  chartResponsiveOptions: [
+    ['screen and (max-width: 480px)', {
+      width: '300px'
+    }]
+  ],
   //savings at retirement age
   retirementSavingsHTML: 'savings__amount'
 };
@@ -298,7 +303,7 @@ var init = function(container) {
 
   createSliders();
   //Line Chart
-  lineChart = new Chartist.Line(configMap.chartClass, configMap.chartData, configMap.chartOptions);
+  lineChart = new Chartist.Line(configMap.chartClass, configMap.chartData, configMap.chartOptions, configMap.chartResponsiveOptions);
   updateLineChart();
   bindSlidersToChart();
 };

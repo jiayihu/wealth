@@ -1,5 +1,5 @@
 {
-  "env": "production",
+  "env": "dev",
 
   "root": {
     "src": "./app",
