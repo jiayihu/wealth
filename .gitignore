@@ -8,13 +8,6 @@ app copia
 www
 public
 
-#Production files which are generated from gulp
-app/index.html
-app/styles/bootstrap.css
-app/styles/main.css
-app/styles/maps
-app/scripts/main.js
-
 # Compiled source #
 ###################
 *.com
@@ -52,3 +45,19 @@ app/scripts/main.js
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+### SublimeText ###
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+# *.sublime-project
+
+# sftp configuration file
+sftp-config.json

@@ -4,7 +4,7 @@
   </div>
   <div class="step step--savings wrapper">
     <div class="about__savings">
-      <p class="about__question">How much do you save?</p>
+      <p class="about__question">How much do you spend?</p>
     </div>
     <div class="row">
       <div class="col-md-6">
@@ -16,6 +16,33 @@
         <div class="about__savings__slider--expenses"></div>
       </div>
     </div>
+    <p class="bls">
+      <small>*Default values are based on Bureau of Labor Statistics <a href="http://www.bls.gov/cex/2014/combined/income.pdf" target="_blank">data for 2014</a>.</small>
+    </p>
+
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <a role="button" data-toggle="collapse" href=".detailed-expenses" aria-expanded="true" aria-controls="detailed-expenses">
+              Detailed expenses (<small>You can go back later and leave the default values if you wish</small>)
+              <i class="zmdi zmdi-chevron-down"></i>
+            </a>
+          </h4>
+        </div>
+        <div class="detailed-expenses panel-collapse collapse in" role="tabpanel">
+          <div class="panel-body">
+            <div class=" row">
+              <ul class="details-values">
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Summary expenses</h4>
+
     <div class="row">
       <div class="col-ms-6">
         <div class="about__savings__circle ct-chart ct-square"></div>
@@ -25,9 +52,6 @@
           <li><span class="ct-legend__color ct-legend__color--basic"></span> Basic Needs</li>
           <li><span class="ct-legend__color ct-legend__color--disc"></span> Discretionary Needs</li>
           <li><span class="ct-legend__color ct-legend__color--savings"></span> Savings</li>
-          <li class="bls">
-            <small>*Default values are based on Bureau of Labor Statistics <a href="http://www.bls.gov/cex/2014/combined/income.pdf" target="_blank">data for 2014</a>.</small>
-          </li>
         </ul>
       </div>
     </div>

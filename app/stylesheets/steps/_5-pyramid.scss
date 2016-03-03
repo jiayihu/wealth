@@ -18,7 +18,6 @@
   }
 
   .detailed-chart {
-    opacity: 0;
 
     .ct-bar {
       stroke-width: 9px;
@@ -30,34 +29,6 @@
 
     .ct-series-b .ct-bar {
       stroke: $gray-light;
-    }
-  }
-
-  .details-values {
-
-    .detail {
-      list-style-type: none;
-      margin-top: .5em;
-
-      &__name {
-        display: inline-block;
-        line-height: 1em;
-        text-align: right;
-        vertical-align: middle;
-        width: 100px;
-      }
-
-      &__value {
-        border: 2px solid $primaryLighter;
-        border-radius: 2px;
-        margin-left: 1em;
-        padding: 0 .5em;
-        width: 60px;
-
-        &:after {
-          content: '%'
-        }
-      }
     }
   }
 }

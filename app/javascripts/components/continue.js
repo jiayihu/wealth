@@ -5,28 +5,29 @@
 
 'use strict';
 
-var PubSub = require('pubsub-js');
 var configMap = {
   continueClass: 'continue',
   navClass: 'nav'
 };
-var continueButtons;
+var stateMap = {
+  continueButtons: null,
+  nav: null
+};
 
 /**
  * DOM FUNCTIONS
  */
 
 var setActive = function(newActive, className) {
-  var oldActive = document.getElementsByClassName(className)[0];
+  var oldActive = document.get(className);
   oldActive.classList.remove(className);
   newActive.classList.add(className);
 };
 
 var activateNav = function() {
-  var nav = document.getElementsByClassName(configMap.navClass)[0];
-  var newActiveNavLink = nav.getElementsByClassName('active')[0].nextElementSibling;
+  var newActiveNavLink = stateMap.nav.get('active').nextElementSibling;
 
-  //Check if it is the last nav link, which doesn't have siblings
+  //Check if it is not the last nav link, which doesn't have siblings
   if (newActiveNavLink) {
     //Activate the navigation item
     if (newActiveNavLink.classList.contains('disabled')) {
@@ -45,12 +46,11 @@ var activateNav = function() {
 
 var bind = function(event, handler) {
   if (event === 'continueClicked') {
-    continueButtons.forEach(function(element) {
+    stateMap.continueButtons.forEach(function(element) {
       element.addEventListener('click', function() {
         var nextStep = this.dataset.template;
-        var nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
+        var nextStepElement = document.get(nextStep + '-wrapper');
         setActive(nextStepElement, 'show');
-        PubSub.publish('step.' + nextStep);
         var nextActiveNavLink = activateNav();
         handler(nextActiveNavLink);
       });
@@ -59,7 +59,8 @@ var bind = function(event, handler) {
 };
 
 var init = function() {
-  continueButtons = document.getElementsByClassName(configMap.continueClass);
+  stateMap.continueButtons = document.getAll(configMap.continueClass);
+  stateMap.nav = document.get(configMap.navClass);
 };
 
 module.exports = {

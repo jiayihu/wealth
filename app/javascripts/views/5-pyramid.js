@@ -16,32 +16,13 @@ var configMap = {
   basicRate: 0,
   discRate: 0,
   savingsRate: 0,
-
-  incomeHTMLClass: '.budget__income .value__actual',
-
-  //User budget & others summary HTML elements
-  budget: {
-    basicHTMLClass: '.budget__category--basic .budget__category__value',
-    discretiotionaryHTMLClass: '.budget__category--discretionary .budget__category__value',
-    savingsHTMLClass: '.budget__category--savings .budget__category__value'
-  },
-  others: {
-    basicHTMLClass: '.others__category__basic .others__category__value',
-    discretiotionaryHTMLClass: '.others__category--discretionary .others__category__value',
-    savingsHTMLClass: '.others__category--savings .others__category__value'
-  },
-
   // Bar Chart Configuration
-  chartHTMLClass: '.comparison-chart',
   chartData: {
     labels: ['Basic Needs', 'Discretionary Expenses', 'Savings'],
     series: [
       [5, 4, 3],
       [3, 2, 9]
     ]
-  },
-  chartOptions: {
-    seriesBarDistance: 22
   }
 };
 
@@ -95,7 +76,11 @@ var moneyFormat = wNumb({
 ///////////////////
 
 var createChart = function() {
-  stateMap.barChart = new Chartist.Bar(configMap.chartHTMLClass, configMap.chartData, configMap.chartOptions, configMap.chartResponsiveOptions);
+  var options = {
+    seriesBarDistance: 22
+  };
+
+  stateMap.barChart = new Chartist.Bar('.comparison-chart', configMap.chartData, options);
 };
 
 /**
@@ -122,7 +107,7 @@ var getSummaryDOM = function(container, who, categories) {
 var setStateMap = function(container) {
   var categories = ['basic', 'discretionary', 'savings'];
 
-  stateMap.income = container.querySelector(configMap.incomeHTMLClass);
+  stateMap.income = container.querySelector('.budget__income .value__actual');
 
   stateMap.budget = getSummaryDOM(container, 'budget', categories);
   stateMap.others = getSummaryDOM(container, 'others', categories);

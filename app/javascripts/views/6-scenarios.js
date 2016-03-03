@@ -290,11 +290,11 @@ var setSlider = function(slider, value) {
 };
 
 var init = function(container) {
-  savingRateSlider = container.getElementsByClassName(configMap.savingRateSlider)[0];
-  incomeRateSlider = container.getElementsByClassName(configMap.incomeRateSlider)[0];
-  investmentRateSlider = container.getElementsByClassName(configMap.investmentRateSlider)[0];
-  retirementSlider = container.getElementsByClassName(configMap.retirementSlider)[0];
-  retirementSavings = container.getElementsByClassName(configMap.retirementSavingsHTML)[0];
+  savingRateSlider = container.get(configMap.savingRateSlider);
+  incomeRateSlider = container.get(configMap.incomeRateSlider);
+  investmentRateSlider = container.get(configMap.investmentRateSlider);
+  retirementSlider = container.get(configMap.retirementSlider);
+  retirementSavings = container.get(configMap.retirementSavingsHTML);
 
   investmentStyleButtons = container.querySelectorAll('input[name="investment-style"]');
   investmentStyleButtons.forEach(function(element) {

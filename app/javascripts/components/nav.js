@@ -1,4 +1,4 @@
-var PubSub = require('pubsub-js');
+'use strict';
 
 var configMap = {
   blocking: true, //Whether steps should be disabled if not seen yet
@@ -7,42 +7,45 @@ var configMap = {
 var nav;
 
 var setActive = function(newActive, className) {
-  var oldActive = document.getElementsByClassName(className)[0];
+  var oldActive = document.get(className);
   oldActive.classList.remove(className);
   newActive.classList.add(className);
-};
-
-var onNavClick = function(e) {
-  var nodeName = e.target.nodeName;
-  var nextStep, nextStepElement, clickedLink;
-
-  //If it is the 'Reset Model' button
-  if (nodeName === 'A') {
-    return;
-  }
-
-  if (nodeName === 'SPAN') {
-    nextStep = e.target.dataset.template;
-    clickedLink = e.target.parentNode;
-  } else if (nodeName === 'LI') {
-    nextStep = e.target.firstElementChild.dataset.template;
-    clickedLink = e.target;
-  }
-  if ( clickedLink && !clickedLink.classList.contains('disabled') && configMap.blocking) {
-    setActive(clickedLink, 'active');
-    nextStepElement = document.getElementsByClassName(nextStep + '-wrapper')[0];
-    setActive(nextStepElement, 'show');
-    PubSub.publish('step.' + nextStep);
-  }
 };
 
 /**
  * PUBLIC FUNCTIONS
  */
 
+var bind = function(event, handler) {
+  if(event === 'linkClicked') {
+    nav.addEventListener('click', function(e) {
+      var nodeName = e.target.nodeName;
+      var nextStep, nextStepElement, clickedLink;
+
+      //If it is the 'Reset Model' button
+      if (nodeName === 'A') {
+        return;
+      }
+
+      if (nodeName === 'SPAN') {
+        nextStep = e.target.dataset.template;
+        clickedLink = e.target.parentNode;
+      } else if (nodeName === 'LI') {
+        nextStep = e.target.firstElementChild.dataset.template;
+        clickedLink = e.target;
+      }
+      if ( clickedLink && !clickedLink.classList.contains('disabled') && configMap.blocking) {
+        setActive(clickedLink, 'active');
+        nextStepElement = document.get(nextStep + '-wrapper');
+        setActive(nextStepElement, 'show');
+        handler(nextStep);
+      }
+    });
+  }
+};
+
 var init = function() {
-  nav = document.getElementsByClassName(configMap.navClass)[0];
-  nav.addEventListener('click', onNavClick);
+  nav = document.get(configMap.navClass);
 };
 
 /**
@@ -57,6 +60,7 @@ var setDisabledLinks = function(start) {
 };
 
 module.exports = {
+  bind: bind,
   init: init,
   setDisabledLinks: setDisabledLinks
 };

@@ -10,8 +10,6 @@ var domHelpers = require('../dom-helpers');
 var wNumb = require('wNumb');
 
 var configMap = {
-  ageSlider: 'about__age__slider',
-  incomeSlider: 'about__income__slider',
   ageOptions: {
     start: 35,
     step: 1,
@@ -41,9 +39,8 @@ var configMap = {
       thousand: '.'
     })
   },
-  optionLists: 'about__select',
-  aboutSituation: 'married-kids',
-  aboutLiving: 'rent'
+  aboutSituation: null,
+  aboutLiving: null
 };
 
 var stateMap = {
@@ -64,9 +61,16 @@ var createSliders = function() {
   domHelpers.createSlider(stateMap.incomeSlider, configMap.incomeOptions, '$');
 };
 
-var setOptionLists = function() {
+var setSelectValues = function() {
   stateMap.situation.value = configMap.aboutSituation;
   stateMap.living.value = configMap.aboutLiving;
+};
+
+var setStateMap = function(container) {
+  stateMap.ageSlider = container.get('about__age__slider');
+  stateMap.incomeSlider = container.get('about__income__slider');
+  stateMap.situation = container.get('about__select');
+  stateMap.living = container.get('about__select', 1);
 };
 
 
@@ -106,15 +110,9 @@ var configModule = function(inputMap) {
 };
 
 var init = function(container) {
-  //DOM elements
-  stateMap.ageSlider = container.getElementsByClassName(configMap.ageSlider)[0];
-  stateMap.incomeSlider = container.getElementsByClassName(configMap.incomeSlider)[0];
-  stateMap.situation = container.getElementsByClassName('about__select')[0];
-  stateMap.living = container.getElementsByClassName('about__select')[1];
-
+  setStateMap(container);
   createSliders();
-
-  setOptionLists();
+  setSelectValues();
 };
 
 module.exports = {

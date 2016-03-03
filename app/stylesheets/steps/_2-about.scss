@@ -7,13 +7,10 @@
 
 .about {
   &__question {
-    margin-bottom: 1.125em;
-    font-weight: normal;
     border-bottom: 1px solid rgba(#B8BBC6, .22);
-
-    @media (min-width: $screen-tablet) {
-      font-size: .9em;
-    }
+    font-weight: normal;
+    font-size: 1.125em;
+    margin-bottom: 1.125em;
   }
 
   &__age__slider {

@@ -14,9 +14,6 @@ var Chartist = require('chartist');
 
 var configMap = {
   aboutIncome: 60000,
-  basicSlider: 'about__savings__slider--needs',
-  expensesSlider: 'about__savings__slider--expenses',
-  savingsSlider: 'current-savings__slider',
   //Slider options
   needsOptions: {
     start: 45,
@@ -53,7 +50,6 @@ var configMap = {
     })
   },
   //Doughnut options
-  doughnutClass: 'about__savings__circle',
   doughnutData: {
     series: [
       {
@@ -91,7 +87,8 @@ var stateMap = {
   $pieChart: null,
   basicSlider: null,
   expensesSlider: null,
-  savingsSlider: null
+  savingsSlider: null,
+  detailsList: null
 };
 
 // Variables by reference
@@ -130,9 +127,9 @@ var isRateValid = function(type, value) {
 // DOM FUNCTIONS ///
 ////////////////////
 
-var createDoughnutTooltip = function() {
-  var $chart = $('.' + configMap.doughnutClass), //@FIXME isn't it stateMap.$pieChart?
-    $toolTip = $chart
+var createDoughnutTooltip = function(pieChart) {
+  var $chart = $(pieChart);
+  var $toolTip = $chart
     .append('<div class="pie-tooltip"></div>')
     .find('.pie-tooltip')
     .hide();
@@ -140,25 +137,21 @@ var createDoughnutTooltip = function() {
     thousand: '.',
     prefix: '$ '
   });
-
   var isTooltipShown = false;
 
-  $chart.on('mouseenter', '.ct-slice-donut', function() {
-    var $slice = $(this),
-      value = $slice.attr('ct:value'),
-      seriesName = $slice.parent().attr('ct:series-name');
-    $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-      moneyFormat.to(Number(value) / 100 * configMap.aboutIncome)).show();
-  });
-
   //For mobiles
-  $chart.on('click', '.ct-slice-donut', function() {
-    if (!isTooltipShown) {
-      var $slice = $(this),
-        value = $slice.attr('ct:value'),
-        seriesName = $slice.parent().attr('ct:series-name');
-      $toolTip.html('<strong>' + seriesName + '</strong>: ' + value + '%/ ' +
-        moneyFormat.to(Number(value) / 100 * configMap.aboutIncome)).show();
+  $chart.on('click mouseenter', '.ct-slice-donut', function(e) {
+    if (!isTooltipShown || e.type === 'mouseenter') {
+      var $slice = $(this);
+      var value = $slice.attr('ct:value');
+      var seriesName = $slice.parent().attr('ct:series-name');
+      $toolTip
+      .html(
+        '<strong>' + seriesName + '</strong>: ' +
+          value + '%/ ' +
+        moneyFormat.to(Number(value) / 100 * configMap.aboutIncome)
+      )
+      .show();
       isTooltipShown = true;
     } else {
       $toolTip.hide();
@@ -170,7 +163,7 @@ var createDoughnutTooltip = function() {
     $toolTip.hide();
   });
 
-  $chart.on('mousemove', function(event) {
+  $chart.on('click mousemove', function(event) {
     $toolTip.css({
       left: (event.offsetX || event.originalEvent.layerX) - $toolTip.width() / 2 - 10,
       top: (event.offsetY || event.originalEvent.layerY) - $toolTip.height() - 30
@@ -179,15 +172,58 @@ var createDoughnutTooltip = function() {
 };
 
 var createChart = function(htmlNode) {
-  stateMap.$pieChart = new Chartist.Pie(
+  var chart = new Chartist.Pie(
     htmlNode,
     configMap.doughnutData,
     configMap.doughnutOptions,
     configMap.doughnutResponsiveOptions);
-
-  createDoughnutTooltip();
+  stateMap.$pieChart = chart;
+  return chart.container;
 };
 
+var createSliders = function() {
+  domHelpers.createSlider(stateMap.basicSlider, configMap.needsOptions, '%');
+  domHelpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions, '%');
+  domHelpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions, '$');
+};
+
+var getDetailsList = function(detailTemplate, detailsNames, defaultValues) {
+  var listHTML = '';
+  detailsNames.forEach(function(name, index) {
+    listHTML += helpers.template(detailTemplate, {
+      name: name,
+      value: defaultValues[index]
+    });
+  });
+  return listHTML;
+};
+
+var renderDetailed = function() {
+  var detailsNames = ['Food at home', 'Food away from home', 'Housing', 'Utilities, fuels, public services', 'Apparel & services', 'Trasportation', 'Healthcare', 'Entertainment & Reading', 'Education', 'Miscellaneous'];
+  var defaultValues = [12, 3, 36, 5, 4, 12, 9, 5, 5, 9];
+  var detailTemplate =
+    '<li class="detail">' +
+      '<span class="detail__name">{name}</span>' +
+      '<input class="detail__value" type="number" value="{value}" name="{name}" >' +
+    '</li>';
+
+  stateMap.detailsList.innerHTML = getDetailsList(detailTemplate, detailsNames, defaultValues);
+  stateMap.detailsList.addEventListener('change', function(e) {
+    if(e.target.classList.contains('detail__value')) {
+      console.log('Details changed: ', e);
+      // updateSerie(e.target.name, Number(e.target.value));
+      // render();
+    }
+  });
+};
+
+var setStateMap = function(container) {
+  stateMap.basicSlider = container.get('about__savings__slider--needs');
+  stateMap.expensesSlider = container.get('about__savings__slider--expenses');
+  stateMap.savingsSlider = container.get('current-savings__slider');
+
+  stateMap.detailsList = container.get('details-values');
+};
 
 /**
  * Update the view of the Doughnut when sliders value change
@@ -218,32 +254,38 @@ var updateDOMDoughnut = function(slider, value) {
  * @param  {function} handler Event handler
  */
 var bind = function(event, handler) {
-  if (event === 'basicNeedsChanged') {
-    stateMap.basicSlider.noUiSlider.on('set', function(values) {
-      var value = Number(values[0]);
-      if(isRateValid('basic', value)) {
-        updateDOMDoughnut('basicSlider', value);
-        handler(basicRate.value, savingsRate.value);
-      } else {
-        this.set(basicRate.value);
-        helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
-      }
-    });
-  } else if (event === 'expensesChanged') {
-    stateMap.expensesSlider.noUiSlider.on('set', function(values) {
-      var value = Number(values[0]);
-      if(isRateValid('discretionary', value)) {
-        updateDOMDoughnut('expensesSlider', value);
-        handler(discRate.value, savingsRate.value);
-      } else {
-        this.set(discRate.value);
-        helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
-      }
-    });
-  } else if (event === 'savingsChanged') {
-    stateMap.savingsSlider.noUiSlider.on('set', function(values) {
-      handler(Number(values[0].replace('.', '')));
-    });
+  switch (event) {
+    case 'basicNeedsChanged':
+      stateMap.basicSlider.noUiSlider.on('set', function(values) {
+        var value = Number(values[0]);
+        if(isRateValid('basic', value)) {
+          updateDOMDoughnut('basicSlider', value);
+          handler(basicRate.value, savingsRate.value);
+        } else {
+          this.set(basicRate.value);
+          helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
+        }
+      });
+      break;
+    case 'expensesChanged':
+      stateMap.expensesSlider.noUiSlider.on('set', function(values) {
+        var value = Number(values[0]);
+        if(isRateValid('discretionary', value)) {
+          updateDOMDoughnut('expensesSlider', value);
+          handler(discRate.value, savingsRate.value);
+        } else {
+          this.set(discRate.value);
+          helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
+        }
+      });
+      break;
+    case 'savingsChanged':
+      stateMap.savingsSlider.noUiSlider.on('set', function(values) {
+        handler(Number(values[0].replace('.', '')));
+      });
+      break;
+    default:
+      return;
   }
 };
 
@@ -266,23 +308,12 @@ var setSlider = function(slider, value) {
 };
 
 var init = function(container) {
-  stateMap.basicSlider = container.getElementsByClassName(configMap.basicSlider)[0];
-  stateMap.expensesSlider = container.getElementsByClassName(configMap.expensesSlider)[0];
-  stateMap.savingsSlider = container.getElementsByClassName(configMap.savingsSlider)[0];
-  var doughnutHtml = container.getElementsByClassName(configMap.doughnutClass)[0];
-
-  //Create sliders
-  domHelpers.createSlider(stateMap.basicSlider, configMap.needsOptions, '%');
-
-  domHelpers.createSlider(stateMap.expensesSlider, configMap.expensesOptions, '%');
-
-  domHelpers.createSlider(stateMap.savingsSlider, configMap.savingsOptions, '$');
-
-  //Init Doughnut Chart
-  createChart(doughnutHtml);
-
-  window.basicSlider = stateMap.basicSlider.noUiSlider;
-  window.expensesSlider = stateMap.expensesSlider.noUiSlider;
+  setStateMap(container);
+  createSliders();
+  createDoughnutTooltip(
+    createChart(container.get('about__savings__circle'))
+  );
+  renderDetailed();
 };
 
 module.exports = {

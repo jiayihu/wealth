@@ -156,11 +156,11 @@ var bind = function(event, handler) {
         goal */
       element.addEventListener('click', function() {
         var goalName = this.dataset.goal;
-        var toggledGoal = container.getElementsByClassName('picked--' + goalName)[0];
+        var toggledGoal = container.get('picked--' + goalName);
         var date = toggledGoal.querySelector(configMap.datepicker).value;
 
         toggledGoal.classList.toggle('picked--show');
-        container.getElementsByClassName('goal--' + goalName)[0].classList.toggle('goal--hide');
+        container.get('goal--' + goalName).classList.toggle('goal--hide');
 
         handler({
           id: goalName,
@@ -175,18 +175,18 @@ var init = function(initContainer, goalsList, pickedGoals) {
   container = initContainer;
   //Show list of goals to be picked and already picked
   var goalsView = getListGoals(goalsList, pickedGoals);
-  container.getElementsByClassName(configMap.goalsWrapper)[0].innerHTML = goalsView;
+  container.get(configMap.goalsWrapper).innerHTML = goalsView;
   var pickedView = getPickedGoals(goalsList, pickedGoals);
-  container.getElementsByClassName(configMap.pickedGoalsWrapper)[0].innerHTML = pickedView;
+  container.get(configMap.pickedGoalsWrapper).innerHTML = pickedView;
 
   //Create tooltips (Bootstrap)
   $(configMap.$tooltips).tooltip();
 
   //Buttons to add and delete goals
-  toggleButtons = container.getElementsByClassName(configMap.toggleButtons);
+  toggleButtons = container.getAll(configMap.toggleButtons);
 
   //Implement drag & drop picked goals
-  var pickedContainer = container.getElementsByClassName(configMap.pickedGoals)[0];
+  var pickedContainer = container.get(configMap.pickedGoals);
   dragula([pickedContainer]);
 
   //Datepicker

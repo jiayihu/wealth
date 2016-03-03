@@ -1,3 +1,5 @@
+'use strict';
+
 var helpers = require('./helpers');
 var noUiSlider = require('nouislider');
 
@@ -11,7 +13,7 @@ var appendTooltip = function(slider) {
     helpers.makeError('params', slider);
   }
 
-  var handle = slider.getElementsByClassName('noUi-handle')[0];
+  var handle = slider.get('noUi-handle');
   var tooltip = document.createElement('div');
   tooltip.classList.add('slider-tooltip');
   tooltip.innerHTML = '<span></span>';

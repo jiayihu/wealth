@@ -27,9 +27,9 @@ var views = {
   hamburger: require('./components/hamburger'),
   continue: require('./components/continue')
 };
-
-//Store model data in this variables, to be used throughtout this module.
-var data;
+var stateMap = {
+  data: null
+};
 
 
 
@@ -186,7 +186,12 @@ var retirementController = function() {
  * Navigation
  */
 var navController = function() {
-  views.nav.setDisabledLinks(data.lastUserStep);
+  views.nav.setDisabledLinks(stateMap.data.lastUserStep);
+  views.nav.bind('linkClicked', function(nextStep) {
+    if(nextStep) {
+      PubSub.publish('step.' + nextStep);
+    }
+  });
 };
 
 /**
@@ -194,14 +199,14 @@ var navController = function() {
  */
 var continueController = function() {
   views.continue.bind('continueClicked', function(nextActiveNavLink) {
+    var link = nextActiveNavLink;
     //When user is on the last step the value of 'nextActiveNavLink' is 'false'
-    if (nextActiveNavLink) {
-      var lastUserStep = Number(
-        nextActiveNavLink
-        .getElementsByClassName('step-number')[0]
-        .textContent
-      );
-      var savedLastStep = data.lastUserStep;
+    if (link) {
+      var lastUserStep = Number(link.get('step-number').textContent);
+      var savedLastStep = stateMap.data.lastUserStep;
+      var nextActiveStep = link.get('step-name').dataset.template;
+
+      PubSub.publish('step.' + nextActiveStep);
       if (lastUserStep > savedLastStep) {
         model.update({'lastUserStep': lastUserStep});
       }
@@ -222,10 +227,11 @@ var continueController = function() {
  */
 var init = function() {
   //get Model data only once
-  data = model.read();
+  stateMap.data = model.read();
+  var data = stateMap.data;
 
   //Screen #2
-  var aboutContainer = document.getElementsByClassName('about-wrapper')[0];
+  var aboutContainer = document.get('about-wrapper');
   views.about.configModule({
     ageOptions: {
       start: data.aboutAge
@@ -240,7 +246,7 @@ var init = function() {
   aboutController();
 
   //Screen #3
-  var youContainer = document.getElementsByClassName('you-wrapper')[0];
+  var youContainer = document.get('you-wrapper');
   views.you.configModule({
     aboutIncome: data.aboutIncome,
     needsOptions: {
@@ -273,7 +279,7 @@ var init = function() {
   youController();
 
   //Screen #5
-  var pyramidContainer = document.getElementsByClassName('pyramid-wrapper')[0];
+  var pyramidContainer = document.get('pyramid-wrapper');
   views.pyramid.configModule({
     aboutIncome: data.aboutIncome,
     basicRate: data.aboutBasicRate,
@@ -284,7 +290,7 @@ var init = function() {
   pyramidController();
 
   //Screen #6
-  var scenariosContainer = document.getElementsByClassName('scenarios-wrapper')[0];
+  var scenariosContainer = document.get('scenarios-wrapper');
   views.scenarios.configModule({
     savingsRate: data.aboutSavingsRate,
     income: data.aboutIncome,
@@ -305,17 +311,17 @@ var init = function() {
   scenariosController();
 
   //Screen #7
-  var goalContainer = document.getElementsByClassName('goal-wrapper')[0];
+  var goalContainer = document.get('goal-wrapper');
   views.goal.init(goalContainer, model.getGoals(), data.goals);
   goalController();
 
   //Screen #8
-  var retirementContainer = document.getElementsByClassName('retirement-wrapper')[0];
+  var retirementContainer = document.get('retirement-wrapper');
   views.retirement.init(retirementContainer);
   retirementController();
 
   //Screen #9
-  var planContainer = document.getElementsByClassName('plan-wrapper')[0];
+  var planContainer = document.get('plan-wrapper');
   views.plan.init(planContainer);
 
 
@@ -334,10 +340,13 @@ var init = function() {
 
   /* DEVELOPMENT ONLY */
   //@NOTE This could be useful also for users and not only for development
-  var resetButton = document.getElementsByClassName('reset-model')[0];
+  var resetButton = document.get('reset-model');
   resetButton.addEventListener('click', function() {
     model.reset();
     document.location.reload();
+  });
+  PubSub.subscribe('step', function(topic) {
+    console.log('Step changed: ', topic);
   });
 };
 
