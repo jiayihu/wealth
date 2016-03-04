@@ -76,6 +76,16 @@ var format = function(value, type) {
 };
 
 /**
+ * Checks whether the input is strictly a isNumber
+ * @param {*} value Value to check
+ * @return {boolean}
+ */
+var isNumber = function(value) {
+  //Check also with isNaN because (typeof NaN === 'number') is true
+  return !isNaN(value) && (typeof value === 'number');
+};
+
+/**
  * Returns the reversed array without side effects
  * @param  {array} array Initial array
  * @return {array}
@@ -185,6 +195,7 @@ var valuesOfSummary = function(income, basicRate, discRate, savingsRate) {
 module.exports = {
   format: format,
   makeError: makeError,
+  isNumber: isNumber,
   reverse: reverse,
   setConfigMap: setConfigMap,
   template: template,

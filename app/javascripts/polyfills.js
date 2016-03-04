@@ -36,7 +36,7 @@ document.get = Element.prototype.get;
 document.getAll = Element.prototype.getAll;
 
 /*
- * Implement the ECMAScript 2015 'find' function in Arrays
+ * Implements the ECMAScript 2015 'find' function in Arrays
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
  * @param  {function} !Array.prototype.find Function to execute on each value in the array
  * @return {undefined}
@@ -62,4 +62,31 @@ if (!Array.prototype.find) {
     }
     return undefined;
   };
+}
+
+//The Object.assign() method is used to copy the values of all enumerable own
+//properties from one or more source objects to a target object. It will return
+//the target object.
+if (typeof Object.assign != 'function') {
+  (function () {
+    Object.assign = function (target) {
+      'use strict';
+      if (target === undefined || target === null) {
+        throw new TypeError('Cannot convert undefined or null to object');
+      }
+
+      var output = Object(target);
+      for (var index = 1; index < arguments.length; index++) {
+        var source = arguments[index];
+        if (source !== undefined && source !== null) {
+          for (var nextKey in source) {
+            if (source.hasOwnProperty(nextKey)) {
+              output[nextKey] = source[nextKey];
+            }
+          }
+        }
+      }
+      return output;
+    };
+  })();
 }

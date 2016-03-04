@@ -1,6 +1,7 @@
 #HWP Story Board
 Private project.
 TODO:
- - makeError da sistemare
- - assert
- - lodash (?)
+- fix views wrappers classNames
+- update noUiSlider to latest
+- replace wNumb with helpers.format()
+- lodash (?)

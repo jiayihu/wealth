@@ -1,13 +1,17 @@
 'use strict';
 
 require('./polyfills');
-var helpers = require('./helpers');
+// var helpers = require('./helpers');
 var model = require('./model');
-var shell = require('./shell');
+var view = require('./view');
+var controller = require('./controller');
 
 var init = function() {
   model.init('wealthApp');
-  shell.init();
+  var initialState = model.read();
+  view.init();
+  controller(model, view.getViews(), initialState);
+
   window.model = model;
 };
 

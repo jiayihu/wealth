@@ -51,6 +51,19 @@ var sliderWithTooltips = function(element, options, format) {
   );
 };
 
+/**
+ * Removes a className from the current active element and applies it to the
+ * new one
+ * @param {Element} newActive New active element
+ * @param {string} className Classname to apply
+ */
+var setActive = function(newActive, className) {
+  var oldActive = document.get(className);
+  oldActive.classList.remove(className);
+  newActive.classList.add(className);
+};
+
 module.exports = {
-  createSlider: sliderWithTooltips
+  createSlider: sliderWithTooltips,
+  setActive: setActive
 };
