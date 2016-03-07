@@ -133,12 +133,18 @@
         }
       }
 
+      .value-wrapper:after {
+        content: "%";
+        font-size: .875em;
+        margin-left: .5em;
+      }
+
       &__value {
         border: 2px solid $primaryLighter;
         border-radius: 2px;
         margin-left: 1em;
         padding: 0 .5em;
-        width: 60px;
+        width: 50px;
 
         &:after {
           content: '%'

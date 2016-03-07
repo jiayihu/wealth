@@ -46,13 +46,22 @@ var bindView = function(model, view) {
   view.bind('currentSavingsChanged', function(currentSavings) {
     model.update({'currentSavings': currentSavings});
   });
+  view.bind('detailsChanged', function() {});
+  view.bind('detailsSaved', function(err, values) {
+    if(err) {
+      notie.alert(3, err);
+    } else {
+      model.update({expenses: values});
+    }
+  });
 };
 
-var setView = function(view, initialState) {
+var setView = function(model, view, initialState) {
   var income = initialState.aboutIncome;
   var basicRate = initialState.aboutBasicRate;
   var discRate = initialState.aboutDiscretionaryRate;
   var currentSavings = initialState.currentSavings;
+  var expenses = initialState.expenses;
 
   view.render('showSliders', {
     basicRate: basicRate,
@@ -64,17 +73,32 @@ var setView = function(view, initialState) {
     basicRate: basicRate,
     discRate: discRate
   });
-  view.render('showDetailed');
+  view.render('showDetailed', {
+    expenses: expenses
+  });
 };
 
-var subscriber = function(view, topic, data) {
+var subscriber = function(model, view, topic, data) {
   if (topic === 'aboutIncome') {
+    //data is the new income
+    var defaultRates = model.getDefaultRates(data, true);
+    view.render('setSlider', {
+      sliderName: 'basic',
+      value: defaultRates.basic
+    });
+    view.render('setSlider', {
+      sliderName: 'discretionary',
+      value: defaultRates.discretionary
+    });
     view.render('updatePieTooltip', data);
+    view.render('showDetailed', {
+      expenses: defaultRates.detailed
+    });
   }
 };
 
 module.exports = function(model, view, initialState) {
-  setView(view, initialState);
+  setView(model, view, initialState);
   bindView(model, view);
-  PubSub.subscribe('aboutIncome', subscriber.bind(null, view));
+  PubSub.subscribe('aboutIncome', subscriber.bind(null, model, view));
 };

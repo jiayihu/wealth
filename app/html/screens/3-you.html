@@ -1,4 +1,4 @@
-<div class="step-wrapper you-wrapper">
+<div class="step-wrapper you-wrapper show">
   <div class="header">
     <p class="step-title">Your savings and expenses</p>
   </div>
@@ -20,28 +20,12 @@
       <small>*Default values are based on Bureau of Labor Statistics <a href="http://www.bls.gov/cex/2014/combined/income.pdf" target="_blank">data for 2014</a>.</small>
     </p>
 
-    <div class="row">
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab">
-          <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" href=".detailed-expenses" aria-expanded="true" aria-controls="detailed-expenses">
-              Detailed expenses (<small>You can go back later and leave the default values if you wish</small>)
-              <i class="zmdi zmdi-chevron-down"></i>
-            </a>
-          </h4>
-        </div>
-        <div class="detailed-expenses panel-collapse collapse in" role="tabpanel">
-          <div class="panel-body">
-            <div class=" row">
-              <ul class="details-values">
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="current-savings">
+      <p class="about__question">How much do you have currently saved?</p>
+      <div class="current-savings__slider"></div>
     </div>
 
-    <h4>Summary expenses</h4>
+    <p class="about__question">Summary expenses</p>
 
     <div class="row">
       <div class="col-ms-6">
@@ -55,9 +39,32 @@
         </ul>
       </div>
     </div>
-    <div class="current-savings">
-      <p class="about__question">How much do you have currently saved?</p>
-      <div class="current-savings__slider"></div>
+
+    <p class="about__question">Detailed expenses</p>
+    <p>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details-modal">
+        Enter your detailed expenses
+      </button>
+    </p>
+    <div class="modal fade" id="details-modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title" id="myModalLabel">What percentage (%) of your budget do you spend on the following</h5>
+          </div>
+          <div class="modal-body">
+            <p>Update the values below to see how your spending compares to others. You may discover an opportunity to save money and build wealth.</p>
+            <p>You can also go back later and leave the default values if you wish.</p>
+            <ul class="details-values"></ul>
+            <p>Sum of all expenses: <strong class="details-sum"></strong> % of your budget</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="save-detailed-expense btn btn-success">Save changes</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div> <!-- </step> -->
   <div class="continue" data-template="pyramid">

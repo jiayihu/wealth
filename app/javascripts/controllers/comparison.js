@@ -9,12 +9,16 @@ var setView = function(model, view) {
   var basicRate = state.aboutBasicRate;
   var discRate = state.aboutDiscretionaryRate;
   var savingsRate = state.aboutSavingsRate;
-  var othersExpenses = model.getDefaultRates(income);
+  var userExpenses = state.expenses;
+  var othersExpenses = model.getDefaultRates(income, true);
 
   view.render('showSummaryChart', {
-    basicRate: basicRate,
-    discRate: discRate,
-    savingsRate: savingsRate
+    user: {
+      basicRate: basicRate,
+      discRate: discRate,
+      savingsRate: savingsRate
+    },
+    others: othersExpenses
   });
   view.render('showUserExpenses', {
     income: income,
@@ -26,7 +30,10 @@ var setView = function(model, view) {
     income: income,
     othersExpenses: othersExpenses
   });
-  view.render('showDetailedChart');
+  view.render('showDetailedChart', {
+    userExpenses: userExpenses,
+    othersExpenses: othersExpenses.detailed
+  });
   view.render('showConclusion', {
     userExpenses: {
       basic: basicRate,
@@ -62,7 +69,11 @@ var subscriber = function(model, view, topic) {
     });
     view.render('showConclusion', {
       userExpenses: userExpenses,
-      othersExpenses:othersExpenses
+      othersExpenses: othersExpenses
+    });
+  } else if(topic === 'expenses') {
+    view.render('updateDetailedChart', {
+      userExpenses: data
     });
   }
 };

@@ -14,15 +14,80 @@ var Chartist = require('chartist');
 var stateMap = {
   chartNode: null,
   $pieChart: null,
+
   basicSlider: null,
   expensesSlider: null,
   savingsSlider: null,
-  detailsList: null
+
+  $modal: null,
+  detailsList: null,
+  detailsInputs: null,
+  saveDetails: null
 };
 
-////////////////////
-// DOM FUNCTIONS ///
-////////////////////
+//////////////////////
+// HELPER FUNCTIONS //
+//////////////////////
+
+/**
+ * Returns if every item is not equal zero
+ * @param  {array} values Array of values to be checked
+ * @return {boolean}
+ */
+var areNotZero = function(values) {
+  if(!Array.isArray(values)) {
+    helpers.makeError('params', values);
+  }
+
+  return !values.some(function(element) {
+    return element === 0;
+  });
+};
+
+/**
+ * Returns the innerHTML of the list of inputs for detailed expenses
+ * @param  {string} detailTemplate Template for each input of the list
+ * @param  {array} detailsNames   Input names corresponding to the expense category
+ * @param  {array} defaultValues  Value for the inputs
+ * @return {string}
+ */
+var getDetailsList = function(detailTemplate, detailsNames, defaultValues) {
+  var listHTML = '';
+  detailsNames.forEach(function(name, index) {
+    listHTML += helpers.template(detailTemplate, {
+      name: name,
+      value: defaultValues[index]
+    });
+  });
+  return listHTML;
+};
+
+/**
+ * Returns the sum of the values
+ * @param  {Array}  values Array of values to be summed
+ * @return {Number}
+ */
+var sum = function(values) {
+  if(!Array.isArray(values)) {
+    helpers.makeError('params', values);
+  }
+
+  return values.reduce(function(previous, current) {
+    return previous + current;
+  });
+};
+
+var updateDetailsSum = function() {
+  var values = Array.prototype.map.call(stateMap.detailsInputs, function(input) {
+    return Number(input.value);
+  });
+  var detailsSum = sum(values);
+  showDetailsSum({sum: detailsSum});
+};
+
+///////////////////////
+// RENDER FUNCTIONS ///
+///////////////////////
 
 var createPieTooltip = function(pieChart, income) {
   var $chart = $(pieChart);
@@ -68,32 +133,33 @@ var createPieTooltip = function(pieChart, income) {
   });
 };
 
-var getDetailsList = function(detailTemplate, detailsNames, defaultValues) {
-  var listHTML = '';
-  detailsNames.forEach(function(name, index) {
-    listHTML += helpers.template(detailTemplate, {
-      name: name,
-      value: defaultValues[index]
-    });
-  });
-  return listHTML;
-};
-
-var showDetailed = function() {
+var showDetailed = function(data) {
   var detailsNames = ['Food at home', 'Food away from home', 'Housing', 'Utilities, fuels, public services', 'Apparel & services', 'Trasportation', 'Healthcare', 'Entertainment & Reading', 'Education', 'Miscellaneous'];
-  var defaultValues = [12, 3, 36, 5, 4, 12, 9, 5, 5, 9];
+  var expenses = data.expenses;
+
+  if(!Array.isArray(expenses)) {
+    helpers.makeError('params', data);
+  }
+
   var detailTemplate =
     '<li class="detail">' +
       '<span class="detail__name">{name}</span>' +
-      '<input class="detail__value" type="number" value="{value}" name="{name}" >' +
+      '<span class="value-wrapper">' +
+        '<input class="detail__value" type="number" value="{value}" name="{name}" >' +
+      '</span>' +
     '</li>';
 
-  stateMap.detailsList.innerHTML = getDetailsList(detailTemplate, detailsNames, defaultValues);
-  stateMap.detailsList.addEventListener('change', function(e) {
-    if(e.target.classList.contains('detail__value')) {
-      console.log('Details changed: ', e);
-    }
-  });
+  stateMap.detailsList.innerHTML = getDetailsList(detailTemplate, detailsNames, expenses);
+};
+
+var showDetailsSum = function(data) {
+  var sum = data.sum;
+
+  if(!helpers.isNumber(sum)) {
+    helpers.makeError('params', data);
+  }
+
+  stateMap.detailsSum.textContent = sum;
 };
 
 var showSliders = function(data) {
@@ -193,6 +259,7 @@ var showPieChart = function(data) {
   createPieTooltip(stateMap.chartNode, income);
 };
 
+
 /**
  * Update the view of the Doughnut when sliders values change
  * @param {object} rates Object with the new rates
@@ -252,6 +319,23 @@ var bind = function(event, handler) {
         handler(Number(values[0].replace('.', '')));
       });
       break;
+    case 'detailsChanged':
+      stateMap.detailsList.addEventListener('change', updateDetailsSum);
+      break;
+    case 'detailsSaved':
+      stateMap.saveDetails.addEventListener('click', function() {
+        var values = Array.prototype.map.call(stateMap.detailsInputs, function(input) {
+          return Number(input.value);
+        });
+        var valid = areNotZero(values) && (sum(values) <= 100);
+        if(valid) {
+          handler(null, values);
+          stateMap.$modal.modal('hide');
+        } else {
+          handler(new Error('Values must not be zeros and their sum not superior 100'), null);
+        }
+      });
+      break;
     default:
       return;
   }
@@ -286,7 +370,14 @@ var render = function(cmd, data) {
       showPieChart(data);
       break;
     case 'showDetailed':
-      showDetailed();
+      showDetailed(data);
+      stateMap.detailsInputs = stateMap.detailsList.getAll('detail__value');
+      var inputsValues = Array.prototype.map.call(stateMap.detailsInputs, function(input) {
+        return Number(input.value);
+      });
+      showDetailsSum({
+        sum: sum(inputsValues)
+      });
       break;
     case 'setSlider':
       setSlider(data);
@@ -304,13 +395,17 @@ var render = function(cmd, data) {
 };
 
 var setStateMap = function(container) {
+  window.sum = sum;
   stateMap.basicSlider = container.get('about__savings__slider--needs');
   stateMap.expensesSlider = container.get('about__savings__slider--expenses');
   stateMap.savingsSlider = container.get('current-savings__slider');
 
   stateMap.chartNode = container.get('about__savings__circle');
 
+  stateMap.$modal = $('#details-modal');
   stateMap.detailsList = container.get('details-values');
+  stateMap.detailsSum = container.get('details-sum');
+  stateMap.saveDetails = container.get('save-detailed-expense');
 };
 
 module.exports = {

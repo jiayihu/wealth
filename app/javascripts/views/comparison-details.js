@@ -1,4 +1,4 @@
-// var helpers = require('../helpers');
+var helpers = require('../helpers');
 var Chartist = require('chartist');
 
 var stateMap = {
@@ -6,12 +6,19 @@ var stateMap = {
 };
 
 
-var showDetailedChart = function() {
+var showDetailedChart = function(data) {
+  var userExpenses = data.userExpenses;
+  var othersExpenses = data.othersExpenses;
+
+  if(!Array.isArray(userExpenses) || !Array.isArray(othersExpenses)) {
+    helpers.makeError('params', data);
+  }
+
   var chartData = {
     labels: ['Miscellaneous', 'Education', 'Entertainment & Reading', 'Healthcare', 'Trasportation', 'Apparel & services', 'Utilities, fuels, public services', 'Housing', 'Food away from home', 'Food at home'],
     series: [
-      [9, 5, 5, 9, 12, 4, 5, 36, 3, 12],
-      [8, 3, 5, 9, 16, 4, 10, 30, 5, 10]
+      userExpenses,
+      othersExpenses
     ]
   };
   var chartOptions =  {
@@ -30,44 +37,35 @@ var showDetailedChart = function() {
   stateMap.chart = new Chartist.Bar('.detailed-chart', chartData, chartOptions);
 };
 
-// var updateSerie = function(category, value) {
-//   if( (typeof category !== 'string') || (typeof value !== 'number') ) {
-//     helpers.makeError('params', {category: category, value: value});
-//   }
+// For now it's used only when user changes his expenses and not for 'income changes/default expenses changes' since they are dealt with showDetailedChart()
+var updateDetailedChart = function(data) {
+  var userExpenses = data.userExpenses;
 
-//   var index = configMap.chartData.labels.indexOf(category);
+  if(!Array.isArray(userExpenses)) {
+    helpers.makeError('params', data);
+  }
 
-//   if(~index) {
-//     configMap.chartData.series[0][index] = value;
-//   }
-// };
+  stateMap.chart.data.series[0] = userExpenses;
+  stateMap.chart.update();
+};
 
 //////////////////////
 // PUBLIC FUNCTIONS //
 //////////////////////
 
-var render = function(cmd) {
+var render = function(cmd, data) {
   switch(cmd) {
     case 'showDetailedChart':
-      showDetailedChart();
+      showDetailedChart(data);
+      break;
+    case 'updateDetailedChart':
+      updateDetailedChart(data);
       break;
     default:
       console.error('No command found.');
       return;
   }
 };
-
-/**
- * Sets the serie of categories expenses of others of the category
- * @param  {array} othersSerie Array of values
- */
-// var setOthersSerie = function(othersSerie) {
-//   if(!Array.isArray(othersSerie)) {
-//     helpers.makeError('params', othersSerie);
-//   }
-
-//   configMap.chartData.series[1] = othersSerie;
-// };
 
 module.exports = {
   render:  render

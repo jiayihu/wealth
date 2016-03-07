@@ -76,13 +76,6 @@ var setSelects = function(data) {
   stateMap.living.value = living;
 };
 
-var setStateMap = function(container) {
-  stateMap.ageSlider = container.get('about__age__slider');
-  stateMap.incomeSlider = container.get('about__income__slider');
-  stateMap.situation = container.get('about__select');
-  stateMap.living = container.get('about__select', 1);
-};
-
 
 //////////////////////
 // PUBLIC FUNCTIONS //
@@ -134,6 +127,13 @@ var render = function(cmd, data) {
       console.error('No command found.');
       return;
   }
+};
+
+var setStateMap = function(container) {
+  stateMap.ageSlider = container.get('about__age__slider');
+  stateMap.incomeSlider = container.get('about__income__slider');
+  stateMap.situation = container.get('about__select');
+  stateMap.living = container.get('about__select', 1);
 };
 
 module.exports = {

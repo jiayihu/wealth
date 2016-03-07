@@ -72,6 +72,32 @@ var updateTextContent = function(element, text) {
   element.textContent = text;
 };
 
+/**
+ * Updates the text for user & others summary categories, with the rates and
+ * actual values.
+ * @param  {object} domMap       Object with the DOM nodes for basic, discretionary
+ * and savings
+ * @param  {object} actualValues Object with the actual values for each category
+ * @param  {object} rates        Object with the rates for each category
+ * @example
+ * updateSummary(
+ *   {
+ *     basic: HTMLNode,
+ *     discretionary: HTMLNode,
+ *     savings: HTMLNode
+ *   },
+ *   {
+ *     basic: 20000,
+ *     discretionary: 13000,
+ *     savings: 8000
+ *   },
+ *   {
+ *     basic: 45,
+ *     discretionary: 35,
+ *     savings: 20
+ *   }
+ *  )
+ */
 var updateSummary = function(domMap, actualValues, rates) {
   Object.keys(domMap).forEach(function(category) {
     updateTextContent(
@@ -90,19 +116,21 @@ var updateSummary = function(domMap, actualValues, rates) {
 //////////////////////
 
 var showSummaryChart = function(data) {
-  var basicRate = data.basicRate;
-  var discRate = data.discRate;
-  var savingsRate = data.savingsRate;
+  var user = data.user;
+  var others = data.others;
 
-  if(typeof (basicRate + discRate + savingsRate) !== 'number') {
+  if(
+    !helpers.isNumber(user.basicRate + user.discRate + user.savingsRate) ||
+    !helpers.isNumber(others.basic + others.discretionary + others.savings)
+  ) {
     helpers.makeError('params', data);
   }
 
   var chartData = {
     labels: ['Basic Needs', 'Discretionary Expenses', 'Savings'],
     series: [
-      [basicRate, discRate, savingsRate],
-      [41, 51, 8]
+      [user.basicRate, user.discRate, user.savingsRate],
+      [others.basic, others.discretionary, others.savings]
     ]
   };
   var chartOptions = {
@@ -141,7 +169,7 @@ var showOthersExpenses = function(data) {
   var income = data.income;
   var othersExpenses = data.othersExpenses;
 
-  if( (typeof income !== 'number') || (Object.keys(othersExpenses).length !== 3) ) {
+  if( (typeof income !== 'number') || (typeof othersExpenses !== 'object') ) {
     helpers.makeError('params', data);
   }
 
@@ -232,13 +260,16 @@ var render = function(cmd, data) {
       showOthersExpenses(data);
       break;
     case 'showDetailedChart':
-      details.render('showDetailedChart');
-      break;
-    case 'updateSummaryChart':
-      updateSummaryChart(data);
+      details.render('showDetailedChart', data);
       break;
     case 'showConclusion':
       showConclusion(data);
+      break;
+    case 'updateDetailedChart':
+      details.render('updateDetailedChart', data);
+      break;
+    case 'updateSummaryChart':
+      updateSummaryChart(data);
       break;
     default:
       console.error('No command found');

@@ -1,6 +1,7 @@
 'use strict';
 
 require('./polyfills');
+require('./components/hamburger');
 // var helpers = require('./helpers');
 var model = require('./model');
 var view = require('./view');
