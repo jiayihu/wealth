@@ -259,6 +259,25 @@ var showPieChart = function(data) {
   createPieTooltip(stateMap.chartNode, income);
 };
 
+/**
+ * Used by shell to set the sliders values when data is changed on some other
+ * screens.
+ * @param {object} data Object with sliderName and value properties
+ */
+var setSlider = function(data) {
+  var sliderName = data.sliderName;
+  var value = data.value;
+
+  if( (typeof sliderName !== 'string') || (typeof value !== 'number') ) {
+    helpers.makeError('params', data);
+  }
+
+  if (sliderName === 'basic') {
+    stateMap.basicSlider.noUiSlider.set(value);
+  } else if (sliderName === 'discretionary') {
+    stateMap.expensesSlider.noUiSlider.set(value);
+  }
+};
 
 /**
  * Update the view of the Doughnut when sliders values change
@@ -338,26 +357,6 @@ var bind = function(event, handler) {
       break;
     default:
       return;
-  }
-};
-
-/**
- * Used by shell to set the sliders values when data is changed on some other
- * screens.
- * @param {object} data Object with sliderName and value properties
- */
-var setSlider = function(data) {
-  var sliderName = data.sliderName;
-  var value = data.value;
-
-  if( (typeof sliderName !== 'string') || (typeof value !== 'number') ) {
-    helpers.makeError('params', data);
-  }
-
-  if (sliderName === 'basic') {
-    stateMap.basicSlider.noUiSlider.set(value);
-  } else if (sliderName === 'discretionary') {
-    stateMap.expensesSlider.noUiSlider.set(value);
   }
 };
 

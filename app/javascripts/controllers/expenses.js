@@ -15,8 +15,8 @@ var bindView = function(model, view) {
       helpers.makeError('user', 'Error: the sum of basic & discretionary rates are superior than 100', notie.alert.bind(null, 3));
     }
 
-    model.update({'aboutBasicRate': basicRate});
-    model.update({'aboutSavingsRate': savingsRate});
+    model.update({aboutBasicRate: basicRate});
+    model.update({aboutSavingsRate: savingsRate});
     view.render('updatePieChart', {
       basicRate: basicRate,
       discRate: discRate,
@@ -51,6 +51,15 @@ var bindView = function(model, view) {
     if(err) {
       notie.alert(3, err);
     } else {
+      var summaryExpenses = model.getSummaryExpenses(values);
+      view.render('setSlider', {
+        sliderName: 'basic',
+        value: summaryExpenses.basic
+      });
+      view.render('setSlider', {
+        sliderName: 'discretionary',
+        value: summaryExpenses.discretionary
+      });
       model.update({expenses: values});
     }
   });

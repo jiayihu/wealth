@@ -104,6 +104,41 @@ var getGoals = function() {
   return goalsList;
 };
 
+
+/**
+ * Returns summary expenses from the detailed one
+ * @param  {array} detailedExpenses Array of the values of detailed expenses
+ * @return {Object}
+ */
+var getSummaryExpenses = function(detailedExpenses) {
+  /**
+   * Positions of the basic categories in the list of detailed expenses
+   * @type {Array}
+   * @NOTE This should be improved since it requires the parameter array to
+   * have always the same structure, but it would require much more code
+   */
+  var basicCategories = [0, 2, 3];
+  var basicExpenses = 0;
+  var discExpenses = 0;
+
+  if(!Array.isArray(detailedExpenses)) {
+    helpers.makeError('params', detailedExpenses);
+  }
+
+  detailedExpenses.forEach(function(expense, index) {
+    if(~basicCategories.indexOf(index)) {
+      basicExpenses += expense;
+    } else {
+      discExpenses += expense;
+    }
+  });
+
+  return {
+    basic: basicExpenses,
+    discretionary: discExpenses
+  };
+};
+
 /**
  * Updates the stored list adding or removing the element
  * @param  {string} listName Name of the list
@@ -136,6 +171,7 @@ var init = function(name) {
 module.exports = {
   getDefaultRates: budget.getDefaultRates,
   getGoals: getGoals,
+  getSummaryExpenses: getSummaryExpenses,
   init: init,
   read: read,
   reset: reset,

@@ -38,6 +38,18 @@ describe('format', function() {
   });
 });
 
+describe('isNumber', function() {
+  var isNumber = helpers.isNumber;
+
+  it('should check if it is a number', function() {
+    expect(isNumber(2)).to.be.true;
+    expect(isNumber('2')).to.be.false;
+    expect(isNumber(NaN)).to.be.false;
+    expect(isNumber({})).to.be.false;
+    expect(isNumber([1])).to.be.false;
+  });
+});
+
 describe('reverse', function() {
   var reverse = helpers.reverse;
 
@@ -93,6 +105,21 @@ describe('setConfigMap', function() {
     };
 
     expect(setConfigMap(inputMap, configMap)).to.deep.equal(expectedMap);
+  });
+});
+
+describe('template', function() {
+  var template = helpers.template;
+
+  it('should replace with the values', function() {
+    var string = '{user} says {object} to {user}';
+    var data = {
+      user: 'Mary',
+      object: 'hello'
+    };
+    var expectedString = 'Mary says hello to Mary';
+
+    expect(template(string, data)).to.equal(expectedString);
   });
 });
 
