@@ -1,4 +1,4 @@
-.hwp {
+.app {
   text-align: center;
   background-color: $primaryDarker;
   box-shadow: 0 3px 4px 0 rgba(0,0,0,0.38);
@@ -9,7 +9,7 @@
    ========================================================================== */
 
 /* Header */
-.header > span, .header > p {
+.header > span {
   position: relative;
   padding-top: 1em;
   padding-bottom: 1em;
@@ -142,28 +142,32 @@
   }
 }
 
-.step-wrapper {
+.step {
   display: none;
 
   &.show {
     display: block;
   }
-}
 
-.wrapper {
-  width: 90%;
-  margin: 0 auto;
-}
-
-.step {
-  @media (min-width: $screen-desktop) {
-    min-height: 370px;
+  &__header {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    font-weight: normal;
   }
 
-  &__desc {
-    font-weight: 400;
-    text-transform: uppercase;
+  &__content {
+    @media (min-width: $screen-desktop) {
+      min-height: 370px;
+      padding: 0 1em;
+    }
   }
+}
+
+.heading {
+  border-bottom: 1px solid rgba(#B8BBC6, .22);
+  font-weight: normal;
+  font-size: 1.125em;
+  margin-bottom: 1.125em;
 }
 
 .continue,

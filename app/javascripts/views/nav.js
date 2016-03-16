@@ -7,9 +7,39 @@ var stateMap = {
   nav: null
 };
 
+
+///////////////////
+// DOM FUNCTIONS //
+///////////////////
+
+var activateNav = function(stepName) {
+  if(typeof stepName !== 'string') {
+    helpers.makeError('params', stepName);
+  }
+
+  var newActiveLink = stateMap.nav.get('step-name--' + stepName).parentNode;
+
+  //Activate the navigation item
+  if(newActiveLink.classList.contains('disabled')) {
+    newActiveLink.classList.remove('disabled');
+  }
+
+  domHelpers.setActive(newActiveLink, 'active');
+};
+
+var activateStep = function(stepName) {
+  if(typeof stepName !== 'string') {
+    helpers.makeError('params', stepName);
+  }
+
+  var nextStepWrapper = document.get('step--' + stepName);
+  console.log(nextStepWrapper);
+  domHelpers.setActive(nextStepWrapper, 'show');
+};
+
 var bindLinkClicked = function(e, handler) {
   var nodeName = e.target.nodeName;
-  var nextStepName, nextStepWrapper, clickedLink;
+  var nextStepName, clickedLink;
 
   //If it is the 'Reset Model' button
   if (nodeName === 'A') {
@@ -26,8 +56,7 @@ var bindLinkClicked = function(e, handler) {
 
   if ( clickedLink && !clickedLink.classList.contains('disabled')) {
     domHelpers.setActive(clickedLink, 'active');
-    nextStepWrapper = document.get(nextStepName + '-wrapper');
-    domHelpers.setActive(nextStepWrapper, 'show');
+    activateStep(nextStepName);
     handler(nextStepName);
   }
 };
@@ -69,6 +98,10 @@ var setStateMap = function() {
 
 var render = function(cmd, data) {
   switch(cmd) {
+    case 'activateStep':
+      activateStep(data.stepName);
+      activateNav(data.stepName);
+      break;
     case 'disableLinks':
       disableLinks(data);
       break;

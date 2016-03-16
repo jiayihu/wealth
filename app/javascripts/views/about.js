@@ -43,8 +43,7 @@ var showSliders = function(data) {
       density: 5
     },
     format: wNumb({
-      decimals: 1,
-      thousand: '.'
+      decimals: 0
     })
   };
   var incomeOptions = {
@@ -130,10 +129,10 @@ var render = function(cmd, data) {
 };
 
 var setStateMap = function(container) {
-  stateMap.ageSlider = container.get('about__age__slider');
-  stateMap.incomeSlider = container.get('about__income__slider');
-  stateMap.situation = container.get('about__select');
-  stateMap.living = container.get('about__select', 1);
+  stateMap.ageSlider = container.get('age__slider');
+  stateMap.incomeSlider = container.get('income__slider');
+  stateMap.situation = container.get('select');
+  stateMap.living = container.get('select', 1);
 };
 
 module.exports = {

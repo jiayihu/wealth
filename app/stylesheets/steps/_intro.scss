@@ -1,44 +1,44 @@
 /* 1-INTRO
    ========================================================================== */
 
-.step--first {
+.step--intro {
   text-align: center;
 
-  & > div {
-    padding: 1em;
+  .step__content {
+    @include flex;
+
+    > div {
+      padding: 0 1em;
+    }
   }
 
-  & > div:last-child {
+  .step__content > div:last-child {
     @media(min-width: $screen-tablet) {
       border-left: 1px solid rgba($primaryLighter, 0.4);
     }
   }
 
-  .step__list {
+  .features {
     list-style-position: inside;
     margin: 0 auto;
     max-width: 30em;
     padding-left: 0;
     text-align: left;
   }
-}
 
-.offer {
-  margin-top: 3em;
-  text-align: center;
+  .offer {
+    @include flex;
+    margin-top: 3em;
+    text-align: center;
 
-  img {
-    margin-right: 1em;
-  }
+    img {
+      margin-right: 1em;
+    }
 
-  .icon--chart {
-    @media (max-width: $screen-desktop) {
-      width: 12.5em;
+    .float-right {
+      order: 1;
+      margin-left: 1em;
     }
   }
 
-  .float-right {
-    order: 1;
-    margin-left: 1em;
-  }
 }

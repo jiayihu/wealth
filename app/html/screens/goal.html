@@ -1,0 +1,27 @@
+{% extends '../templates/step.html' %}
+
+{% set stepName = "goal" %}
+{% set nextStepName = "plan" %}
+
+{% block header %}
+  Pick a goal
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  <p class="heading">Pick one or more goals from the left by dragging them over or by clicking the '+'</p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="goals">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p>
+        <strong>Picked Goals</strong>
+        (Drag & Drop to order)</p>
+      <div class="picked-goals">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

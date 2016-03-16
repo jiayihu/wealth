@@ -22,6 +22,8 @@ var stateMap = {
   $modal: null,
   detailsList: null,
   detailsInputs: null,
+  detailsSum: null,
+  detailsSavings: null,
   saveDetails: null
 };
 
@@ -77,14 +79,6 @@ var sum = function(values) {
   });
 };
 
-var updateDetailsSum = function() {
-  var values = Array.prototype.map.call(stateMap.detailsInputs, function(input) {
-    return Number(input.value);
-  });
-  var detailsSum = sum(values);
-  showDetailsSum({sum: detailsSum});
-};
-
 ///////////////////////
 // RENDER FUNCTIONS ///
 ///////////////////////
@@ -134,7 +128,7 @@ var createPieTooltip = function(pieChart, income) {
 };
 
 var showDetailed = function(data) {
-  var detailsNames = ['Food at home', 'Food away from home', 'Housing', 'Utilities, fuels, public services', 'Apparel & services', 'Trasportation', 'Healthcare', 'Entertainment & Reading', 'Education', 'Miscellaneous'];
+  var detailsNames = ['Food at home', 'Food away from home', 'Housing', 'Misc Housing Related', 'Utilities, fuels, public services', 'Apparel & services', 'Trasportation', 'Healthcare', 'Entertainment & Reading', 'Education', 'Miscellaneous'];
   var expenses = data.expenses;
 
   if(!Array.isArray(expenses)) {
@@ -160,6 +154,7 @@ var showDetailsSum = function(data) {
   }
 
   stateMap.detailsSum.textContent = sum;
+  stateMap.detailsSavings.textContent = 100 - sum;
 };
 
 var showSliders = function(data) {
@@ -279,6 +274,14 @@ var setSlider = function(data) {
   }
 };
 
+var updateDetailsSum = function() {
+  var values = Array.prototype.map.call(stateMap.detailsInputs, function(input) {
+    return Number(input.value);
+  });
+  var detailsSum = sum(values);
+  showDetailsSum({sum: detailsSum});
+};
+
 /**
  * Update the view of the Doughnut when sliders values change
  * @param {object} rates Object with the new rates
@@ -308,7 +311,6 @@ var updatePieChart = function(rates) {
   };
   stateMap.$pieChart.update(updatedData);
 };
-
 
 //////////////////////
 // PUBLIC FUNCTIONS //
@@ -340,6 +342,9 @@ var bind = function(event, handler) {
       break;
     case 'detailsChanged':
       stateMap.detailsList.addEventListener('change', updateDetailsSum);
+      break;
+    case 'detailsReset':
+      stateMap.detailsReset.addEventListener('click', handler);
       break;
     case 'detailsSaved':
       stateMap.saveDetails.addEventListener('click', function() {
@@ -395,15 +400,17 @@ var render = function(cmd, data) {
 
 var setStateMap = function(container) {
   window.sum = sum;
-  stateMap.basicSlider = container.get('about__savings__slider--needs');
-  stateMap.expensesSlider = container.get('about__savings__slider--expenses');
+  stateMap.basicSlider = container.get('slider--needs');
+  stateMap.expensesSlider = container.get('slider--expenses');
   stateMap.savingsSlider = container.get('current-savings__slider');
 
-  stateMap.chartNode = container.get('about__savings__circle');
+  stateMap.chartNode = container.get('summary__chart');
 
   stateMap.$modal = $('#details-modal');
   stateMap.detailsList = container.get('details-values');
+  stateMap.detailsReset = container.get('reset-detailed');
   stateMap.detailsSum = container.get('details-sum');
+  stateMap.detailsSavings = container.get('details-savings');
   stateMap.saveDetails = container.get('save-detailed-expense');
 };
 

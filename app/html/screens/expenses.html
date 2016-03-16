@@ -1,0 +1,83 @@
+{% extends '../templates/step.html' %}
+
+{% set stepName = "expenses" %}
+{% set nextStepName = "comparison" %}
+
+{% block header %}
+  Your savings and expenses
+{% endblock %}
+
+{% block content %}
+<div class="expenses">
+  <p class="heading">How much do you spend?</p>
+  <div class="row">
+    <div class="col-md-6">
+      <p>What are your basic needs?</p>
+      <div class="slider--needs"></div>
+    </div>
+    <div class="col-md-6">
+      <p>What are your discretionary expenses?</p>
+      <div class="slider--expenses"></div>
+    </div>
+  </div>
+  <p class="bls">
+    <small>*Default values are based on Bureau of Labor Statistics <a href="http://www.bls.gov/cex/2014/combined/income.pdf" target="_blank">data for 2014</a>.</small>
+  </p>
+</div>
+
+<div class="current-savings">
+  <p class="heading">How much do you have currently saved?</p>
+  <div class="current-savings__slider"></div>
+</div>
+
+<div class="summary">
+  <p class="heading">Summary expenses</p>
+  <div class="row">
+    <div class="col-ms-6">
+      <div class="summary__chart ct-chart ct-square"></div>
+    </div>
+    <div class="col-ms-6">
+      <ul class="ct-legend">
+        <li><span class="ct-legend__color ct-legend__color--basic"></span> Basic Needs</li>
+        <li><span class="ct-legend__color ct-legend__color--disc"></span> Discretionary Needs</li>
+        <li><span class="ct-legend__color ct-legend__color--savings"></span> Savings</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="detailed">
+  <p class="heading">Detailed expenses</p>
+  <p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details-modal">
+      Enter your detailed expenses
+    </button>
+  </p>
+  <p>(Click the button to get more details about your expenses)</p>
+</div>
+
+<div class="modal fade" id="details-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="myModalLabel">What percentage (%) of your budget do you spend on the following</h5>
+      </div>
+      <div class="modal-body">
+        <p>Update the values below to see how your spending compares to others. You may discover an opportunity to save money and build wealth.</p>
+        <p><em>(You can skip this and come back later if you wish.)</em></p>
+        <ul class="details-values"></ul>
+        <p>Sum of all expenses: <strong class="details-sum"></strong> % of your budget. <br />
+          Savings: <strong class="details-savings"></strong> % of your budget</p>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <button type="button" class="reset-detailed btn btn-info pull-left">Reset Defaults</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="save-detailed-expense btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

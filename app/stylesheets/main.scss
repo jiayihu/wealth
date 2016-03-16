@@ -21,20 +21,19 @@
    ========================================================================== */
 
 @import "layout/layout";
+@import "layout/print";
 
 
 /* ==========================================================================
    STEPS
    ========================================================================== */
 
-@import "steps/1-intro";
-@import "steps/2-about";
-@import "steps/3-you";
-// @import "steps/4-people";
-@import "steps/5-pyramid";
-@import "steps/6-scenarios";
-@import "steps/7-goal";
-@import "steps/8-retirement";
-@import "steps/9-plan";
+@import "steps/intro";
+@import "steps/about";
+@import "steps/expenses";
+@import "steps/comparison";
+@import "steps/scenarios";
+@import "steps/goal";
+@import "steps/plan";
+@import "steps/reminders";
 
-@import "layout/print";

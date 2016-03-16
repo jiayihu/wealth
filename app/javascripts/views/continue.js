@@ -5,8 +5,6 @@
 
 'use strict';
 
-var domHelpers = require('../dom-helpers');
-
 var configMap = {
   continueClass: 'continue',
   navClass: 'nav'
@@ -20,21 +18,6 @@ var stateMap = {
  * DOM FUNCTIONS
  */
 
-var activateNav = function() {
-  var newActiveNavLink = stateMap.nav.get('active').nextElementSibling;
-
-  //Check if it is not the last nav link, which doesn't have siblings
-  if (newActiveNavLink) {
-    //Activate the navigation item
-    if (newActiveNavLink.classList.contains('disabled')) {
-      newActiveNavLink.classList.remove('disabled');
-    }
-    domHelpers.setActive(newActiveNavLink, 'active');
-    return newActiveNavLink;
-  }
-
-  return false;
-};
 
 /**
  * PUBLIC FUNCTIONS
@@ -42,14 +25,13 @@ var activateNav = function() {
 
 var bind = function(event, handler) {
   if (event === 'continueClicked') {
-    stateMap.continueButtons.forEach(function(element) {
-      element.addEventListener('click', function() {
-        var nextStep = this.dataset.template;
-        var nextStepElement = document.get(nextStep + '-wrapper');
-        domHelpers.setActive(nextStepElement, 'show');
-        var nextActiveNavLink = activateNav();
-        handler(nextActiveNavLink);
-      });
+    document.addEventListener('click', function(e) {
+      var classList = e.target.classList;
+      var stepName = e.target.dataset.template;
+
+      if((classList.contains('continue') || classList.contains('backward')) && stepName) {
+        handler(stepName);
+      }
     });
   }
 };

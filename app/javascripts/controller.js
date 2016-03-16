@@ -13,8 +13,8 @@ var controllers = [
   require('./controllers/comparison'),
   require('./controllers/scenarios'),
   require('./controllers/goal'),
-  require('./controllers/retirement'),
   require('./controllers/plan'),
+  require('./controllers/reminders'),
   require('./controllers/nav'),
   require('./controllers/continue')
 ];

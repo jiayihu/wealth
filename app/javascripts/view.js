@@ -2,12 +2,12 @@
 
 var viewsNames = [
   'about',
-  'you',
-  'pyramid',
+  'expenses',
+  'comparison',
   'scenarios',
   'goal',
-  'retirement',
-  'plan'
+  'plan',
+  'reminders'
 ];
 var views = [
   require('./views/about'),
@@ -15,8 +15,8 @@ var views = [
   require('./views/comparison'),
   require('./views/scenarios'),
   require('./views/goal'),
-  require('./views/retirement'),
   require('./views/plan'),
+  require('./views/reminders'),
   require('./views/nav'),
   require('./views/continue')
 ];
@@ -27,7 +27,7 @@ var getViews = function() {
 
 var init = function() {
   views.forEach(function(view, index) {
-    var container = index < 7? document.get(viewsNames[index] + '-wrapper') : null;
+    var container = index < 7? document.get('step--' + viewsNames[index]) : null;
     view.setStateMap(container);
   });
 };

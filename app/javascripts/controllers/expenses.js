@@ -47,6 +47,14 @@ var bindView = function(model, view) {
     model.update({'currentSavings': currentSavings});
   });
   view.bind('detailsChanged', function() {});
+  view.bind('detailsReset', function() {
+    var income = model.read('aboutIncome');
+    var defaultExpenses = model.getDefaultRates(income, true).detailed;
+
+    view.render('showDetailed', {
+      expenses: defaultExpenses
+    });
+  });
   view.bind('detailsSaved', function(err, values) {
     if(err) {
       notie.alert(3, err);
@@ -71,6 +79,11 @@ var setView = function(model, view, initialState) {
   var discRate = initialState.aboutDiscretionaryRate;
   var currentSavings = initialState.currentSavings;
   var expenses = initialState.expenses;
+
+  //If user has not entered detailed expenses yet
+  if(expenses.length == 0) {
+    expenses = model.getDefaultRates(income, true).detailed;
+  }
 
   view.render('showSliders', {
     basicRate: basicRate,

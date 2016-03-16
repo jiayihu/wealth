@@ -25,7 +25,7 @@ var defaultModel = {
   aboutDiscretionaryRate: 52,
   aboutSavingsRate: 13,
   currentSavings: 10000,
-  expenses: [8, 6, 25, 8, 3, 19, 9, 5, 1, 4],
+  expenses: [],
   //aboutStage: 'home',
   lastUserStep: 1,
   goals: [],
@@ -117,7 +117,7 @@ var getSummaryExpenses = function(detailedExpenses) {
    * @NOTE This should be improved since it requires the parameter array to
    * have always the same structure, but it would require much more code
    */
-  var basicCategories = [0, 2, 3];
+  var basicCategories = [0, 2, 4];
   var basicExpenses = 0;
   var discExpenses = 0;
 

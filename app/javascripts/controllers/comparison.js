@@ -44,7 +44,7 @@ var setView = function(model, view) {
   });
 };
 
-var subscriber = function(model, view, topic) {
+var subscriber = function(model, view, topic, msg) {
   if (topic === 'aboutSavingsRate') {
     var data = model.read();
     var income = data.aboutIncome;
@@ -73,7 +73,7 @@ var subscriber = function(model, view, topic) {
     });
   } else if(topic === 'expenses') {
     view.render('updateDetailedChart', {
-      userExpenses: data
+      userExpenses: msg
     });
   }
 };
@@ -84,7 +84,8 @@ module.exports = function(model, view) {
     setView(model, view);
   });
   PubSub.subscribe('aboutSavingsRate', subscriber.bind(null, model, view));
-  PubSub.subscribe('step.pyramid', function() {
+  PubSub.subscribe('step.comparison', function() {
     setView(model, view);
   });
+  PubSub.subscribe('expenses', subscriber.bind(null, model, view));
 };

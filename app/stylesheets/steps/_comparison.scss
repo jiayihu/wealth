@@ -1,7 +1,7 @@
 /* 5-PYRAMID
    ========================================================================== */
 
-.step--compare {
+.step--comparison {
   color: $primaryDarker;
   font-weight: normal;
 
@@ -15,21 +15,6 @@
 
   .conclusion {
     margin-top: 1em;
-  }
-
-  .detailed-chart {
-
-    .ct-bar {
-      stroke-width: 9px;
-    }
-
-    .ct-series-a .ct-bar {
-      stroke: $primary;
-    }
-
-    .ct-series-b .ct-bar {
-      stroke: $gray-light;
-    }
   }
 }
 
@@ -128,6 +113,39 @@
 
     &__value {
       font-size: 1rem;
+    }
+  }
+}
+
+.advanced-comparison {
+  .detailed-chart {
+    display: none;
+
+    .ct-bar {
+      stroke-width: 9px;
+    }
+
+    .ct-series-a .ct-bar {
+      stroke: $primary;
+    }
+
+    .ct-series-b .ct-bar {
+      stroke: $gray-light;
+    }
+  }
+
+  .legend {
+    display: none;
+  }
+
+  &.show-chart {
+    .info {
+      display: none;
+    }
+
+    .detailed-chart,
+    .legend {
+      display: block;
     }
   }
 }

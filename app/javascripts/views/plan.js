@@ -2,113 +2,73 @@
  * Screen #8 - Retirement module
  * @module 8-Retirement
  */
+
 'use strict';
 
 var $ = require('jQuery');
+var actionsList = require('../model/actions');
 
 var stateMap = {
-  actionTitles: null,
-  printButton: null
+  tbody: null
+};
+
+
+///////////////////
+// DOM FUNCTIONS //
+///////////////////
+
+
+var createActions = function(actionsList) {
+  var docFragment = document.createDocumentFragment();
+  var row;
+
+  actionsList.forEach(function(element, index) {
+    row = document.createElement('tr');
+    row.innerHTML = '<td><i class="zmdi zmdi-check-circle" data-action="' + index + '"></i></td>' +
+      '<td>' + element.todo + '</td>' +
+      '<td>' + element.todonot + '</td>' +
+      '<td><i class="zmdi zmdi-info-outline" data-toggle="tooltip" data-placement="left" title="' + element.why + '"></i></td>';
+    docFragment.appendChild(row);
+  });
+  return docFragment;
 };
 
 /**
- * DOM FUNCTIONS
+ * EVENT HANDLERS
  */
 
-var printPlan = function() {
-  var printPage = document.createElement('div'),
-    html = '<h1 class="text-center">Your Action Plan</h1>';
-
-  printPage.classList.add('print-page');
-
-  var planActions = [{
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }];
-
-  var tHead = '<table class="table"><thead><tr><th>Title</th><th>type</th><th>Date</th><th>Details</th></tr></thead>',
-    tBody = '<tbody>';
-
-  for (var i = 0, len = planActions.length; i < len; i++) {
-    tBody += '<tr><td>' + planActions[i].title + '</td>' +
-      '<td>' + planActions[i].type + '</td>' +
-      '<td>' + planActions[i].date + '</td>' +
-      '<td>' + planActions[i].details + '</td><tr>';
-  }
-
-  tBody += '</tbody></table>';
-  html += tHead + tBody;
-
-  printPage.innerHTML = html;
-  document.body.appendChild(printPage);
-  document.body.classList.add('no-print');
-
-  window.print();
-
-  document.body.classList.remove('no-print');
-  printPage.innerHTML = '';
-};
-
-//////////////////////
-// PUBLIC FUNCTIONS //
-//////////////////////
+/**
+ * PUBLIC FUNCTIONS
+ */
 
 var bind = function(event, handler) {
-  if(event === 'printClicked') {
-    stateMap.printButton.addEventListener('click', function() {
-      handler();
+  if (event === 'actionToggled') {
+    stateMap.tbody.addEventListener('click', function(event) {
+      var target = event.target;
+      if (target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
+        target.classList.toggle('saved');
+        handler(actionsList[Number(target.dataset.action)]);
+      }
     });
   }
 };
 
 var render = function(cmd) {
   switch(cmd) {
-    case 'createPopovers':
-      $('.plan-wrapper .zmdi-info-outline').popover({
-        placement: 'left'
-      });
+    case 'showActions':
+      stateMap.tbody.appendChild(createActions(actionsList));
       break;
-    case 'createDatepickers':
-      $('.plan-wrapper .zmdi-calendar-alt')
-        .datepicker({
-          autoclose: true,
-          format: 'M d yyyy'
-        })
-        .on('changeDate', function(event) {
-          this.dataset.date = event.format();
-        });
+    case 'createTooltips':
+      $('.retirement-wrapper .zmdi-info-outline').tooltip();
       break;
-    case 'printPlan':
-      printPlan();
-      break;
+    default:
+      console.error('No command found.');
+      return;
   }
 };
 
 var setStateMap = function(container) {
-  stateMap.actionTitles = container.getAll('action__title');
-  stateMap.printButton = container.get('print');
+  stateMap.tbody = container.getElementsByTagName('tbody')[0];
 };
 
 module.exports = {

@@ -2,30 +2,20 @@
    ========================================================================== */
 
 .step--about {
-  padding: 0 2em;
-}
 
-.about {
-  &__question {
-    border-bottom: 1px solid rgba(#B8BBC6, .22);
-    font-weight: normal;
-    font-size: 1.125em;
-    margin-bottom: 1.125em;
-  }
-
-  &__age__slider {
+  .age__slider {
     margin-bottom: 80px;
   }
 
-  &__age .slider-tooltip {
+  .age .slider-tooltip {
     left: 0;
   }
 
-  &__situation {
+  .situation {
     margin-bottom: 3em;
   }
 
-  &__select {
+  .select {
     height: 40px;
     padding: 4px 15px;
     background: none;
@@ -36,13 +26,13 @@
     }
   }
 
-  &__house {
+  .house {
     @media (max-width: $screen-tablet) {
       margin-bottom: 3em;
     }
   }
 
-  &__income {
+  .income {
 
     .slider-tooltip {
       left: -16px;

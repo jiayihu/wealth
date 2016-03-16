@@ -1,12 +1,7 @@
 /* 3-YOU
    ========================================================================== */
 
-.step--savings {
-
-  .col-md-6 {
-    padding: 0 1em;
-  }
-
+.step--expenses {
   .noUi-target {
     margin-bottom: 2em;
   }
@@ -106,6 +101,7 @@
 
   .details-values {
     padding-left: 0;
+    text-align: left;
 
     .detail {
       display: inline-block;

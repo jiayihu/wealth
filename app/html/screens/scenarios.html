@@ -1,0 +1,81 @@
+{% extends '../templates/step.html' %}
+
+{% set stepName = "scenarios" %}
+{% set nextStepName = "goal" %}
+
+{% block header %}
+  What if scenario
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+  <p class="heading">Play with the options on the left and see on the right how a simple change can affect your future wealth</p>
+  <div class="row">
+    <div class="col-sm-6 option">
+      <p class="option__title">Saving Rate %</p>
+      <div class="option__slider option__slider--saving"></div>
+    </div>
+    <div class="col-sm-6 option option--income">
+      <p class="option__title">Income $</p>
+      <div class="option__slider option__slider--income"></div>
+    </div>
+    <p>*Defaults are based on your peers</p>
+  </div>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a data-toggle="collapse" href=".adv-settings">
+          Advanced settings
+          <i class="zmdi zmdi-chevron-down"></i></a>
+      </div> <!-- /.panel-heading -->
+      <div class="adv-settings collapse">
+        <div class="panel-body">
+          <div class="investment row">
+            <h4>Investment style</h4>
+            <input type="radio" name="investment-style" value="safe" id="safe-investment">
+            <label for="safe-investment">
+              <span class="investment__style">NO RISK INVESTMENT</span>
+              <span class="investment__gain">0 <small>to</small> +2%</span>
+              <span>return per year</span>
+            </label>
+            <input type="radio" name="investment-style" value="moderate" id="moderate-investment" checked>
+            <label for="moderate-investment">
+              <span class="investment__style">MODERATE RISK</span>
+              <span class="investment__gain">-6% <small>to</small> +6%</span>
+              <span>return per year</span>
+            </label>
+            <input type="radio" name="investment-style" value="risky" id="risky-investment">
+            <label for="risky-investment">
+              <span class="investment__style">HIGH RISK INVESTMENT</span>
+              <span class="investment__gain">-15% <small>to</small> +15%</span>
+              <span>return per year</span>
+            </label>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 option">
+              <p class="option__title">% of savings to invest</p>
+              <div class="option__slider option__slider--investment"></div>
+            </div>
+            <div class="col-sm-6 option">
+              <p class="option__title">Retirement age</p>
+              <div class="option__slider option__slider--retirement"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8 scenario">
+      <h4>Savings</h4>
+      <div class="scenario__chart ct-chart"></div>
+    </div>
+    <div class="col-sm-4">
+      <div class="savings">
+        <p class="savings__amount"><sup>$</sup>320,000</p>
+        <p>savings at retirement age</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var helpers = require('../app/javascripts/helpers');
+var helpers = require('../../app/javascripts/helpers');
 
 describe('makeError', function() {
   var makeError = helpers.makeError;

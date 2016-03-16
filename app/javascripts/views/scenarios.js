@@ -220,8 +220,8 @@ var showSliders = function(data) {
     start: 65,
     step: 1,
     range: {
-      'min': 65,
-      'max': 70
+      'min': 55,
+      'max': 75
     },
     format: wNumb({
       decimals: 0

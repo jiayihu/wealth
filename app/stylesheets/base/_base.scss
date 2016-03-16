@@ -18,11 +18,10 @@ th {
   text-align: center;
 }
 
-.flex {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  @media (max-width: $screen-desktop) {
-    display: block;
+@mixin flex {
+  @media (min-width: $screen-desktop) {
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
 }

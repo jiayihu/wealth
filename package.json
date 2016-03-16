@@ -1,17 +1,17 @@
 {
   "name": "chattina",
   "version": "0.0.1",
-  "description": "MVC Chat in vanilla JS without JQuery or MVC framework",
+  "description": "Wealth project",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jiayihu/chattina.git"
+    "url": "git://github.com/jiayihu/wealth.git"
   },
   "scripts": {
     "production": "gulp production",
     "gulp": "gulp",
     "development": "gulp",
-    "test": "mocha"
+    "test": "mocha test/unit"
   },
   "dependencies": {
     "chartist": "^0.9.5",

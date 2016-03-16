@@ -1,12 +1,12 @@
 var bindView = function(model, view) {
-  view.bind('actionToggled', function(action) {
-    model.toggleActions(action);
+  view.bind('printClicked', function() {
+    view.render('printPlan');
   });
 };
 
 var setView = function(model, view) {
-  view.render('showActions');
-  view.render('createTooltips');
+  view.render('createPopovers');
+  view.render('createDatePickers');
 };
 
 module.exports = function(model, view) {

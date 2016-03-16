@@ -286,6 +286,8 @@ var setStateMap = function(container) {
   stateMap.others = getSummaryDOM(container, 'others', categories);
 
   stateMap.conclusion = container.querySelector('.conclusion');
+
+  details.setStateMap(container);
 };
 
 module.exports = {
