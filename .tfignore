@@ -4,4 +4,3 @@ node_modules
 *.map
 public
 www
-test/functional/*

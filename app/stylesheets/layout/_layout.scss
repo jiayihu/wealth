@@ -156,9 +156,10 @@
   }
 
   &__content {
+    padding: 0 1em;
+
     @media (min-width: $screen-desktop) {
       min-height: 370px;
-      padding: 0 1em;
     }
   }
 }

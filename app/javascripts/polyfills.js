@@ -35,6 +35,19 @@ Element.prototype.getAll = function(className) {
 document.get = Element.prototype.get;
 document.getAll = Element.prototype.getAll;
 
+if (Element && !Element.prototype.matches) {
+  var proto = Element.prototype;
+  proto.matches = proto.matchesSelector ||
+    proto.mozMatchesSelector || proto.msMatchesSelector ||
+    proto.oMatchesSelector || proto.webkitMatchesSelector ||
+    function(selector) {
+      var matches = (this.document || this.ownerDocument).querySelectorAll(selector);
+      var i = matches.length;
+      while (--i >= 0 && matches.item(i) !== this) ;
+      return i > -1;
+    };
+}
+
 /*
  * Implements the ECMAScript 2015 'find' function in Arrays
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find

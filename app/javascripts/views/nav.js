@@ -33,7 +33,6 @@ var activateStep = function(stepName) {
   }
 
   var nextStepWrapper = document.get('step--' + stepName);
-  console.log(nextStepWrapper);
   domHelpers.setActive(nextStepWrapper, 'show');
 };
 

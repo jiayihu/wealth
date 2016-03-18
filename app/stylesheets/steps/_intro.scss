@@ -10,12 +10,16 @@
     > div {
       padding: 0 1em;
     }
+
+    > div:last-child {
+      @media(min-width: $screen-desktop) {
+        border-left: 1px solid rgba($primaryLighter, 0.4);
+      }
+    }
   }
 
-  .step__content > div:last-child {
-    @media(min-width: $screen-tablet) {
-      border-left: 1px solid rgba($primaryLighter, 0.4);
-    }
+  .heading {
+    margin-top: 1em;
   }
 
   .features {

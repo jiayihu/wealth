@@ -5,19 +5,10 @@
 
 'use strict';
 
-var configMap = {
-  continueClass: 'continue',
-  navClass: 'nav'
-};
 var stateMap = {
-  continueButtons: null,
-  nav: null
+  continue: null,
+  backward: null
 };
-
-/**
- * DOM FUNCTIONS
- */
-
 
 /**
  * PUBLIC FUNCTIONS
@@ -25,20 +16,23 @@ var stateMap = {
 
 var bind = function(event, handler) {
   if (event === 'continueClicked') {
-    document.addEventListener('click', function(e) {
-      var classList = e.target.classList;
-      var stepName = e.target.dataset.template;
-
-      if((classList.contains('continue') || classList.contains('backward')) && stepName) {
-        handler(stepName);
-      }
+    stateMap.continue.forEach(function(button) {
+      button.addEventListener('click', function() {
+        var template = this.dataset.template;
+        handler(template);
+      });
+    });
+    stateMap.backward.forEach(function(button) {
+      button.addEventListener('click', function() {
+        handler(this.dataset.template);
+      });
     });
   }
 };
 
 var setStateMap = function() {
-  stateMap.continueButtons = document.getAll(configMap.continueClass);
-  stateMap.nav = document.get(configMap.navClass);
+  stateMap.continue = document.getAll('continue');
+  stateMap.backward = document.getAll('backward');
 };
 
 module.exports = {

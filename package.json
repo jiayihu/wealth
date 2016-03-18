@@ -11,7 +11,7 @@
     "production": "gulp production",
     "gulp": "gulp",
     "development": "gulp",
-    "test": "mocha test/unit"
+    "test": "mocha test/functional/"
   },
   "dependencies": {
     "chartist": "^0.9.5",
@@ -44,6 +44,8 @@
     "gulp-uglify": "^1.5.1",
     "lodash.assign": "^4.0.1",
     "mocha": "^2.4.5",
+    "mocha-generators": "^1.2.0",
+    "nightmare": "^2.2.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.4",
     "vinyl-buffer": "^1.0.0",

@@ -26,6 +26,8 @@ var subscriber = function(model, view, topic, data) {
   if(lastUserStep < stepNumber) {
     model.update({lastUserStep: stepNumber});
   }
+
+  PubSub.publish('step.' + stepName);
 };
 
 module.exports = function(model, view, initialState) {
