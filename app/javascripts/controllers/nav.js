@@ -42,7 +42,4 @@ module.exports = function(model, view, initialState) {
     model.reset();
     document.location.reload();
   });
-  PubSub.subscribe('step', function(topic) {
-    console.log('Step changed: ', topic);
-  });
 };

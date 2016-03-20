@@ -1,4 +1,5 @@
 require('mocha-generators').install();
+var helpers = require('./helpers');
 var Nightmare = require('nightmare');
 var expect = require('chai').expect;
 
@@ -45,5 +46,13 @@ describe('Navigation', function() {
       .click('.step-name--scenarios')
       .visible('.step--scenarios');
     expect(isScenariosShown).to.be.false;
+  });
+
+  it('should move to step #4 when we unblock disabled nav links', function* () {
+    var isScenariosShown = yield nightmare
+      .evaluate(helpers.enableNav)
+      .click('.step-name--scenarios')
+      .visible('.step--scenarios');
+    expect(isScenariosShown).to.be.true;
   });
 });

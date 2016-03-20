@@ -9,6 +9,7 @@ var helpers = require('./helpers');
 var PubSub = require('pubsub-js');
 var notie = require('notie').alert;
 
+var actions = require('./model/actions');
 var budget = require('./model/budget');
 var goalsList = require('./model/goals');
 
@@ -169,6 +170,7 @@ var init = function(name) {
 };
 
 module.exports = {
+  getActions: actions,
   getDefaultRates: budget.getDefaultRates,
   getGoals: getGoals,
   getSummaryExpenses: getSummaryExpenses,
