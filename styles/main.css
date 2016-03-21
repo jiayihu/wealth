@@ -859,6 +859,8 @@ th {
 
 .step--plan .zmdi-info-outline {
   font-size: 1.5em; }
+  .step--plan .zmdi-info-outline:focus {
+    outline: none; }
 
 .step--plan .saved {
   color: #7ed321; }
@@ -869,6 +871,10 @@ th {
   .step--plan .th-todonot {
     color: #fff;
     background-color: #E97B6C; }
+
+.step--plan tbody tr td:nth-child(2),
+.step--plan tbody tr td:nth-child(3) {
+  text-align: left; }
 
 .step--plan .popover ul {
   padding-left: 1em; }
