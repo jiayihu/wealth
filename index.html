@@ -1,0 +1,682 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Wealth Project</title>
+  <link rel="stylesheet" href="styles/bootstrap.css">
+  <link rel="stylesheet" href="styles/nouislider.min.css">
+  <link rel="stylesheet" href="styles/chartist.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,300italic,600' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="styles/mdif.min.css">
+  <link rel="stylesheet" href="styles/dragula.min.css">
+  <link rel="stylesheet" href="styles/bootstrap-datepicker.min.css">
+
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="app">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="header">
+            <span class="brand-name"><a href="/">The Wealth Project</a></span>
+            <button class="c-hamburger c-hamburger--htx">
+              <span>Toggle Menu</span>
+            </button>
+          </div>
+          <div class="nav">
+  <p class="nav__label">Navigation</p>
+  <ul>
+    <li class="active">
+      <span class="step-name step-name--intro" data-template="intro"><span class="step-number">1</span>Introduction</span>
+    </li>
+    <li>
+      <span class="step-name step-name--about" data-template="about"><span class="step-number">2</span>Tell us about you</span>
+    </li>
+    <li>
+      <span class="step-name step-name--expenses" data-template="expenses"><span class="step-number">3</span>Your savings & expenses</span>
+    </li>
+    <li>
+      <span class="step-name step-name--comparison" data-template="comparison"><span class="step-number">4</span>This is you now</span>
+    </li>
+    <li>
+      <span class="step-name step-name--scenarios" data-template="scenarios"><span class="step-number">5</span>What if</span>
+    </li>
+    <li>
+      <span class="step-name step-name--goal" data-template="goal"><span class="step-number">6</span>Pick a goal</span>
+    </li>
+    <li>
+      <span class="step-name step-name--plan" data-template="plan"><span class="step-number">7</span>Action Plan</span>
+    </li>
+    <li>
+      <span class="step-name step-name--reminders" data-template="reminders"><span class="step-number">8</span>Setup Remembers</span>
+    </li>
+  </ul>
+  <a class="reset-model">Reset and Start Over</a>
+</div>
+
+        </div>
+        <div class="main col-md-9">
+          <div class="step step--intro show">
+  <div class="step__header">
+    <p class="step-title">
+  Simple Steps, Easy Habits - A PLAN TO BUILD WEALTH
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="col-md-5">
+  <ul class="features">
+    <li>Answer 6 easy questions about yourself</li>
+    <li>We show you what your financial future holds in store for you</li>
+    <li>See how you spend money compared to other people like you</li>
+    <li>We show you what your peers are doing differently su succeed</li>
+    <li>Build an easy to use action plan</li>
+    <li>Get reminders to coach you</li>
+    <li>Safe and anonymous – signup is optional</li>
+  </ul>
+</div>
+<div class="col-md-7">
+  <p class="heading">What you get</p>
+  <div class="offer clearfix">
+    <img src="images/1/icon-graph.svg" alt="Chart" />
+    <p>Budgeting: How your expenses compare to others like you & tips to save more’</p>
+  </div>
+  <div class="offer clearfix">
+    <img class="float-right" src="images/1/icon-chart.svg" alt="Chart" />
+    <p>Personalized charts and ‘What if’ scenarios to help you</p>
+  </div>
+  <div class="offer clearfix">
+    <img src="images/1/icon-checklist.svg" alt="Chart" />
+    <p>Checklist of tasks and habits that your peers are using to build wealth & a <strong>Personalized Plan</strong></p>
+  </div>
+  <div class="offer clearfix">
+    <img class="float-right" src="images/1/icon-ticket.svg" alt="Chart" />
+    <p>Optional reminders to keep you on track</p>
+  </div>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="about">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--about ">
+  <div class="step__header">
+    <p class="step-title">
+  Tell us about you
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="age">
+  <p class="heading">What is your age?</p>
+  <div class="age__slider"></div>
+</div>
+<div class="row">
+  <div class="situation col-ms-6">
+    <p class="heading">What is your situation?</p>
+    <select class="select" name="situation">
+      <option value="single">Single</option>
+      <option value="married" selected>Married - no kids</option>
+      <option value="married-kids">Married - with kids</option>
+      <option value="single-kids">Single - with kids</option>
+    </select>
+  </div>
+  <div class="house col-ms-6">
+    <p class="heading">Where do you live?</p>
+    <select class="select" name="house">
+      <option value="rent">I rent my home</option>
+      <option value="own" selected>I own my home</option>
+      <option value="other">Others</option>
+    </select>
+  </div>
+</div> <!-- </row> -->
+<div class="income">
+  <p class="heading">How much do you earn a year?</p>
+  <div class="income__slider"></div>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="expenses">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--expenses ">
+  <div class="step__header">
+    <p class="step-title">
+  Your savings and expenses
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="expenses">
+  <p class="heading">How much do you spend?</p>
+  <div class="row">
+    <div class="col-md-6">
+      <p>What are your basic needs?</p>
+      <div class="slider--needs"></div>
+    </div>
+    <div class="col-md-6">
+      <p>What are your discretionary expenses?</p>
+      <div class="slider--expenses"></div>
+    </div>
+  </div>
+  <p class="bls">
+    <small>*Default values are based on Bureau of Labor Statistics <a href="http://www.bls.gov/cex/2014/combined/income.pdf" target="_blank">data for 2014</a>.</small>
+  </p>
+</div>
+
+<div class="current-savings">
+  <p class="heading">How much do you have currently saved?</p>
+  <div class="current-savings__slider"></div>
+</div>
+
+<div class="summary">
+  <p class="heading">Summary expenses</p>
+  <div class="row">
+    <div class="col-ms-6">
+      <div class="summary__chart ct-chart ct-square"></div>
+    </div>
+    <div class="col-ms-6">
+      <ul class="ct-legend">
+        <li><span class="ct-legend__color ct-legend__color--basic"></span> Basic Needs</li>
+        <li><span class="ct-legend__color ct-legend__color--disc"></span> Discretionary Needs</li>
+        <li><span class="ct-legend__color ct-legend__color--savings"></span> Savings</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="detailed">
+  <p class="heading">Detailed expenses</p>
+  <p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#details-modal">
+      Enter your detailed expenses
+    </button>
+  </p>
+  <p>(Click the button to get more details about your expenses)</p>
+</div>
+
+<div class="modal fade" id="details-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="myModalLabel">What percentage (%) of your budget do you spend on the following</h5>
+      </div>
+      <div class="modal-body">
+        <p>Update the values below to see how your spending compares to others. You may discover an opportunity to save money and build wealth.</p>
+        <p><em>(You can skip this and come back later if you wish.)</em></p>
+        <ul class="details-values"></ul>
+        <p>Sum of all expenses: <strong class="details-sum"></strong> % of your budget. <br />
+          Savings: <strong class="details-savings"></strong> % of your budget</p>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <button type="button" class="reset-detailed btn btn-info pull-left">Reset Defaults</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="save-detailed-expense btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="comparison">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--comparison ">
+  <div class="step__header">
+    <p class="step-title">
+  Compare you expenses with your peers
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="row">
+  <div class="comparison col-sm-6">
+    <div class="budget row">
+      <div class="col-ms-6">
+        <span class="budget__title">Your budget</span>
+        <div class="budget__income">
+          <span class="value">
+            <span class="value__actual">$114.000</span>
+            per year
+          </span>
+        </div>
+      </div>
+      <div class="col-ms-6">
+        <div class="budget__categories">
+          <div class="budget__category budget__category--basic">
+            <span class="dot"></span>
+            <span class="budget__category__name">Basic Needs</span>
+            <span class="budget__category__value">
+              <span class="actual">$43,000</span> -
+              <span class="rate">40%</span>
+            </span>
+          </div>
+          <div class="budget__category budget__category--discretionary">
+            <span class="dot"></span>
+            <span class="budget__category__name">Discretionary Expenses</span>
+            <span class="budget__category__value">
+              <span class="actual">$43,000</span> -
+              <span class="rate">40%</span>
+            </span>
+          </div>
+          <div class="budget__category budget__category--savings">
+            <span class="dot"></span>
+            <span class="budget__category__name">Savings</span>
+            <span class="budget__category__value">
+              <span class="actual">$43,000</span> -
+              <span class="rate">40%</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="others">
+      <p>Avarage budget of people who are similar to you (peers)</p>
+      <ul class="others__summary">
+        <li class="others__category others__category--basic">
+          <span class="dot"></span>
+          Basic Needs:
+          <span class="others__category__value">
+            <span class="actual">$43,000</span> -
+            <span class="rate">40%</span>
+          </span>
+        </li>
+        <li class="others__category others__category--discretionary">
+          <span class="dot"></span>
+          Discretionary Expenses:
+          <span class="others__category__value">
+            <span class="actual">$43,000</span> -
+            <span class="rate">40%</span>
+          </span>
+        </li>
+        <li class="others__category others__category--savings">
+          <span class="dot"></span>
+          Savings:
+          <span class="others__category__value">
+            <span class="actual">$43,000</span> -
+            <span class="rate">40%</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="comparison-chart" style="height: 300px;"></div>
+    <p class="small">
+      <span class="dot"></span>
+      your peers
+    </p>
+  </div>
+</div>
+<p class="conclusion"></p>
+<hr />
+<div class="advanced-comparison">
+  <h4>Advanced comparison</h4>
+  <p class="info">
+    If you want a more meaningful comparison estimate how you spend your money and enter your detailed expenses on the previous step.
+    <br /> <br />
+    <button class="backward btn btn-info" data-template="expenses">Return to the previous step</button>
+  </p>
+  <div class="detailed-chart" style="height: 400px"></div>
+  <p class="legend"><span class="dot"></span> your peers</p>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="scenarios">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--scenarios ">
+  <div class="step__header">
+    <p class="step-title">
+  What if scenario
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="wrapper">
+  <p class="heading">Play with the options on the left and see on the right how a simple change can affect your future wealth</p>
+  <div class="row">
+    <div class="col-sm-6 option">
+      <p class="option__title">Saving Rate %</p>
+      <div class="option__slider option__slider--saving"></div>
+    </div>
+    <div class="col-sm-6 option option--income">
+      <p class="option__title">Income $</p>
+      <div class="option__slider option__slider--income"></div>
+    </div>
+    <p>*Defaults are based on your peers</p>
+  </div>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a data-toggle="collapse" href=".adv-settings">
+          Advanced settings
+          <i class="zmdi zmdi-chevron-down"></i></a>
+      </div> <!-- /.panel-heading -->
+      <div class="adv-settings collapse">
+        <div class="panel-body">
+          <div class="investment row">
+            <h4>Investment style</h4>
+            <input type="radio" name="investment-style" value="safe" id="safe-investment">
+            <label for="safe-investment">
+              <span class="investment__style">NO RISK INVESTMENT</span>
+              <span class="investment__gain">0 <small>to</small> +2%</span>
+              <span>return per year</span>
+            </label>
+            <input type="radio" name="investment-style" value="moderate" id="moderate-investment" checked>
+            <label for="moderate-investment">
+              <span class="investment__style">MODERATE RISK</span>
+              <span class="investment__gain">-6% <small>to</small> +6%</span>
+              <span>return per year</span>
+            </label>
+            <input type="radio" name="investment-style" value="risky" id="risky-investment">
+            <label for="risky-investment">
+              <span class="investment__style">HIGH RISK INVESTMENT</span>
+              <span class="investment__gain">-15% <small>to</small> +15%</span>
+              <span>return per year</span>
+            </label>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 option">
+              <p class="option__title">% of savings to invest</p>
+              <div class="option__slider option__slider--investment"></div>
+            </div>
+            <div class="col-sm-6 option">
+              <p class="option__title">Retirement age</p>
+              <div class="option__slider option__slider--retirement"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8 scenario">
+      <h4>Savings</h4>
+      <div class="scenario__chart ct-chart"></div>
+    </div>
+    <div class="col-sm-4">
+      <div class="savings">
+        <p class="savings__amount"><sup>$</sup>320,000</p>
+        <p>savings at retirement age</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="goal">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--goal ">
+  <div class="step__header">
+    <p class="step-title">
+  Pick a goal
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="wrapper">
+  <p class="heading">Pick one or more goals from the left by dragging them over or by clicking the '+'</p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="goals">
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p>
+        <strong>Picked Goals</strong>
+        (Drag & Drop to order)</p>
+      <div class="picked-goals">
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="plan">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--plan ">
+  <div class="step__header">
+    <p class="step-title">
+  Saving for retirement
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="wrapper">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Save</th>
+          <th class="th-todo">Things to do</th>
+          <th class="th-todonot">Things to avoid</th>
+          <th>Why</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  </div>
+  
+    <div class="continue" data-template="reminders">
+      <a class="continue__button">CONTINUE <i class="zmdi zmdi-long-arrow-right"></i></a>
+    </div>
+  
+   
+</div>
+          <div class="step step--reminders ">
+  <div class="step__header">
+    <p class="step-title">
+  Action Plan
+</p>
+  </div>
+  <div class="step__content">
+    
+<div class="panel-group">
+  <!-- Action -->
+  <div class="action panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-6">
+          <a class="action__title" data-toggle="collapse" href=".action__details--0">Plan a "stay-cation" <i class="zmdi zmdi-chevron-down"></i></a>
+        </div>
+        <div class="col-xs-6 action__buttons">
+          <div class="row">
+            <div class="col-xs-8">Variable expense</div>
+            <div class="col-xs-2"><i class="zmdi zmdi-calendar-alt"></i></div>
+            <div class="col-xs-2"><i class="zmdi zmdi-info-outline" data-toggle="popover" title="Action info" data-content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ullam, dolores omnis, recusandae id inventore repudiandae aliquid fugit."></i></div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.panel-heading -->
+    <div class="action__details action__details--0 collapse">
+      <div class="panel-body">
+        <div class="col-xs-8">
+          <p>Bank what you save - Savings</p>
+        </div>
+        <div class="col-xs-4">
+          <p>Savings</p>
+        </div>
+      </div>
+    </div> <!-- /.action__details -->
+  </div> <!-- /.action -->
+  <!-- Action -->
+  <div class="action panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-6">
+          <a class="action__title" data-toggle="collapse" href=".action__details--1">Plan a "stay-cation" <i class="zmdi zmdi-chevron-down"></i></a>
+        </div>
+        <div class="col-xs-6 action__buttons">
+          <div class="row">
+            <div class="col-xs-8">Variable expense</div>
+            <div class="col-xs-2"><i class="zmdi zmdi-calendar-alt"></i></div>
+            <div class="col-xs-2"><i class="zmdi zmdi-info-outline" data-toggle="popover" title="Action info" data-content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ullam, dolores omnis, recusandae id inventore repudiandae aliquid fugit."></i></div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.panel-heading -->
+    <div class="action__details action__details--1 collapse">
+      <div class="panel-body">
+        <div class="col-xs-8">
+          <p>Bank what you save - Savings</p>
+        </div>
+        <div class="col-xs-4">
+          <p>Savings</p>
+        </div>
+      </div>
+    </div> <!-- /.action__details -->
+  </div> <!-- /.action -->
+  <!-- Action -->
+  <div class="action panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-6">
+          <a class="action__title" data-toggle="collapse" href=".action__details--2">Pack your lunch 3 days a week <i class="zmdi zmdi-chevron-down"></i></a>
+        </div>
+        <div class="col-xs-6 action__buttons">
+          <div class="row">
+            <div class="col-xs-8">Variable expense</div>
+            <div class="col-xs-2"><i class="zmdi zmdi-calendar-alt"></i></div>
+            <div class="col-xs-2"><i class="zmdi zmdi-info-outline" data-toggle="popover" title="Action info" data-content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ullam, dolores omnis, recusandae id inventore repudiandae aliquid fugit."></i></div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.panel-heading -->
+    <div class="action__details action__details--2 collapse">
+      <div class="panel-body">
+        <div class="col-xs-8">
+          <p>Bank what you save - Savings</p>
+        </div>
+        <div class="col-xs-4">
+          <p>Savings</p>
+        </div>
+      </div>
+    </div> <!-- /.action__details -->
+  </div> <!-- /.action -->
+  <!-- Action -->
+  <div class="action panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-xs-6">
+          <a class="action__title" data-toggle="collapse" href=".action__details--3">Plan a "stay-cation" <i class="zmdi zmdi-chevron-down"></i></a>
+        </div>
+        <div class="col-xs-6 action__buttons">
+          <div class="row">
+            <div class="col-xs-8">Variable expense</div>
+            <div class="col-xs-2"><i class="zmdi zmdi-calendar-alt"></i></div>
+            <div class="col-xs-2"><i class="zmdi zmdi-info-outline" data-toggle="popover" title="Action info" data-content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab ullam, dolores omnis, recusandae id inventore repudiandae aliquid fugit."></i></div>
+          </div>
+        </div>
+      </div>
+    </div> <!-- /.panel-heading -->
+    <div class="action__details action__details--3 collapse">
+      <div class="panel-body">
+        <div class="col-xs-8">
+          <p>Bank what you save - Savings</p>
+        </div>
+        <div class="col-xs-4">
+          <p>Savings</p>
+        </div>
+      </div>
+    </div> <!-- /.action__details -->
+  </div> <!-- /.action -->
+</div> <!-- /.panel-group -->
+
+<form>
+  <p class="form-title">Signup for reminders</p>
+  <div class="form-group">
+    <label for="text-number">Text Number</label>
+    <input class="form-control" type="text" name="text-number" placeholder="Your mobile phone number">
+  </div>
+  <p>OR</p>
+  <div class="form-group">
+    <label for="text-email">Email address</label>
+    <input class="form-control" type="email" name="text-email" placeholder="example@gmail.com">
+  </div>
+  <button class="btn btn-primary" type="submit">Save</button>
+</form>
+
+  </div>
+  
+  
+<div class="print">
+    <a class="print__button">PRINT<i class="zmdi zmdi-print"></i></a>
+  </div>
+
+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/lib/jquery.min.js" charset="utf-8"></script>
+  <script src="scripts/lib/wNumb.min.js" charset="utf-8"></script>
+  <!-- Bootstrap -->
+  <script src="scripts/lib/bootstrap.min.js" charset="utf-8"></script>
+  <!-- Bootstrap Datepicker -->
+  <script src="scripts/lib/bootstrap-datepicker.min.js" charset="utf-8"></script>
+  <!-- Custom JS -->
+  <script src="scripts/main.js" charset="utf-8"></script>
+  <!-- Other Components -->
+  <script src="scripts/lib/fastclick.js" charset="utf-8"></script>
+
+  <script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-8229287-16', 'auto');
+    ga('send', 'pageview');
+  </script>
+</body>
+
+</html>
