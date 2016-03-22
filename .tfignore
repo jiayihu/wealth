@@ -3,4 +3,5 @@ node_modules
 **/*/maps
 *.map
 public
+.publish
 www

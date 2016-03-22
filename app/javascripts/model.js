@@ -11,7 +11,7 @@ var notie = require('notie').alert;
 
 var actions = require('./model/actions');
 var budget = require('./model/budget');
-var goalsList = require('./model/goals');
+var getGoals = require('./model/goals');
 
 var stateMap = {
   dbName: ''
@@ -97,14 +97,6 @@ var reset = function () {
 // SPECIFIC MODEL FUNCTIONS //
 //////////////////////////////
 
-/**
- * Returns the list of available goals
- * @return {array}
- */
-var getGoals = function() {
-  return goalsList;
-};
-
 
 /**
  * Returns summary expenses from the detailed one
@@ -161,11 +153,15 @@ var init = function(name) {
   stateMap.dbName = name;
 
   if(typeof window.Storage === undefined) {
-    helpers.makeError(null, 'localStorage support', 'Error: localStorage is not supported.', notie.bind(null, 3));
+    helpers.makeError(null, 'Error: localStorage is not supported.', notie.bind(null, 3));
   }
 
   if(!localStorage[name]) {
-    localStorage[name] = JSON.stringify(defaultModel);
+    try {
+      localStorage[name] = JSON.stringify(defaultModel);
+    } catch(error) {
+      helpers.makeError(null, 'Error: localStorage is a browser feature requested by this application and it is not supported or available. Are using Private Navigation?', notie.bind(null, 3));
+    }
   }
 };
 

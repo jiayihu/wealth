@@ -12,10 +12,10 @@ var stateMap = {
   tbody: null
 };
 
-var actionTemplate = '<tr><td><i class="zmdi zmdi-check-circle" data-action="{index}"></i></td>' +
+var actionTemplate = '<tr><td><i class="zmdi zmdi-check-circle saved" data-action="{index}"></i></td>' +
   '<td>{toDo}</td>' +
   '<td>{notToDo}</td>' +
-  '<td><i class="zmdi zmdi-info-outline" data-toggle="popover" data-placement="left" data-content="{details}""></i></td></tr>';
+  '<td><a class="zmdi zmdi-info-outline" data-toggle="popover" data-placement="left" data-content="{details}" tabindex="0" role="button"></a></td></tr>';
 
 
 ///////////////////
@@ -30,6 +30,7 @@ var actionTemplate = '<tr><td><i class="zmdi zmdi-check-circle" data-action="{in
 var getActionsHTML = function(goal) {
   var id = goal.id;
   var actions = goal.actions;
+  var title = goal.title;
   var markup = '';
 
   if( (typeof id !== 'string') || (typeof actions !== 'object') ) {
@@ -38,7 +39,7 @@ var getActionsHTML = function(goal) {
 
   markup +=
     '<tr class="' + id + '">' +
-      '<td colspan="4"><h4>' + id[0].toUpperCase() + id.slice(1) + '</h4></td>' +
+      '<td colspan="4"><h4>' + title + '</h4></td>' +
     '</tr>';
 
   actions.forEach(function(action) {
@@ -107,7 +108,8 @@ var render = function(cmd, data) {
     case 'createPopovers':
       $('.step--plan .zmdi-info-outline').popover({
         html: true,
-        title: 'Details'
+        title: 'Details',
+        trigger: 'focus'
       });
       break;
     default:

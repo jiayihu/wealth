@@ -13,6 +13,10 @@
 
   .zmdi-info-outline {
     font-size: 1.5em;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   .saved {
@@ -27,6 +31,11 @@
       color: #fff;
       background-color: #E97B6C;
     }
+  }
+
+  tbody tr td:nth-child(2),
+  tbody tr td:nth-child(3) {
+    text-align: left;
   }
 
   .popover {

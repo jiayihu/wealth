@@ -49,17 +49,29 @@ var makeError = function(type, data, callback) {
 };
 
 /**
+ * Checks whether the input is strictly a isNumber
+ * @param {*} value Value to check
+ * @return {boolean}
+ */
+var isNumber = function(value) {
+  //Check also with isNaN because (typeof NaN === 'number') is true
+  return !isNaN(value) && (typeof value === 'number');
+};
+
+/**
  * Formats the value to a specified type
  * @param  {string} value Value to be formatted
  * @param  {string} type Format
  * @return {string} Formatted value
  */
 var format = function(value, type) {
-  if( (typeof value !== 'number') && (typeof value !== 'string') ) {
+  if((type && typeof type !== 'string') ) {
     makeError('params', value);
   }
 
   var newValue = '';
+
+  value = String(value).replace(/(\.0)$/, '');
 
   switch (type) {
     case '$':
@@ -73,16 +85,6 @@ var format = function(value, type) {
   }
 
   return newValue;
-};
-
-/**
- * Checks whether the input is strictly a isNumber
- * @param {*} value Value to check
- * @return {boolean}
- */
-var isNumber = function(value) {
-  //Check also with isNaN because (typeof NaN === 'number') is true
-  return !isNaN(value) && (typeof value === 'number');
 };
 
 /**

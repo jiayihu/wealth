@@ -1,5 +1,6 @@
 var bindView = function(model, view) {
-  view.bind('goalToggled', function(goal) {
+  view.bind('goalToggled', function(data) {
+    var goal = Object.assign({}, model.getGoals(data.id), {date: data.date});
     model.toggleGoal(goal);
   });
 };

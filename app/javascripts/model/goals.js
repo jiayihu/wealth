@@ -1,3 +1,5 @@
+var helpers = require('../helpers');
+
 var goalsList = [
   {
     id: 'college',
@@ -37,4 +39,16 @@ var goalsList = [
   }
 ];
 
-module.exports = goalsList;
+module.exports = function(id) {
+  if(id && (typeof id !== 'string')) {
+    helpers.makeError('params', id);
+  }
+
+  if(id) {
+    return goalsList.find(function(goal) {
+      return goal.id === id;
+    });
+  }
+
+  return goalsList;
+};

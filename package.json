@@ -8,7 +8,7 @@
     "url": "git://github.com/jiayihu/wealth.git"
   },
   "scripts": {
-    "production": "gulp production",
+    "production": "gulp clean && gulp production",
     "gulp": "gulp",
     "development": "gulp",
     "test": "mocha test/functional/"

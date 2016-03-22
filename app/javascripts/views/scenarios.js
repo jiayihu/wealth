@@ -201,7 +201,7 @@ var showSliders = function(data) {
     },
     format: wNumb({
       decimals: 1,
-      thousand: '.'
+      thousand: ','
     })
   };
 
@@ -368,7 +368,7 @@ var bind = function(event, handler) {
       break;
     case 'incomeChanged':
       stateMap.incomeSlider.noUiSlider.on('set', function(values) {
-        var income = Number(values[0].replace('.', ''));
+        var income = Number(values[0].replace(',', ''));
         handler(income);
       });
       break;

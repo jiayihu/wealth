@@ -10,7 +10,12 @@ describe('Plan actions', function() {
   this.timeout(15000);
 
   before(function() {
-    nightmare = Nightmare();
+    nightmare = Nightmare(
+      {
+        webPreferences:{
+          partition: 'wealthApp'
+        }
+      });
   });
 
   after(function*() {
@@ -23,7 +28,8 @@ describe('Plan actions', function() {
       .evaluate(helpers.enableNav)
       .click('.step-name--goal')
       .click('.goal--college .add-goal')
-      .exists('.step--plan .funds');
+      .wait('.step--plan .college')
+      .exists('.step--plan .college');
     expect(areActionsAdded).to.be.true;
   });
 });

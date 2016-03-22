@@ -10,7 +10,12 @@ describe('Navigation', function() {
   this.timeout(15000);
 
   before(function() {
-    nightmare = Nightmare();
+    nightmare = Nightmare(
+      {
+        webPreferences:{
+          partition: 'wealthApp'
+        }
+      });
   });
 
   after(function*() {
