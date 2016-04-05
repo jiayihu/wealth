@@ -15,7 +15,7 @@ var goalsList = [
   },
   {
     id: 'car',
-    title: 'Save for car',
+    title: 'Buy a car',
     date: 'January 2017',
     probability: '50%'
   },
