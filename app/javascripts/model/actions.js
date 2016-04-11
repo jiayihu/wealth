@@ -48,6 +48,80 @@ var actions = {
       notToDo: 'Dont\' do this thing'
     }
   ],
+  home: [
+    {
+      id: 0,
+      toDo: 'Figure out what you can afford ',
+      details: [
+        'Before you go shopping for a home, you first need to determine how much you can afford to spend on a home based on your financial situation. '
+      ],
+      notToDo: 'Don\'t neglect consideration of financial situation while fixing house budget'
+    },
+    {
+      id: 1,
+      toDo: 'Consider a 3% down payment vs 20%',
+      details: [
+        'You\'ll buy your home sooner which means you\'ll benefit from building equity sooner as well as the appreciation of your property value. <br />You\'ll have to pay from mortgage insurance but this will likely be off-set in the long run. See <a href=\'http://achievethedream.com/Tools/DownpaymentCalc\' target=\'_blank\'>Downpayment Calculator</a>'
+      ],
+      notToDo: 'Don\'t wait to save 20% when a lower down payment (3%, 5%, or 10%) may be a better choice.'
+    },
+    {
+      id: 2,
+      toDo: 'Consider a Veterans Administration (VA) loan',
+      details: [
+        'If you are a veteran, you may qualify for loan that requires less than 20% down.'
+      ],
+      notToDo: 'Don\'t buy mortgage insurance for a low down payment loan if you can qualify for a VA loan.'
+    },
+    {
+      id: 3,
+      toDo: 'Check out maintenance requirements',
+      details: [
+        'Some homes built by well-known construction companies have lower repair bills than others. In addition, newer homes tend to need fewer repairs than older homes.'
+      ],
+      notToDo: 'Don\'t underestimate maintenance charges.'
+    },
+    {
+      id: 4,
+      toDo: 'Purchase homeowner\'s insurance',
+      details: [
+        'When you own a home, you need to purchase homeowner’s insurance, which covers the home in case of burglary or damage.'
+      ],
+      notToDo: 'Don\'t avoid home insurance,especially if house is expensive or located in riskier zone'
+    },
+    {
+      id: 5,
+      toDo: 'Calculate property taxes and deduct them from your taxes',
+      details: [
+        'Taxes are imposed on homes to pay for local services, such as the local school system and the local park system. Taxes vary substantially among locations. '
+      ],
+      notToDo: 'Don\'t neglect property tax implications on personal cash flows'
+    },
+    {
+      id: 6,
+      toDo: 'Research prices of similar homes in given location',
+      details: [
+        'The resale value of a home is highly dependent on its location. Most homes with similar features within a specific subdivision or neighborhood are in the same range.<br />Although home prices in a given subdivision tend to move in the same direction, the price movements can vary substantially among homes.<br /> For example, homes in a subdivision that are within walking distance of a school may be worth more than comparable houses several miles from the school. '
+      ],
+      notToDo: 'Don\'t apply resale value based on simply locations.'
+    },
+    {
+      id: 7,
+      toDo: 'Know all the transaction and closing costs',
+      details: [
+        'The transaction costs of purchasing a home include the down payment and closing costs. The key closing costs are points and the origination fee. '
+      ],
+      notToDo: 'Don\'t consider only down payments while transacting'
+    },
+    {
+      id: 8,
+      toDo: 'Shop for the best mortgage',
+      details: [
+        ' It requires a larger monthly payment, but a larger proportion of the payment is allocated to principal in the early years. '
+      ],
+      notToDo: 'Don\'t fail to identify the effects of rate types.'
+    }
+  ],
   car: [
     {
       id: 0,

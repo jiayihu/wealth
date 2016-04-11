@@ -19,11 +19,11 @@ var setView = function(model, view, initialState) {
     return goalActions;
   });
   // We add the general tips to the beginning
-  goalsActions.unshift({
-    id: 'general',
-    actions: model.getActions('general'),
-    title: 'General Tips'
-  });
+  // goalsActions.unshift({
+  //   id: 'general',
+  //   actions: model.getActions('general'),
+  //   title: 'General Tips'
+  // });
 
   view.render('showGoalsActions', goalsActions);
   view.render('createPopovers');
