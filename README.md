@@ -1,7 +1,5 @@
-#HWP Story Board
+# The Wealth Project
 Private project.
 TODO:
 - 'goto' instead of 'continue&backward' buttons (?)
-- fix views wrappers classNames
-- replace wNumb with helpers.format()
 - lodash (?)
