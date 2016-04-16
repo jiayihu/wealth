@@ -1,6 +1,6 @@
 /**
- * Controller module. This module executes the controllers for each view, in MVC
- * pattern. To be more precise this is more likely the Presenter in MVP pattern.
+ * Controller module. This module executes the controllers for each view, in MVP
+ * pattern.
  * Our views/screens are 'dumb'. They don't know anything about the Model, so
  * the Presenter has the job to update the screens when Model changes and viceversa.
  * @see {@link https://addyosmani.com/resources/essentialjsdesignpatterns/book/#detailmvp}

@@ -48,7 +48,6 @@
   },
 
   "globals": {
-    "casper": false
   },
 
   "extends": "eslint:recommended"

@@ -1,6 +1,7 @@
 var helpers = require('../helpers');
 var PubSub = require('pubsub-js');
 var notie = require('notie');
+var ga = require('ga');
 
 var bindView = function(model, view) {
   view.bind('basicRateChanged', function(basicRate) {
@@ -23,6 +24,7 @@ var bindView = function(model, view) {
       savingsRate: savingsRate
     });
   });
+
   view.bind('discRateChanged', function(discRate) {
     var basicRate = model.read('aboutBasicRate');
     var savingsRate = 100 - basicRate - discRate;
@@ -43,10 +45,13 @@ var bindView = function(model, view) {
       savingsRate: savingsRate
     });
   });
+
   view.bind('currentSavingsChanged', function(currentSavings) {
     model.update({'currentSavings': currentSavings});
   });
+
   view.bind('detailsChanged', function() {});
+
   view.bind('detailsReset', function() {
     var income = model.read('aboutIncome');
     var defaultExpenses = model.getDefaultRates(income, true).detailed;
@@ -55,6 +60,7 @@ var bindView = function(model, view) {
       expenses: defaultExpenses
     });
   });
+
   view.bind('detailsSaved', function(err, values) {
     if(err) {
       notie.alert(3, err);
@@ -69,6 +75,12 @@ var bindView = function(model, view) {
         value: summaryExpenses.discretionary
       });
       model.update({expenses: values});
+
+      ga('send', {
+        hitType: 'event',
+        eventCategory: 'Step #3.5',
+        eventAction: 'Continue'
+      });
     }
   });
 };

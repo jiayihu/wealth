@@ -58,6 +58,7 @@
     ]
   },
   "browserify-shim": {
+    "ga": "global:ga",
     "wNumb": "global:wNumb",
     "jQuery": "global:jQuery"
   }

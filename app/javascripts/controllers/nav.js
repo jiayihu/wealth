@@ -1,4 +1,5 @@
 var PubSub = require('pubsub-js');
+var ga = require('ga');
 
 var bindView = function(model, view) {
   view.bind('linkClicked', function(nextStep) {
@@ -26,6 +27,12 @@ var subscriber = function(model, view, topic, data) {
   if(lastUserStep < stepNumber) {
     model.update({lastUserStep: stepNumber});
   }
+
+  ga('send', {
+    hitType: 'event',
+    eventCategory: 'Step #' + stepNumber,
+    eventAction: 'Continue'
+  });
 
   PubSub.publish('step.' + stepName);
 };
