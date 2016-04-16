@@ -128,7 +128,7 @@ var createPieTooltip = function(pieChart, income) {
 };
 
 var showDetailed = function(data) {
-  var detailsNames = ['Food at home', 'Food away from home', 'Housing', 'Misc Housing Related', 'Utilities, fuels, public services', 'Apparel & services', 'Trasportation', 'Healthcare', 'Entertainment & Reading', 'Education', 'Miscellaneous'];
+  var detailsNames = ['Food at home', 'Food away from home', 'Housing', 'Misc Housing Related', 'Utilities, fuels, public services', 'Apparel & services', 'Transportation', 'Healthcare', 'Entertainment & Reading', 'Education', 'Miscellaneous'];
   var expenses = data.expenses;
 
   if(!Array.isArray(expenses)) {

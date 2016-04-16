@@ -23,7 +23,7 @@ var showDetailedChart = function(data) {
   }
 
   var chartData = {
-    labels: ['Miscellaneous', 'Education', 'Entertainment & Reading', 'Healthcare', 'Trasportation', 'Apparel & services', 'Utilities, fuels, public services', 'Misc Housing Related', 'Housing', 'Food away from home', 'Food at home'],
+    labels: ['Miscellaneous', 'Education', 'Entertainment & Reading', 'Healthcare', 'Transportation', 'Apparel & services', 'Utilities, fuels, public services', 'Misc Housing Related', 'Housing', 'Food away from home', 'Food at home'],
     series: [
       userExpenses,
       othersExpenses

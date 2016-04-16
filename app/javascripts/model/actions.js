@@ -210,7 +210,7 @@ var actions = {
     },
     {
       id: 10,
-      toDo: 'Budget for additional costs (ex. registration fees, taxes, transportaion fees, insurance, etc.)',
+      toDo: 'Budget for additional costs (ex. registration fees, taxes, transportation fees, insurance, etc.)',
       details: [
         'Estimate ownership costs at <a href=\'http://www.edmunds.com\' target=\'_blank\'>Edmund</a>'
       ],
@@ -232,7 +232,7 @@ var actions = {
       details: [
         'If you have other debt outstanding, you should pay off credit card debt first (assuming that the credit card debt has a higher interest rate).'
       ],
-      notToDo: 'Don\'t prefer payment of anyother debt over credit card debt. '
+      notToDo: 'Don\'t prefer payment of any other debt over credit card debt. '
     },
     {
       id: 2,
@@ -356,7 +356,7 @@ var actions = {
     },
     {
       id: 2,
-      toDo: 'Start now - make a minum deposit of $25',
+      toDo: 'Start now - make a minimum deposit of $25',
       details: [
         'This is your safety-net. You\'ll need more later but this will go a long way toward getting started.'
       ],
@@ -368,7 +368,7 @@ var actions = {
       details: [
         'Make this a priority before any other financial goals. '
       ],
-      notToDo: 'Dont\' quit before you achieve your goal. Consistancy is key.'
+      notToDo: 'Dont\' quit before you achieve your goal. Consistency is key.'
     },
     {
       id: 4,
@@ -376,7 +376,7 @@ var actions = {
       details: [
         'Setup direct deposit for your monthly budgeted contribution to this fund'
       ],
-      notToDo: 'Dont\'aAssume you\'ll stay diciplined after you start saving.'
+      notToDo: 'Dont\' assume you\'ll stay disciplined after you start saving.'
     },
     {
       id: 5,
@@ -393,6 +393,88 @@ var actions = {
         'You may already have this through your employer. If not, consider getting a policy on your own.'
       ],
       notToDo: 'Dont\' assume you already have a policy or think you don\'t need one.'
+    }
+  ],
+  retire: [
+    {
+      id: 0,
+      toDo: 'Enroll in your employer sponsored (401k) plan',
+      details: [
+        'Employer-sponsored retirement plans are designed to help you save for retirement. Each pay period, you and/or your employer contribute money to a retirement account.<br /> The money in most of these accounts can be invested in a manner that you specify (within the range of options offered by your specific plan).<br />The money you contribute to the retirement plan is not taxed until you withdraw it from the account.'
+      ],
+      notToDo: 'Don\'t depend on only social security'
+    },
+    {
+      id: 1,
+      toDo: 'Take advantage of contribution matching from your employer  - its FREE money!',
+      details: [
+        'Some employers will match your contributions. This is a huge benefit and unlike a conventional bonus, its tax deferred.'
+      ],
+      notToDo: 'Don\'t forget to consider this benefit when applying for a job and consider it a part of your compensation.'
+    },
+    {
+      id: 2,
+      toDo: 'Start an Individual Retirement Account (IRA)',
+      details: [
+        'An IRA is a great option if you are self employed or leave your job. This tax-deferred saving plan can be setup with any brokerage or bank.',
+        'Consider a Keogh or SEP Plan. Two popular retirement plans for self-employed individuals are the Keogh plan and the Simplified Employee Pension (SEP) plan.'
+      ],
+      notToDo: 'Don\'t think that a 401k is your only option for a tax-deferred retirement plan'
+    },
+    {
+      id: 3,
+      toDo: 'Start saving early',
+      details: [
+        'The earlier you start, the more money you\'ll accumulate. You\'ll also be able to tolerate more risk (for higher reward) when you are young.'
+      ],
+      notToDo: 'Don\'t wait until you are middle aged to start'
+    },
+    {
+      id: 4,
+      toDo: 'Set up automatic contributions',
+      details: [
+        'With a 401k your contributions are automatically made from your paycheck. With an IRA, you should setup an automatic transfer from you checking account to your IRA.<br />Figure out how much you should contribute per period based on how much you think you will need when you retire and how long until you retire.<br />There are many online calculators to help you including the \'what-if\' feature in the Wealth Project app.'
+      ],
+      notToDo: 'Don\'t wait to contribute to your fund. Automatic contributions ensure consistency and allow you to invest consistently so get a return on your investment earlier.'
+    },
+    {
+      id: 5,
+      toDo: 'Decide contribution based on retirement expenditure',
+      details: [
+        'One of the most important retirement planning decisions is how much to contribute each pay period, as this decision will influence the amount of funds you have to spend during your retirement.<br />However, many individuals do not invest in their retirement accounts in their early years, and therefore they do not take full advantage of the tax savings provided by retirement accounts.'
+      ],
+      notToDo: 'Don\'t fail to invest earlier for full advantage'
+    },
+    {
+      id: 6,
+      toDo: 'Invest according to your risk tolerance.',
+      details: [
+        'The younger you are, the more time you have to make-up for a bad year or two in the stock market. Consider growth funds but know your risks. As you get older, move your money into less risky funds like fixed-in bonds. Use the \'Advanced Settings\' in Wealth Project app to see the relationship between risk and reward. '
+      ],
+      notToDo: 'Don\'t invest in risky stocks or funds if you can\'t handle the down-side.'
+    },
+    {
+      id: 7,
+      toDo: 'Diversify your investments',
+      details: [
+        'The easiest way is to buy broadly indexed funds (ETFs or mutual funds) that track the S&P 500 or sectors such as fixed income, large cap, small cap, global, and/or international stocks depending on your risk tolerance.'
+      ],
+      notToDo: 'Don\'t try to manage individual stocks without rebalancing your portfolio every year.'
+    },
+    {
+      id: 8,
+      toDo: 'Roll over company stock',
+      details: [
+        'Avoid paying income tax on the original cost of the stock when you take distributions with the Net Unrealized Appreciation (NUA) provision.<br />Move it to a taxable account which allows you to take advantage of the lower long-tem capital-gains tax rate. See your tax planning profession for details.'
+      ],
+      notToDo: 'Move the company stock over from your 401(k) to an IRA when you leave a company'
+    },
+    {
+      id: 9,
+      toDo: 'Check your monthly statements from your pension fund, 401 (k), or IRA to catch mistakes',
+      details: [
+      ],
+      notToDo: ''
     }
   ]
 };
