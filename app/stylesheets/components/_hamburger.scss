@@ -8,7 +8,7 @@ $button-height: 48px;                   // The height of the button area
 $bar-thickness: 4px;                    // The thickness of the button bars
 $button-pad: 9px;                      // The left/right padding between button area and bars.
 $button-bar-space: 6px;                // The spacing between button bars
-$button-transistion-duration: 0.1s;     // The transition duration
+$button-transistion-duration: .3s;     // The transition duration
 
 /**
  * Toggle Switch Globals
@@ -28,15 +28,12 @@ $button-transistion-duration: 0.1s;     // The transition duration
   height: $button-height;
   font-size: 0;
   text-indent: -9999px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
   background: none;
   box-shadow: none;
   border-radius: 0;
   border: none;
   cursor: pointer;
-  transition: background $button-transistion-duration;
 }
 
 .c-hamburger:focus {
@@ -80,7 +77,7 @@ $button-transistion-duration: 0.1s;     // The transition duration
  */
 
 .c-hamburger--htx span {
-  transition: background 0s $button-transistion-duration;
+  transition: background $button-transistion-duration;
 }
 
 .c-hamburger--htx span::before,
@@ -100,7 +97,7 @@ $button-transistion-duration: 0.1s;     // The transition duration
 /* active state, i.e. menu open */
 
 .c-hamburger--htx.is-active span {
-  background: none;
+  background: rgba(255, 255, 255, 0);
 }
 
 .c-hamburger--htx.is-active span::before {

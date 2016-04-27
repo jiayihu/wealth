@@ -2,11 +2,26 @@
   text-align: center;
   background-color: $primaryDarker;
   box-shadow: 0 3px 4px 0 rgba(0,0,0,0.38);
-  overflow: hidden;
+  height: 100%;
+  overflow: auto;
+
+  > .row {
+    height: 100%;
+  }
+}
+
+.wip {
+  margin-bottom: 1em;
 }
 
 /* HEADER & NAVIGATION
    ========================================================================== */
+
+.sidebar {
+  @media (min-width: $screen-desktop) {
+    min-height: 100%;
+  }
+}
 
 /* Header */
 .header > span {
@@ -109,7 +124,7 @@
   }
 }
 
-.reset-model {
+.reset {
   color: #999;
   cursor: pointer;
   font-size: 14px;
@@ -127,6 +142,9 @@
 
 .main {
   background-color: #fff;
+  min-height: 100%;
+  padding-bottom: 70px;
+  position: relative;
 }
 
 .step-title {
@@ -173,12 +191,15 @@
 
 .continue,
 .print {
-  margin-top: 2em;
-  line-height: 50px;
-  text-transform: uppercase;
   background-color: $primaryLighter;
-  transition: background-color ease-out 1s;
+  bottom: 0;
   cursor: pointer;
+  line-height: 50px;
+  margin-top: 2em;
+  position: absolute;
+  text-transform: uppercase;
+  transition: background-color ease-out 1s;
+  width: 100%;
 
   &:hover {
     background-color: $text;

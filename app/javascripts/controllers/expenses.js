@@ -1,7 +1,6 @@
 var helpers = require('../helpers');
 var PubSub = require('pubsub-js');
 var notie = require('notie');
-var ga = require('ga');
 
 var bindView = function(model, view) {
   view.bind('basicRateChanged', function(basicRate) {
@@ -76,7 +75,7 @@ var bindView = function(model, view) {
       });
       model.update({expenses: values});
 
-      ga('send', {
+      window.ga('send', {
         hitType: 'event',
         eventCategory: 'Step #3.5',
         eventAction: 'Continue'

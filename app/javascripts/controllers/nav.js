@@ -1,11 +1,22 @@
 var PubSub = require('pubsub-js');
-var ga = require('ga');
+var notie = require('notie');
 
 var bindView = function(model, view) {
   view.bind('linkClicked', function(nextStep) {
     if(nextStep) {
       PubSub.publish('step.' + nextStep);
     }
+  });
+  view.bind('resetClicked', function() {
+    notie.confirm(
+      'You will lose all the settings and the action plan. Are you sure?',
+      'Yes',
+      'Cancel',
+      function() {
+        model.reset();
+        document.location.reload();
+      }
+    );
   });
 };
 
@@ -28,7 +39,9 @@ var subscriber = function(model, view, topic, data) {
     model.update({lastUserStep: stepNumber});
   }
 
-  ga('send', {
+  // Google Analytics update the 'ga' function asynchronously when the library is loaded
+  // so we assure to use the correct function
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Step #' + stepNumber,
     eventAction: 'Continue'
@@ -41,12 +54,4 @@ module.exports = function(model, view, initialState) {
   setView(view, initialState);
   bindView(model, view);
   PubSub.subscribe('activateStep', subscriber.bind(null, model, view));
-
-  /* DEVELOPMENT ONLY */
-  //@NOTE This could be useful also for users and not only for development
-  var resetButton = document.get('reset-model');
-  resetButton.addEventListener('click', function() {
-    model.reset();
-    document.location.reload();
-  });
 };

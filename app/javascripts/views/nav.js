@@ -4,7 +4,8 @@ var helpers = require('../helpers');
 var domHelpers = require('../dom-helpers');
 
 var stateMap = {
-  nav: null
+  nav: null,
+  reset: null
 };
 
 
@@ -88,11 +89,14 @@ var bind = function(event, handler) {
     stateMap.nav.addEventListener('click', function(e) {
       bindLinkClicked(e, handler);
     });
+  } else if(event === 'resetClicked') {
+    stateMap.reset.addEventListener('click', handler);
   }
 };
 
 var setStateMap = function() {
   stateMap.nav = document.get('nav');
+  stateMap.reset = document.get('reset');
 };
 
 var render = function(cmd, data) {

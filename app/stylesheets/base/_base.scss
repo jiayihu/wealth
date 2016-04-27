@@ -1,10 +1,15 @@
+html,
 body {
+  height: 100%;
+}
+
+body {
+  background-color: rgba(181, 171, 104, .19);
   font-weight: 300;
   font-size: 17px;
 
   @media (min-width: $screen-desktop) {
     font-size: 16px;
-    padding-top: 3.125em;
   }
 }
 

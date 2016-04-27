@@ -5,6 +5,37 @@
 
 'use strict';
 
+var ajax = function(options) {
+  if( (typeof options.method !== 'string') || (typeof options.url !== 'string') ) {
+    throw new Error('Wrong params' +  JSON.stringify(options));
+  }
+
+  var callback = options.callback || function() {};
+  var request = new XMLHttpRequest();
+  request.open(options.method, options.url, true);
+
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      var data = JSON.parse(request.responseText);
+      callback(null, data); //callback(err, value)
+    } else {
+      callback('Something went wrong', null);
+    }
+  };
+
+  request.onerror = function(error) {
+    callback(error, null);
+  };
+
+  if(options.method === 'GET') {
+    request.setRequestHeader('Accept', 'application/json');
+  } else {
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  }
+
+  request.send(options.data);
+};
+
 var customErrorConstructor = function(name, desc) {
   var ErrorConstructor = function(msg) {
     this.message = desc + msg;
@@ -195,6 +226,7 @@ var valuesOfSummary = function(income, basicRate, discRate, savingsRate) {
 
 
 module.exports = {
+  ajax: ajax,
   format: format,
   makeError: makeError,
   isNumber: isNumber,

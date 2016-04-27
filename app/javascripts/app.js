@@ -2,12 +2,13 @@
 
 require('./polyfills');
 require('./components/hamburger');
-// var helpers = require('./helpers');
 var model = require('./model');
 var view = require('./view');
 var controller = require('./controller');
+var notie = require('notie');
 
 var VERSION = '0.1.1';
+var DEV = false;
 
 var init = function() {
   model.init('wealthApp');
@@ -26,16 +27,21 @@ var init = function() {
   view.init();
   controller(model, view.getViews(), initialState);
 
-  // Debug only
-  window.model = model;
+  window.addEventListener('error', function (e) {
+    var stack = e.error.stack;
+    var message = e.error.toString();
+    if (stack) {
+      message += '\n' + stack;
+    }
+  });
+
+  if(!DEV) {
+    notie.alert(2, 'Welcome to the beta version - This is a Working in Progress', 10);
+  }
+
+  if(DEV) {
+    window.model = model;
+  }
 };
 
 init();
-
-// try {
-//   init();
-// } catch (e) {
-//   console.error(e);
-//   //@FIXME update email address
-//   helpers.makeError(null, 'Something wrong happened. Please try refreshing the page and report the problem at ...');
-// }

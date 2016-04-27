@@ -8,7 +8,8 @@ var $ = require('jQuery');
 
 var stateMap = {
   actionTitles: null,
-  printButton: null
+  print: null,
+  saveReminders: null
 };
 
 /**
@@ -77,9 +78,9 @@ var printPlan = function() {
 
 var bind = function(event, handler) {
   if(event === 'printClicked') {
-    stateMap.printButton.addEventListener('click', function() {
-      handler();
-    });
+    stateMap.print.addEventListener('click', handler);
+  } else if(event === 'savedReminders') {
+    stateMap.saveReminders.addEventListener('click', handler);
   }
 };
 
@@ -108,7 +109,8 @@ var render = function(cmd) {
 
 var setStateMap = function(container) {
   stateMap.actionTitles = container.getAll('action__title');
-  stateMap.printButton = container.get('print');
+  stateMap.print = container.get('print');
+  stateMap.saveReminders = container.get('sign__save');
 };
 
 module.exports = {

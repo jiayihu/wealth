@@ -1,4 +1,4 @@
-{#
+﻿{#
   Nunjucks Templating!
   Homepage: https://mozilla.github.io/nunjucks/
   Docs: https://mozilla.github.io/nunjucks/api.html
@@ -28,28 +28,26 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="app">
-      <div class="row">
-        <div class="col-md-3">
-          <div class="header">
-            <span class="brand-name"><a href="/">The Wealth Project</a></span>
-            <button class="c-hamburger c-hamburger--htx">
-              <span>Toggle Menu</span>
-            </button>
-          </div>
-          {% include 'includes/nav.html' %}
+  <div class="app container">
+    <div class="row">
+      <div class="sidebar col-md-3">
+        <div class="header">
+          <span class="brand-name"><a href="/">The Wealth Project</a></span>
+          <button class="c-hamburger c-hamburger--htx">
+            <span>Toggle Menu</span>
+          </button>
         </div>
-        <div class="main col-md-9">
-          {% include 'screens/intro.html' %}
-          {% include 'screens/about.html' %}
-          {% include 'screens/expenses.html' %}
-          {% include 'screens/comparison.html' %}
-          {% include 'screens/scenarios.html' %}
-          {% include 'screens/goal.html' %}
-          {% include 'screens/plan.html' %}
-          {% include 'screens/reminders.html' %}
-        </div>
+        {% include 'includes/nav.html' %}
+      </div>
+      <div class="main col-md-9">
+        {% include 'screens/intro.html' %}
+        {% include 'screens/about.html' %}
+        {% include 'screens/expenses.html' %}
+        {% include 'screens/comparison.html' %}
+        {% include 'screens/scenarios.html' %}
+        {% include 'screens/goal.html' %}
+        {% include 'screens/plan.html' %}
+        {% include 'screens/reminders.html' %}
       </div>
     </div>
   </div>
@@ -62,7 +60,7 @@
         m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
     })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-8229287-16', 'auto');
+    ga('create', 'UA-8229287-2', 'auto');
     ga('send', 'pageview');
   </script>
 

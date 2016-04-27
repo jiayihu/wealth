@@ -1,6 +1,6 @@
 .git
 node_modules
-**/*/maps
+public/styles/maps
 *.map
 public
 .publish
