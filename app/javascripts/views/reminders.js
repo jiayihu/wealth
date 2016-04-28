@@ -4,72 +4,20 @@
  */
 'use strict';
 
-var $ = require('jQuery');
+var helpers = require('../helpers');
 
 var stateMap = {
-  actionTitles: null,
   print: null,
-  saveReminders: null
+  saveReminders: null,
+  signEmail: null
 };
 
 /**
- * DOM FUNCTIONS
+ * Renders the table of actions picked by user and ordered by goal
+ * @param  {Array} actionGroups Actions grouped by goal
  */
-
-var printPlan = function() {
-  var printPage = document.createElement('div'),
-    html = '<h1 class="text-center">Your Action Plan</h1>';
-
-  printPage.classList.add('print-page');
-
-  var planActions = [{
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }, {
-    title: 'Play a stay-cation',
-    type: 'Variable expense',
-    date: 'November 28th 2016',
-    details: 'Bank what you save'
-  }];
-
-  var tHead = '<table class="table"><thead><tr><th>Title</th><th>type</th><th>Date</th><th>Details</th></tr></thead>',
-    tBody = '<tbody>';
-
-  for (var i = 0, len = planActions.length; i < len; i++) {
-    tBody += '<tr><td>' + planActions[i].title + '</td>' +
-      '<td>' + planActions[i].type + '</td>' +
-      '<td>' + planActions[i].date + '</td>' +
-      '<td>' + planActions[i].details + '</td><tr>';
-  }
-
-  tBody += '</tbody></table>';
-  html += tHead + tBody;
-
-  printPage.innerHTML = html;
-  document.body.appendChild(printPage);
-  document.body.classList.add('no-print');
-
-  window.print();
-
-  document.body.classList.remove('no-print');
-  printPage.innerHTML = '';
+var showActionPlan = function(actionGroups) {
+  
 };
 
 //////////////////////
@@ -80,37 +28,33 @@ var bind = function(event, handler) {
   if(event === 'printClicked') {
     stateMap.print.addEventListener('click', handler);
   } else if(event === 'savedReminders') {
-    stateMap.saveReminders.addEventListener('click', handler);
+    stateMap.saveReminders.addEventListener('click', function() {
+      var email = stateMap.signEmail.value;
+      var isValid = helpers.isValidEmail(email);
+
+      if(isValid) {
+        handler(null, email);
+      } else {
+        handler(new Error('Not a valid email'), null);
+      }
+    });
   }
 };
 
-var render = function(cmd) {
+var render = function(cmd, data) {
   switch(cmd) {
-    case 'createPopovers':
-      $('.plan-wrapper .zmdi-info-outline').popover({
-        placement: 'left'
-      });
+    case 'showActionPlan':
+      showActionPlan(data);
       break;
-    case 'createDatepickers':
-      $('.plan-wrapper .zmdi-calendar-alt')
-        .datepicker({
-          autoclose: true,
-          format: 'M d yyyy'
-        })
-        .on('changeDate', function(event) {
-          this.dataset.date = event.format();
-        });
-      break;
-    case 'printPlan':
-      printPlan();
-      break;
+    default:
+      console.error('No cmd found.');
   }
 };
 
 var setStateMap = function(container) {
-  stateMap.actionTitles = container.getAll('action__title');
   stateMap.print = container.get('print');
   stateMap.saveReminders = container.get('sign__save');
+  stateMap.signEmail = container.get('sign__email');
 };
 
 module.exports = {

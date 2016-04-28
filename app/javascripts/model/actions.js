@@ -479,10 +479,33 @@ var actions = {
   ]
 };
 
-module.exports = function(goal) {
+/**
+ * Returns the action by Goal and action id
+ * @param  {Object} query Object with goal id and action id properties
+ * @return {Object}
+ */
+var getAction = function(query) {
+  var goalId = query.goalId;
+  var actionId = Number(query.actionId);
+
+  if( (typeof goalId !== 'string') || !helpers.isNumber(actionId) ) {
+    helpers.makeError('params', query);
+  }
+
+  return actions[goalId].find(function(action) {
+    return action.id === actionId;
+  });
+};
+
+var getActions = function(goal) {
   if(typeof goal !== 'string') {
     helpers.makeError('params', goal);
   }
 
   return actions[goal];
+};
+
+module.exports = {
+  getAction: getAction,
+  getActions: getActions
 };

@@ -1,7 +1,16 @@
 var bindView = function(model, view) {
   view.bind('goalToggled', function(data) {
-    var goal = Object.assign({}, model.getGoals(data.id), {date: data.date});
+    // data is the date object passed by the view
+    var goalName = data.id;
+    var goal = Object.assign({}, model.getGoals(goalName), {date: data.date});
     model.toggleGoal(goal);
+
+    var actions = model.getActions(goalName);
+    var actionsGroup = {
+      id: goalName,
+      actions: actions
+    };
+    model.toggleActionsGroup(actionsGroup);
   });
 };
 

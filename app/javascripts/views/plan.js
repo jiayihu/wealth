@@ -12,7 +12,8 @@ var stateMap = {
   tbody: null
 };
 
-var actionTemplate = '<tr><td><i class="zmdi zmdi-check-circle saved" data-action="{index}"></i></td>' +
+var actionTemplate = '<tr><td><i class="zmdi zmdi-check-circle saved"' +
+  'data-action="{index}" data-goal="{goal}"></i></td>' +
   '<td>{toDo}</td>' +
   '<td>{notToDo}</td>' +
   '<td><a class="zmdi zmdi-info-outline" data-toggle="popover" data-placement="left" data-content="{details}" tabindex="0" role="button"></a></td></tr>';
@@ -51,6 +52,7 @@ var getActionsHTML = function(goal) {
     markup += helpers.template(actionTemplate, {
       id: id,
       index: action.id,
+      goal: goal.id,
       toDo: action.toDo,
       notToDo: action.notToDo,
       details: details
@@ -94,7 +96,9 @@ var bind = function(event, handler) {
       var target = event.target;
       if (target.nodeName === 'I' && target.classList.contains('zmdi-check-circle')) {
         target.classList.toggle('saved');
-        console.log(target.dataset.action);
+        var goalId = target.dataset.goal;
+        var actiondId = target.dataset.action;
+        handler(goalId, actiondId);
       }
     });
   }

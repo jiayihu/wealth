@@ -149,6 +149,43 @@ var toggleListItem = function(listName, item) {
   update(updateMap);
 };
 
+var toggleAction = function(goalId, action) {
+  if( (typeof goalId !== 'string') || (typeof action !== 'object') ) {
+    helpers.makeError('params', goalId);
+  }
+
+  var groups = read('actions');
+  var actionGroup = groups.find(function(actionGroup) {
+    return actionGroup.id === goalId;
+  });
+  actionGroup.actions = helpers.toggleArrayItem(actionGroup.actions, action);
+
+  update({
+    actions: groups
+  });
+};
+
+/**
+ * Add/removes the actions of a goal
+ * @param  {Object} actionsGroup The actions grouped by goal
+ */
+var toggleActionsGroup = function(actionsGroup) {
+  toggleListItem('actions', actionsGroup);
+};
+
+/**
+ * Add/removes the goal and returns whether it was added or removed
+ * @param  {Object} goal Goal to toggle
+ * @return {Boolean}
+ */
+var toggleGoal = function(goal) {
+  var initialLength = read('goals').length;
+  toggleListItem('goals', goal);
+  var currentLength = read('goals').length;
+
+  return currentLength > initialLength;
+};
+
 var init = function(name) {
   stateMap.dbName = name;
 
@@ -166,7 +203,8 @@ var init = function(name) {
 };
 
 module.exports = {
-  getActions: actions,
+  getAction: actions.getAction,
+  getActions: actions.getActions,
   getDefaultRates: budget.getDefaultRates,
   getGoals: getGoals,
   getSummaryExpenses: getSummaryExpenses,
@@ -174,7 +212,8 @@ module.exports = {
   read: read,
   reset: reset,
   remove: remove,
-  toggleActions: toggleListItem.bind(null, 'actions'),
-  toggleGoal: toggleListItem.bind(null, 'goals'),
+  toggleAction: toggleAction,
+  toggleActionsGroup: toggleActionsGroup,
+  toggleGoal: toggleGoal,
   update: update
 };

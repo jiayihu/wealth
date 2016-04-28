@@ -1,8 +1,13 @@
 var PubSub = require('pubsub-js');
 
 var bindView = function(model, view) {
-  view.bind('actionToggled', function(action) {
-    model.toggleActions(action);
+  view.bind('actionToggled', function(goalId, actionId) {
+    var action = model.getAction({
+      goalId: goalId,
+      actionId: actionId
+    });
+
+    model.toggleAction(goalId, action);
   });
 };
 
@@ -18,6 +23,7 @@ var setView = function(model, view, initialState) {
   }).filter(function(goalActions) { //filter not undefined goal actions
     return goalActions;
   });
+  // @NOTE REMOVED FOR NOW
   // We add the general tips to the beginning
   // goalsActions.unshift({
   //   id: 'general',

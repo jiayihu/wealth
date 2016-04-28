@@ -5,6 +5,17 @@
 
 'use strict';
 
+/**
+ * Make Ajax requests
+ * @param  {Object} options Options of the request
+ * @example
+ * ajax({
+ *   method: 'GET',
+ *   url: 'some url',
+ *   callback: function(err, response) {},
+ *   contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
+ * })
+ */
 var ajax = function(options) {
   if( (typeof options.method !== 'string') || (typeof options.url !== 'string') ) {
     throw new Error('Wrong params' +  JSON.stringify(options));
@@ -26,6 +37,10 @@ var ajax = function(options) {
   request.onerror = function(error) {
     callback(error, null);
   };
+
+  if(options.contentType) {
+    request.setRequestHeader('Content-Type', options.contentType);
+  }
 
   if(options.method === 'GET') {
     request.setRequestHeader('Accept', 'application/json');
@@ -87,6 +102,16 @@ var makeError = function(type, data, callback) {
 var isNumber = function(value) {
   //Check also with isNaN because (typeof NaN === 'number') is true
   return !isNaN(value) && (typeof value === 'number');
+};
+
+/**
+ * Checks whether the input is a valid email address
+ * @param  {String}  email Email address to test
+ * @return {Boolean}
+ */
+var isValidEmail = function(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 };
 
 /**
@@ -230,6 +255,7 @@ module.exports = {
   format: format,
   makeError: makeError,
   isNumber: isNumber,
+  isValidEmail: isValidEmail,
   reverse: reverse,
   setConfigMap: setConfigMap,
   template: template,
