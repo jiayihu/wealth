@@ -1,9 +1,10 @@
 var helpers = require('../helpers');
 var notie = require('notie');
+var PubSub = require('pubsub-js');
 
 var bindView = function(model, view) {
   view.bind('printClicked', function() {
-    view.render('printPlan');
+    // view.render('printPlan');
   });
 
   view.bind('savedReminders', function(err, email) {
@@ -28,8 +29,12 @@ var setView = function(model, view, initialState) {
   view.render('showActionPlan', actions);
 };
 
+var subscriber = function(model, view, topic, data) {
+  setView(model, view, {actions: data});
+};
+
 module.exports = function(model, view, initialState) {
-  console.log('initialState', initialState);
   setView(model, view, initialState);
   bindView(model, view);
+  PubSub.subscribe('actions', subscriber.bind(null, model, view));
 };

@@ -7,7 +7,8 @@ var bindView = function(model, view) {
 
     var actions = model.getActions(goalName);
     var actionsGroup = {
-      id: goalName,
+      id: goal.id,
+      title: goal.title,
       actions: actions
     };
     model.toggleActionsGroup(actionsGroup);

@@ -7,7 +7,7 @@ var view = require('./view');
 var controller = require('./controller');
 var notie = require('notie');
 
-var VERSION = '0.1.1';
+var VERSION = '0.2.1';
 var DEV = false;
 
 var init = function() {

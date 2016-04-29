@@ -2,7 +2,21 @@
    ========================================================================== */
 
 .step--reminders {
+  .well a {
+    cursor: pointer;
+  }
 
+  table {
+    .to-do {
+      background-color: $accent-green;
+      color: #fff;
+    }
+
+    .not-do {
+      background-color: $accent;
+      color: #fff;
+    }
+  }
 }
 
 .sign {

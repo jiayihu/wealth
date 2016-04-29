@@ -25,10 +25,10 @@ $gray-light:             #d3d3d3; // #777
 $gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee
 
 $brand-primary:         $primary !default; // #337ab7
-$brand-success:         #5cb85c !default;
+$brand-success:         $accent-green !default;
 $brand-info:            $primaryLighter !default;
 $brand-warning:         #f0ad4e !default;
-$brand-danger:          #d9534f !default;
+$brand-danger:          $accent !default;
 
 //== Scaffolding
 //

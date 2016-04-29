@@ -2,16 +2,30 @@
    PRINT
    ========================================================================== */
 
-.print-page {
-  display: none;
-}
-
 @media print {
-  .no-print > * {
-    display: none;
-  }
+  .no-print {
+    .main {
+      width: 100%;
+    }
 
-  .print-page {
-    display: block;
+    .sidebar,
+    .sign {
+      display: none;
+    }
+
+    .step--reminders {
+      font-size: 14px;
+    }
+
+    .well {
+      background: none;
+      border: 0;
+      padding: 0;
+    }
+
+    td {
+      padding: 3px !important;
+    }
+
   }
 }
