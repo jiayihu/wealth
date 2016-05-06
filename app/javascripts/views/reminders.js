@@ -8,6 +8,7 @@ var helpers = require('../helpers');
 var $ = require('jQuery');
 
 var stateMap = {
+  printTop: null,
   print: null,
   saveReminders: null,
   signEmail: null,
@@ -20,12 +21,23 @@ var actionTemplate =
     '<td>{notToDo}</td>' +
   '</tr>';
 
+var printPage = function() {
+  // Open the accordions and style the page before printing
+  $('.step--reminders .collapse').collapse('show');
+  document.body.classList.add('no-print');
+
+  window.print();
+
+  // Reset the page to its previous state
+  document.body.classList.remove('no-print');
+  $('.step--reminders .collapse').collapse('hide');
+};
+
 /**
  * Renders the table of actions picked by user and ordered by goal
  * @param  {Array} actionGroups Actions grouped by goal
  */
 var showActionPlan = function(actionGroups) {
-  console.log(actionGroups);
   var actionGroupMarkup = actionGroups.reduce(function(sumGroup, currGroup) {
     sumGroup +=
       '<h4 class="well"><a data-toggle="collapse" data-target=".' + currGroup.id + '">' + currGroup.title + '</a></h4>' +
@@ -55,17 +67,8 @@ var showActionPlan = function(actionGroups) {
 
 var bind = function(event, handler) {
   if(event === 'printClicked') {
-    stateMap.print.addEventListener('click', function() {
-      // Open the accordions and style the page before printing
-      $('.step--reminders .collapse').collapse('show');
-      document.body.classList.add('no-print');
-
-      window.print();
-
-      // Reset the page to its previous state
-      document.body.classList.remove('no-print');
-      $('.step--reminders .collapse').collapse('hide');
-    });
+    stateMap.printTop.addEventListener('click', printPage);
+    stateMap.print.addEventListener('click', printPage);
   } else if(event === 'savedReminders') {
     stateMap.saveReminders.addEventListener('click', function() {
       var email = stateMap.signEmail.value;
@@ -91,6 +94,7 @@ var render = function(cmd, data) {
 };
 
 var setStateMap = function(container) {
+  stateMap.printTop = container.get('print-btn');
   stateMap.print = container.get('print');
   stateMap.saveReminders = container.get('sign__save');
   stateMap.signEmail = container.get('sign__email');

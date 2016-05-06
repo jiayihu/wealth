@@ -18,6 +18,11 @@ var bindView = function(model, view) {
       url: 'http://www.mymoneymentor.org/wealthprojservices/ReminderRequest?value=' + email,
       callback: function(err, response) {
         console.log('Ajax call to web service: ', err, response);
+        if(err) {
+          notie.alert(3, 'Error sending the email to the server. Please try again or report the issue.', 5);
+        } else {
+          notie.alert(1, 'Thank you for submitting your email! ' + response, 5);
+        }
       },
       contentType: 'text/xml; charset=utf-8'
     });

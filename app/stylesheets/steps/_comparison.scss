@@ -11,6 +11,14 @@
     display: inline-block;
     height: .75em;
     width: .75em;
+
+    &--you {
+      background-color: $primary;
+    }
+
+    &--peers {
+      margin-left: 1em;
+    }
   }
 
   .conclusion {
