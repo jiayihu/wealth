@@ -15,7 +15,7 @@ var actions = {
         'Details',
         'Details'
       ],
-      notToDo: 'Dont\' do this thing'
+      notToDo: 'Don\'t do this thing'
     },
     {
       id: 1,
@@ -25,7 +25,7 @@ var actions = {
         'Details',
         'Details'
       ],
-      notToDo: 'Dont\' do this thing'
+      notToDo: 'Don\'t do this thing'
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ var actions = {
         'Details',
         'Details'
       ],
-      notToDo: 'Dont\' do this thing'
+      notToDo: 'Don\'t do this thing'
     },
     {
       id: 3,
@@ -45,7 +45,7 @@ var actions = {
         'Details',
         'Details'
       ],
-      notToDo: 'Dont\' do this thing'
+      notToDo: 'Don\'t do this thing'
     }
   ],
   home: [
@@ -284,7 +284,7 @@ var actions = {
         '529 Plan for College',
         'Coverdell Education Savings Account (ESA) for K thru 12'
       ],
-      notToDo: 'Dont\' rely on a conventional savings account'
+      notToDo: 'Don\'t rely on a conventional savings account'
     },
     {
       id: 1,
@@ -292,7 +292,7 @@ var actions = {
       details: [
         'Use this resource to estimate how much you will need: <a href=\'http://www.savingforcollege.com/college-savings-calculator/index.php\' target=\'_blank\'>College cost calculator</a>'
       ],
-      notToDo: 'Dont\' guess on how much you will need. Chances are it will be more than you expected.'
+      notToDo: 'Don\'t guess on how much you will need. Chances are it will be more than you expected.'
     },
     {
       id: 2,
@@ -300,7 +300,7 @@ var actions = {
       details: [
         '<a href=\'https://fafsa.ed.gov/FAFSA/app/f4cForm\' target=\'_blank\'>Federal Student Aid</a>'
       ],
-      notToDo: 'Dont\' assume that everyone pays the same amount.'
+      notToDo: 'Don\'t assume that everyone pays the same amount.'
     },
     {
       id: 3,
@@ -308,7 +308,7 @@ var actions = {
       details: [
         'Plan this into your budget. Use automatic payments if possible'
       ],
-      notToDo: 'Dont\' be inconsistent with your savings. Slow and steady wins the race.'
+      notToDo: 'Don\'t be inconsistent with your savings. Slow and steady wins the race.'
     },
     {
       id: 4,
@@ -318,7 +318,7 @@ var actions = {
         'Make sure credits are transferable first',
         'AP classes in high school are another great option'
       ],
-      notToDo: 'Dont\' assume that all of your course work has to be at a 4-year institution'
+      notToDo: 'Don\'t assume that all of your course work has to be at a 4-year institution'
     },
     {
       id: 5,
@@ -326,7 +326,7 @@ var actions = {
       details: [
         'Expensive private colleges may actually be the least expensive when you factor in generous endowments for qualified students'
       ],
-      notToDo: 'Dont\' assume that private school is cheaper than public'
+      notToDo: 'Don\'t assume that private school is cheaper than public'
     },
     {
       id: 6,
@@ -334,7 +334,7 @@ var actions = {
       details: [
         'Go to <a href=\'http://www2.ed.gov/programs/fws/index.html\' target=\'_blank\'>FastWeb.com</a> to find scholarships and explore work-study programs'
       ],
-      notToDo: 'Dont\' sc this thingholarship is too small to apply for. Multiple scholarships add up'
+      notToDo: 'Don\'t sc this thingholarship is too small to apply for. Multiple scholarships add up'
     }
   ],
   funds: [
@@ -344,7 +344,7 @@ var actions = {
       details: [
         'Calculate your monthly expenses and use this calculator: <a href=\'http://www.moneyunder30.com/emergency-fund-calculator\' target=\'_blank\'>Emergency fund calculator</a>'
       ],
-      notToDo: 'Dont\' underestimate what you\'ll need or how long it will take you to find a new job if you lose yours.'
+      notToDo: 'Don\'t underestimate what you\'ll need or how long it will take you to find a new job if you lose yours.'
     },
     {
       id: 1,
@@ -352,7 +352,7 @@ var actions = {
       details: [
         'Keep your emergency fund separate from you checking and saving account. You\'ll think differently about this fund if dedicate to an emergency (i.e. you\'ll be less likely to spend it)'
       ],
-      notToDo: 'Dont\' co-mingle funds with your checking or saving account'
+      notToDo: 'Don\'t co-mingle funds with your checking or saving account'
     },
     {
       id: 2,
@@ -360,7 +360,7 @@ var actions = {
       details: [
         'This is your safety-net. You\'ll need more later but this will go a long way toward getting started.'
       ],
-      notToDo: 'Dont\' wait until you have an emergency'
+      notToDo: 'Don\'t wait until you have an emergency'
     },
     {
       id: 3,
@@ -368,7 +368,7 @@ var actions = {
       details: [
         'Make this a priority before any other financial goals. '
       ],
-      notToDo: 'Dont\' quit before you achieve your goal. Consistency is key.'
+      notToDo: 'Don\'t quit before you achieve your goal. Consistency is key.'
     },
     {
       id: 4,
@@ -376,7 +376,7 @@ var actions = {
       details: [
         'Setup direct deposit for your monthly budgeted contribution to this fund'
       ],
-      notToDo: 'Dont\' assume you\'ll stay disciplined after you start saving.'
+      notToDo: 'Don\'t assume you\'ll stay disciplined after you start saving.'
     },
     {
       id: 5,
@@ -392,7 +392,7 @@ var actions = {
       details: [
         'You may already have this through your employer. If not, consider getting a policy on your own.'
       ],
-      notToDo: 'Dont\' assume you already have a policy or think you don\'t need one.'
+      notToDo: 'Don\'t assume you already have a policy or think you don\'t need one.'
     }
   ],
   retire: [
