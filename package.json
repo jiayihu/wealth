@@ -16,7 +16,7 @@
   "dependencies": {
     "chartist": "^0.9.5",
     "dragula": "^3.6.3",
-    "is_js": "^0.8.0",
+    "intro.js": "^2.1.0",
     "notie": "^2.1.0",
     "nouislider": "^8.2.1",
     "pubsub-js": "^1.5.3"

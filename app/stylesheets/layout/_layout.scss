@@ -2,12 +2,7 @@
   text-align: center;
   background-color: $primaryDarker;
   box-shadow: 0 3px 4px 0 rgba(0,0,0,0.38);
-  height: 100%;
   overflow: auto;
-
-  > .row {
-    height: 100%;
-  }
 }
 
 .wip {
@@ -16,12 +11,6 @@
 
 /* HEADER & NAVIGATION
    ========================================================================== */
-
-.sidebar {
-  @media (min-width: $screen-desktop) {
-    min-height: 100%;
-  }
-}
 
 /* Header */
 .header > span {
@@ -142,7 +131,6 @@
 
 .main {
   background-color: #fff;
-  min-height: 100%;
   padding-bottom: 70px;
   position: relative;
 }

@@ -8,6 +8,7 @@
  */
 
 var controllers = [
+  require('./controllers/intro'),
   require('./controllers/about'),
   require('./controllers/expenses'),
   require('./controllers/comparison'),

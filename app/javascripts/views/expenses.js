@@ -10,6 +10,7 @@ var domHelpers = require('../dom-helpers');
 var wNumb = require('wNumb');
 var $ = require('jQuery');
 var Chartist = require('chartist');
+var introJs = require('intro.js').introJs;
 
 var stateMap = {
   chartNode: null,
@@ -19,6 +20,8 @@ var stateMap = {
   expensesSlider: null,
   savingsSlider: null,
 
+  enterDetails: null,
+
   $modal: null,
   detailsList: null,
   detailsInputs: null,
@@ -26,6 +29,12 @@ var stateMap = {
   detailsSavings: null,
   saveDetails: null
 };
+
+/**
+ * Whether the view is seen for the first time in the session
+ * @type {Boolean}
+ */
+var firstTime = true;
 
 //////////////////////
 // HELPER FUNCTIONS //
@@ -155,6 +164,27 @@ var showDetailsSum = function(data) {
 
   stateMap.detailsSum.textContent = sum;
   stateMap.detailsSavings.textContent = 100 - sum;
+};
+
+var showIntro = function() {
+  if(!firstTime) {
+    return;
+  }
+
+  firstTime = false;
+  var introSteps = [
+    {
+      element: stateMap.enterDetails,
+      intro: 'Remember to enter your expense details later!'
+    }
+  ];
+  var intro = introJs();
+  intro.setOptions({
+    showBullets: false,
+    steps: introSteps,
+    tooltipPosition: 'auto'
+  });
+  intro.start();
 };
 
 var showSliders = function(data) {
@@ -370,9 +400,15 @@ var render = function(cmd, data) {
     case 'showSliders':
       showSliders(data);
       break;
+
     case 'showPieChart':
       showPieChart(data);
       break;
+
+    case 'showIntro':
+      showIntro();
+      break;
+
     case 'showDetailed':
       showDetailed(data);
       stateMap.detailsInputs = stateMap.detailsList.getAll('detail__value');
@@ -383,15 +419,19 @@ var render = function(cmd, data) {
         sum: sum(inputsValues)
       });
       break;
+
     case 'setSlider':
       setSlider(data);
       break;
+
     case 'updatePieChart':
       updatePieChart(data);
       break;
+
     case 'updatePieTooltip':
       createPieTooltip(stateMap.chartNode, data);
       break;
+
     default:
       console.error('No command found.');
       return;
@@ -405,6 +445,8 @@ var setStateMap = function(container) {
   stateMap.savingsSlider = container.get('current-savings__slider');
 
   stateMap.chartNode = container.get('summary__chart');
+
+  stateMap.enterDetails = container.get('btn-details');
 
   stateMap.$modal = $('#details-modal');
   stateMap.detailsList = container.get('details-values');

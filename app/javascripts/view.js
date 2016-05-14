@@ -1,6 +1,7 @@
 'use strict';
 
 var viewsNames = [
+  'intro',
   'about',
   'expenses',
   'comparison',
@@ -10,6 +11,7 @@ var viewsNames = [
   'reminders'
 ];
 var views = [
+  require('./views/intro'),
   require('./views/about'),
   require('./views/expenses'),
   require('./views/comparison'),
@@ -27,7 +29,7 @@ var getViews = function() {
 
 var init = function() {
   views.forEach(function(view, index) {
-    var container = index < 7? document.get('step--' + viewsNames[index]) : null;
+    var container = index < 8? document.get('step--' + viewsNames[index]) : null;
     view.setStateMap(container);
   });
 };
