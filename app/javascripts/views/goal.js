@@ -35,14 +35,6 @@ var freeGoalTemplate =
   '<div class="goal goal--{id} {picked}">' +
     '<div class="goal__details">' +
       '<p class="goal__title">{title}</p>' +
-      '<span class="goal__date" data-placement="bottom" data-toggle="tooltip" title="Expected achievement date based on your data">' +
-        '<i class="zmdi zmdi-calendar-alt"></i>' +
-        '<span>{date}</span>' +
-      '</span>' +
-      '<span class="goal__success" data-placement="bottom" data-toggle="tooltip" title="Expected achievement probability based on your data">' +
-        '<i class="zmdi zmdi-chart"></i>' +
-        '<span>{probability}</span>' +
-      '</span>' +
     '</div>' +
     '<i class="toggle-goal add-goal zmdi zmdi-plus-circle" data-goal="{id}"></i>' +
   '</div>';
@@ -54,9 +46,7 @@ var pickedGoalTemplate =
       '<p class="picked__date">' +
         '<i class="zmdi zmdi-calendar-alt"></i>' +
         '<input class="goal__date__picker" type="text" value="{date}" readonly>' +
-        '<i class="zmdi zmdi-edit"></i>' +
       '</p>' +
-      '<p class="picked__success"><i class="zmdi zmdi-chart"></i>{probability}</p>' +
     '</div>' +
     '<i class="toggle-goal delete-goal zmdi zmdi-minus-circle" data-goal="{id}"></i>' +
   '</div>';
@@ -157,9 +147,6 @@ var render = function(cmd, data) {
   switch(cmd) {
     case 'showGoals':
       showGoals(data);
-      break;
-    case 'createTooltips':
-      $('.goal__details > span').tooltip();
       break;
     case 'setDragDrop':
       dragula([stateMap.pickedGoals]);

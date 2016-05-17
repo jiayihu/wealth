@@ -135,6 +135,9 @@ module.exports = function(model, view, initialState) {
   bindView(model, view);
   PubSub.subscribe('aboutIncome', subscriber.bind(null, model, view));
   PubSub.subscribe('step.expenses', function() {
-    view.render('showIntro');
+    var expenses = model.read('expenses');
+    if(!expenses.length) {
+      view.render('showIntro');
+    }
   });
 };

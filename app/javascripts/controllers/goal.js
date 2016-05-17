@@ -20,8 +20,7 @@ var setView = function(model, view, initialState) {
     goalsList: model.getGoals(),
     pickedGoals: initialState.goals
   });
-  view.render('createTooltips');
-  view.render('setDragDrop');
+  // view.render('setDragDrop');
   view.render('createDatepickers');
 };
 

@@ -8,7 +8,7 @@ var controller = require('./controller');
 var notie = require('notie');
 
 var VERSION = '0.2.1';
-var DEV = false;
+var DEV = true;
 
 var init = function() {
   model.init('wealthApp');
@@ -35,11 +35,8 @@ var init = function() {
     }
   });
 
-  if(!DEV) {
-    notie.alert(2, 'Welcome to the beta version - This is a Working in Progress', 10);
-  }
-
   if(DEV) {
+    notie.alert(2, 'Welcome to the beta version - This is a Working in Progress', 10);
     window.model = model;
   }
 };

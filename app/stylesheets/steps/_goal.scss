@@ -48,30 +48,20 @@
   }
 
   &__details {
+    background-color: #78B6E1;
+    display: table;
     height: 90px;
     padding-top: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
-    background-color: #78B6E1;
+    width: 100%;
   }
 
-  &__date,
-  &__success {
-    display: inline-block;
-    text-align: center;
-    font-size: 0.875em;
-
-    & .zmdi {
-      display: block;
-      margin: 0 auto;
-    }
-  }
-
-  &__date {
-    width: 100px;
-  }
-  &__success {
-    width: 60px;
+  &__title {
+    display: table-cell;
+    font-size: 1.1em;
+    padding: 0 1em;
+    vertical-align: middle;
   }
 
   .add-goal {
@@ -125,13 +115,15 @@
   }
 
   .goal__date__picker {
-    width: 100px;
-    padding: 0;
-    text-align: center;
+    cursor: pointer;
     background-color: rgba(0,0,0,0);
     border: 0;
+    border-bottom: 1px solid $primaryLighter;
+    border-radius: 3px;
     outline: none;
-    cursor: pointer;
+    padding: 0;
+    text-align: center;
+    width: 100px;
   }
 
   p .zmdi {
