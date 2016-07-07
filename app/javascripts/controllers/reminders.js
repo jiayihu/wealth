@@ -42,4 +42,7 @@ module.exports = function(model, view, initialState) {
   setView(model, view, initialState);
   bindView(model, view);
   PubSub.subscribe('actions', subscriber.bind(null, model, view));
+  PubSub.subscribe('step.reminders', function() {
+    notie.alert(2, '<a href="http://www.mymoneymentor.org/wealthproject/Donate.aspx" target="_blank">Donate $1</a> To Help Fund New Features. Thanks!</a>', 10);
+  });
 };
