@@ -9,9 +9,10 @@
   },
   "scripts": {
     "production": "gulp clean && gulp production",
-    "gulp": "gulp",
-    "development": "gulp",
-    "test": "mocha test/functional/"
+    "start": "gulp",
+    "test:functional": "mocha test/functional/",
+    "test:unit": "mocha test/unit/",
+    "test": "npm run test:unit && npm run test:functional"
   },
   "dependencies": {
     "chartist": "^0.9.5",
